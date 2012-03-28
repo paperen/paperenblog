@@ -79,9 +79,44 @@ class Sidebar_Common_Module extends CI_Module
 		$latest_posts = $this->post_model->get_latest( $limit );
 		$data['posts_data'] = $latest_posts;
 
-		$this->load->view( 'lastest_posts', $data );
+		$this->load->view( 'latest_posts', $data );
 	}
 
+	/**
+	 * 热门文章
+	 * @param int $limit 显示篇数
+	 */
+	public function hot_posts( $limit = 5 )
+	{
+		$limit = intval( $limit );
+		if ( empty( $limit ) ) $limit = 5;
+
+		$data = array( );
+
+		$this->load->model( 'post_model' );
+		$hot_posts = $this->post_model->get_hot( $limit );
+		$data['posts_data'] = $hot_posts;
+
+		$this->load->view( 'hot_posts', $data );
+	}
+
+	/**
+	 * 最近评论
+	 * @param int $limit 显示条数
+	 */
+	public function recent_comments( $limit = 5 )
+	{
+		$limit = intval( $limit );
+		if ( empty( $limit ) ) $limit = 5;
+
+		$data = array( );
+
+		$this->load->model( 'comment_model' );
+		$comments_data = $this->comment_model->all( $limit );
+		$data['comments_data'] = $comments_data;
+
+		$this->load->view( 'recent_comments', $data );
+	}
 }
 
 // end of common

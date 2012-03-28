@@ -165,6 +165,30 @@ class Post_model extends CI_Model
 				->result_array();
 	}
 
+	/**
+	 * 获取热门文章
+	 * @param int $limit 显示文章数
+	 * @return array
+	 */
+	public function get_hot( $limit = 5 )
+	{
+		$query = $this->db->select(
+						'p.id,p.title,p.urltitle,
+						 p.categoryid,p.content,
+						 p.authorid,p.click,p.good,
+						 p.bad,p.posttime,
+						 c.category,
+						 u.name as author'
+				)
+				->from( "{$this->_tables['post']} as p" )
+				->join( "{$this->_tables['category']} as c", 'c.id = p.categoryid' )
+				->join( "{$this->_tables['user']} as u", 'u.id = p.authorid' )
+				->where( "p.good >", 0 )
+				->order_by( 'p.good', 'desc' );
+		if ( $limit ) $query->limit( $limit );
+		return $query->get()->result_array();
+	}
+
 }
 
 // end of Post_model

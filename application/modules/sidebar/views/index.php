@@ -17,39 +17,9 @@
     </script>
 
 	<?php $this->load->module('sidebar/common/calendar', array()); ?>
-	
-    <!-- latest post -->
-    <div class="latest">
-	<h3>最近文章</h3>
-	<ul>
-	    <li><a href="#">同步登陆</a></li>
-	    <li><a href="#">年总结Summary</a></li>
-	    <li><a href="#">关于控制器与模型间的一些想法</a></li>
-	    <li><a href="#">解决表单重复提交</a></li>
-	</ul>
-    </div>
-    <!-- latest post -->
-
-    <!-- hotpost -->
-    <div class="hotpost">
-	<h3>顶得火热博文</h3>
-	<ul>
-	    <li><a href="#">同步登陆</a></li>
-	    <li><a href="#">年总结Summary</a></li>
-	    <li><a href="#">关于控制器与模型间的一些想法</a></li>
-	    <li><a href="#">解决表单重复提交</a></li>
-	</ul>
-    </div>
-    <!-- hotpost -->
-
-    <!-- latest-comment -->
-    <div class="latest-comment">
-	<h3>最近评论</h3>
-	<ul>
-	    <li><a href="#"><strong>next_step_do</strong> 靠，竟然在公车上问女...</a> <small>前6小时前</small></li>
-	</ul>
-    </div>
-    <!-- latest-comment -->
+	<?php $this->load->module('sidebar/common/latest_posts', array()); ?>
+	<?php $this->load->module('sidebar/common/hot_posts', array()); ?>
+	<?php $this->load->module('sidebar/common/recent_comments', array()); ?>
 
     <!-- links -->
     <div class="links">

@@ -1,0 +1,36 @@
+.archive {
+	padding: 15px 0 0 20px;
+	border-bottom: 1px #EEE solid;
+	margin-left: 15px;
+}
+.archive h2 {
+	padding: 0 0 10px 85px;
+	position: relative;
+}
+.archive h2 .timeline-txt {
+	position: absolute;
+	left: -30px;
+}
+.archive h2 .timeline-txt i {
+	margin: 5px 5px 0 0;
+}
+.archive .col-left {
+	border-right: 1px #EEE solid;
+}
+.archive .archive-attr h3,
+.archive .archive-attr h4 {
+	text-align: right;
+}
+.archive .archive-list li {
+	margin-bottom: 5px;
+}
+.archive .single {
+	margin-bottom: 10px;
+	position: relative;
+}
+.archive .single .total {
+	position: absolute;
+	right: 10px;
+	top: 0;
+	font-size: 22px;
+}

@@ -37,6 +37,26 @@ class MY_Loader extends CI_Loader {
 	var $_ci_module_method = '';	// 当前 Module 执行的方法
 
 	/**
+	 * Initialize the Loader
+	 *
+	 * This method is called once in CI_Controller.
+	 *
+	 * @param 	array
+	 * @return 	object
+	 */
+	public function initialize()
+	{
+		$this->_ci_classes = array();
+		$this->_ci_loaded_files = array();
+		$this->_ci_models = array();
+		$this->_base_classes =& is_loaded();
+
+		$this->_ci_autoloader();
+
+		return $this;
+	}
+
+	/**
 	 * Module Loader
 	 *
 	 * This function lets users load and instantiate module.

@@ -39,7 +39,7 @@ function js( $js )
  */
 function page_title( $page_title = '', $delimiter = '&raquo;' )
 {
-	$page_title = empty( $page_title ) ? config_item( 'sitename' ) : config_item( 'sitename' ) . ' ' . $delimiter . ' ' . $page_title;
+	$page_title = empty( $page_title ) ? config_item( 'sitename' ) : $page_title . ' ' . $delimiter . ' ' . config_item( 'sitename' );
 	return "<title>{$page_title}</title>";
 }
 

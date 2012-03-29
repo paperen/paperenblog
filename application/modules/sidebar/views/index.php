@@ -16,9 +16,9 @@
 	});
     </script>
 
-	<?php $this->load->module('sidebar/common/calendar', array()); ?>
-	<?php $this->load->module('sidebar/common/hot_posts', array()); ?>
-	<?php $this->load->module('sidebar/common/recent_comments', array()); ?>
-	<?php $this->load->module('sidebar/common/links', array()); ?>
+	<?php $this->load->module('calendar/common/locus', array()); ?>
+	<?php $this->load->module('post/common/hot', array()); ?>
+	<?php $this->load->module('comment/common/recent', array()); ?>
+	<?php $this->load->module('link/common/all', array()); ?>
 </div>
 <!-- sidebar -->

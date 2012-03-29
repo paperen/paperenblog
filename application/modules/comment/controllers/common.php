@@ -42,6 +42,23 @@ class Comment_Common_Module extends CI_Module
 		$this->load->view( 'form', $data );
 	}
 
+	/**
+	 * 最近评论
+	 * @param int $limit 显示条数
+	 */
+	public function recent( $limit = 5 )
+	{
+		$limit = intval( $limit );
+		if ( empty( $limit ) ) $limit = 5;
+
+		$data = array( );
+
+		$comments_data = $this->querycache->get('comment', 'get_all', $limit );
+		$data['comments_data'] = $comments_data;
+
+		$this->load->view( 'recent', $data );
+	}
+
 }
 
 // end of common

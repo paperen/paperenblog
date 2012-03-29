@@ -38,16 +38,19 @@
 |
 */
 
-$route['default_controller'] = "main";
+$route['default_controller'] = 'main';
 $route['404_override'] = '';
 
+// 404
+$route['404'] = 'main/not_found';
+
 // 文章
-$route['post/(:any)'] = "main/post/$1";
+$route['post/(:any)'] = 'main/post/$1';
 
 // 归档
-$route['archive'] = "main/archive/";
-$route['archive/(:num)/(:num)'] = "main/archive_by_year/$1/$2";
-$route['archive/(:num)-(:num)/(:num)'] = "main/archive_by_month/$1/$2/$3";
+$route['archive'] = 'main/archive/';
+$route['archive/(:num)/(:num)'] = 'main/archive_by_year/$1/$2';
+$route['archive/(:num)-(:num)/(:num)'] = 'main/archive_by_month/$1/$2/$3';
 
 
 

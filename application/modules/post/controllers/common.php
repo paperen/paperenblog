@@ -36,8 +36,7 @@ class Post_Common_Module extends CI_Module
 	{
 		$data = array( );
 
-		$this->load->model( 'post_model' );
-		$posts_data = $this->post_model->get_all( config_item( 'per_page' ), $offset );
+		$posts_data = $this->querycache->get('post', 'get_all', config_item( 'per_page' ), $offset );
 
 		// 分栏显示
 		$posts_data_by_col = $this->_posts_by_col( $posts_data );
@@ -65,6 +64,40 @@ class Post_Common_Module extends CI_Module
 		$data = array( );
 
 		$this->load->view( 'archive', $data );
+	}
+
+	/**
+	 * 最近文章
+	 * @param int $limit 获取条数
+	 */
+	public function latest_posts( $limit = 5 )
+	{
+		$limit = intval( $limit );
+		if ( empty( $limit ) ) $limit = 5;
+
+		$data = array( );
+
+		$latest_posts = $this->querycache->get('post', 'get_all', 5);
+		$data['posts_data'] = $latest_posts;
+
+		$this->load->view( 'latest_posts', $data );
+	}
+
+	/**
+	 * 热门文章
+	 * @param int $limit 显示篇数
+	 */
+	public function hot( $limit = 5 )
+	{
+		$limit = intval( $limit );
+		if ( empty( $limit ) ) $limit = 5;
+
+		$data = array( );
+
+		$hot_posts = $this->querycache->get('post', 'get_hot', $limit );
+		$data['posts_data'] = $hot_posts;
+
+		$this->load->view( 'hot', $data );
 	}
 
 }

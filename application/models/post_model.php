@@ -26,6 +26,52 @@ class Post_model extends CI_Model
 	);
 
 	/**
+	 * 根據文章ID獲取文章數據
+	 * @param int $post_id
+	 * @return array
+	 */
+	public function get_by_id( $post_id )
+	{
+		return $this->db->select(
+						'p.id,p.title,p.urltitle,
+						 p.categoryid,p.content,
+						 p.authorid,p.click,p.good,
+						 p.bad,p.posttime,
+						 c.category,
+						 u.name as author'
+				)
+				->from( "{$this->_tables['post']} as p" )
+				->join( "{$this->_tables['category']} as c", 'c.id = p.categoryid' )
+				->join( "{$this->_tables['user']} as u", 'u.id = p.authorid' )
+				->where( 'p.id', $post_id )
+				->get()
+				->row_array();
+	}
+
+	/**
+	 * 根據文章URL標題獲取文章數據
+	 * @param string $urltitle
+	 * @return array
+	 */
+	public function get_by_urltitle( $urltitle )
+	{
+		return $this->db->select(
+						'p.id,p.title,p.urltitle,
+						 p.categoryid,p.content,
+						 p.authorid,p.click,p.good,
+						 p.bad,p.posttime,
+						 c.category,
+						 u.name as author'
+				)
+				->from( "{$this->_tables['post']} as p" )
+				->join( "{$this->_tables['category']} as c", 'c.id = p.categoryid' )
+				->join( "{$this->_tables['user']} as u", 'u.id = p.authorid' )
+				->where( 'p.urltitle', $urltitle )
+				->get()
+				->row_array();
+	}
+
+	/**
 	 * 查询所有文章
 	 * @param int $per_page 每页显示条数
 	 * @param int $offset 游标

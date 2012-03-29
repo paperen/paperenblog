@@ -110,7 +110,6 @@ function get_time_diff( $unixtime, $prefix = '<strong>', $subfix = '</strong>' )
 
 if ( !function_exists( 'gbk_substr' ) )
 {
-
 	/**
 	 * 文本截取
 	 * @param string $str 中文文本
@@ -130,6 +129,17 @@ if ( !function_exists( 'gbk_substr' ) )
 					'((?:[\x00-\x7F]|[\xC0-\xFF][\x80-\xBF]+){0,' . $length . '}).*#s', '$1', $string );
 		}
 	}
+}
 
+/**
+ * 为连接附加http
+ * @param string $url URL
+ * @return string 补全后的URL
+ */
+function add_http( $url )
+{
+	$str = 'http://';
+	if ( strpos( $url, $str ) === FALSE ) return $str . $url;
+	return $url;
 }
 // end of app_helper

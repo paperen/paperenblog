@@ -117,6 +117,20 @@ class Sidebar_Common_Module extends CI_Module
 
 		$this->load->view( 'recent_comments', $data );
 	}
+
+	/**
+	 * 友情链接
+	 */
+	public function links()
+	{
+		$data = array();
+
+		$this->load->model('link_model');
+		$links = $this->link_model->get_all( NULL );
+		$data['links'] = $links;
+
+		$this->load->view( 'links', $data );
+	}
 }
 
 // end of common

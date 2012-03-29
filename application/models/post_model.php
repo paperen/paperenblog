@@ -31,7 +31,7 @@ class Post_model extends CI_Model
 	 * @param int $offset 游标
 	 * @return array
 	 */
-	public function all( $per_page = 0, $offset = 0 )
+	public function get_all( $per_page = 0, $offset = 0 )
 	{
 		$query = $this->db->select(
 						'p.id,p.title,p.urltitle,
@@ -43,11 +43,12 @@ class Post_model extends CI_Model
 				)
 				->from( "{$this->_tables['post']} as p" )
 				->join( "{$this->_tables['category']} as c", 'c.id = p.categoryid' )
-				->join( "{$this->_tables['user']} as u", 'u.id = p.authorid' );
+				->join( "{$this->_tables['user']} as u", 'u.id = p.authorid' )
+				->where( 'p.ispublic', 1 );
 		if ( $per_page ) $query->limit( $per_page, $offset );
 
 		// 文章数据
-		$post_data = $query->order_by( 'p.id', 'desc' )
+		$post_data = $query->order_by( 'p.posttime', 'desc' )
 				->get()
 				->result_array();
 		if ( empty( $post_data ) ) return array( );
@@ -137,30 +138,6 @@ class Post_model extends CI_Model
 				->where( 'p.posttime <', $upper );
 		if ( $per_page ) $query->limit( $per_page, $offset );
 		return $query->order_by( 'p.id', 'desc' )
-				->get()
-				->result_array();
-	}
-
-	/**
-	 * 获取最近文章
-	 * @param int $limit 显示文章数
-	 * @return array
-	 */
-	public function get_latest( $limit = 5 )
-	{
-		return $this->db->select(
-						'p.id,p.title,p.urltitle,
-						 p.categoryid,p.content,
-						 p.authorid,p.click,p.good,
-						 p.bad,p.posttime,
-						 c.category,
-						 u.name as author'
-				)
-				->from( "{$this->_tables['post']} as p" )
-				->join( "{$this->_tables['category']} as c", 'c.id = p.categoryid' )
-				->join( "{$this->_tables['user']} as u", 'u.id = p.authorid' )
-				->order_by( 'p.id', 'desc' )
-				->limit( $limit )
 				->get()
 				->result_array();
 	}

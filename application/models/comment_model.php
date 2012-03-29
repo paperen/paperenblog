@@ -28,9 +28,9 @@ class Comment_model extends CI_Model
 	 * @param int $offset 游标
 	 * @return array
 	 */
-	public function all( $per_page = 0, $offset = 0 )
+	public function get_all( $per_page = 0, $offset = 0 )
 	{
-		return $this->db->select(
+		$query = $this->db->select(
 					'c.id,c.postid,c.userid,c.author,c.authoremail,
 					c.authorurl,c.commenttime,c.content,c.pid,c.isneednotice,
 					u.name as username,
@@ -40,9 +40,9 @@ class Comment_model extends CI_Model
 				->join("{$this->_tables['post']} as p", 'p.id = c.postid')
 				->join("{$this->_tables['user']} as u", 'u.id = c.userid', 'left')
 				->where('c.ispublic', 1)
-				->order_by('c.id', 'desc')
-				->get()
-				->result_array();
+				->order_by('c.id', 'desc');
+		if ( $per_page ) $query->limit( $per_page, $offset );
+		return $query->get()	->result_array();
 	}
 
 }

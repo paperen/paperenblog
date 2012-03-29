@@ -76,7 +76,7 @@ class Sidebar_Common_Module extends CI_Module
 		$data = array( );
 
 		$this->load->model( 'post_model' );
-		$latest_posts = $this->post_model->get_latest( $limit );
+		$latest_posts = $this->post_model->get_all( $limit );
 		$data['posts_data'] = $latest_posts;
 
 		$this->load->view( 'latest_posts', $data );
@@ -112,7 +112,7 @@ class Sidebar_Common_Module extends CI_Module
 		$data = array( );
 
 		$this->load->model( 'comment_model' );
-		$comments_data = $this->comment_model->all( $limit );
+		$comments_data = $this->comment_model->get_all( $limit );
 		$data['comments_data'] = $comments_data;
 
 		$this->load->view( 'recent_comments', $data );

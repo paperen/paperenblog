@@ -37,7 +37,7 @@ class Post_Common_Module extends CI_Module
 		$data = array( );
 
 		$this->load->model( 'post_model' );
-		$posts_data = $this->post_model->all( config_item( 'per_page' ), $offset );
+		$posts_data = $this->post_model->get_all( config_item( 'per_page' ), $offset );
 
 		// 分栏显示
 		$posts_data_by_col = $this->_posts_by_col( $posts_data );

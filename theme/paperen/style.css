@@ -15,7 +15,7 @@ a {
 	color: #0069D6;
 }
 a:hover {
-	color: #00438A;
+	color: #03C;
 	text-decoration: underline;
 }
 pre {
@@ -59,8 +59,12 @@ pre {
 .sidebar .cmd h3 a {
 	font-size: 13px;
 }
+.sidebar ul {
+	margin-left: 0;
+}
 .sidebar li {
 	line-height: 1.5em;
+	list-style: none;
 }
 .sidebar .calendar td{
 	padding: 2px 0;
@@ -95,6 +99,14 @@ pre {
 }
 .sidebar .post-image .single {
 	margin: 0 3px 5px 0;
+}
+.sidebar .recent-comment li {
+	border-bottom: 1px #F0F0F0 solid;
+	padding: 6px 0;
+}
+.sidebar .recent-comment strong {
+	color: #333;
+	margin-right: 5px;
 }
 /* post-attr */
 .post-date ,
@@ -163,7 +175,7 @@ pre {
 }
 /* post-date */
 /* vote */
-.vote{	
+.vote{
 	padding:7px;
 	background:#FBFBFB;
 }

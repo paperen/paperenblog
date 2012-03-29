@@ -61,11 +61,11 @@
 	<?php } ?>
 	</div>
 <?php } ?>
-	<ul class="pager">
-	    <li class="previous"><a href="#">&laquo; Older</a></li>
-	    <li class="next"><a href="#">Newer &raquo;</a></li>
-	</ul>
-
+		<div class="c"></div>
+		<ul class="pager">
+			<li class="previous"><a href="#">&laquo; Older</a></li>
+			<li class="next"><a href="#">Newer &raquo;</a></li>
+		</ul>
     </div>
 
 </div>

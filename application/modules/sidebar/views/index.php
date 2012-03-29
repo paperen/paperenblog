@@ -17,7 +17,6 @@
     </script>
 
 	<?php $this->load->module('sidebar/common/calendar', array()); ?>
-	<?php $this->load->module('sidebar/common/latest_posts', array()); ?>
 	<?php $this->load->module('sidebar/common/hot_posts', array()); ?>
 	<?php $this->load->module('sidebar/common/recent_comments', array()); ?>
 

@@ -66,6 +66,7 @@ function get_weekday_from_unixtime( $unixtime = '' )
 	$weekday_CN = array( '日', '壹', '貳', '叁', '肆', '伍', '陸' );
 	return $weekday_CN[date( 'w', $unixtime )];
 }
+
 /**
  * 根據UNIX時間戳獲取時間距離的描述
  * @param int $unixtime 時間戳
@@ -80,12 +81,12 @@ function get_time_diff( $unixtime, $prefix = '<strong>', $subfix = '</strong>' )
 	{
 		return "{$prefix}{$diff}{$subfix}秒前";
 	}
-	else if( $diff >= 60 && $diff < 3600 )
+	else if ( $diff >= 60 && $diff < 3600 )
 	{
 		$min = floor( $diff / 60 );
 		return "{$prefix}{$min}{$subfix}分鐘前";
 	}
-	else if( $diff >= 3600 && $diff < 86400 )
+	else if ( $diff >= 3600 && $diff < 86400 )
 	{
 		$hour = floor( $diff / 3600 );
 		return "{$prefix}{$hour}{$subfix}小時前";
@@ -105,5 +106,30 @@ function get_time_diff( $unixtime, $prefix = '<strong>', $subfix = '</strong>' )
 		$year = floor( $diff / 31104000 );
 		return "{$prefix}{$year}{$subfix}年前";
 	}
+}
+
+if ( !function_exists( 'gbk_substr' ) )
+{
+
+	/**
+	 * 文本截取
+	 * @param string $str 中文文本
+	 * @param int $length 截取长度
+	 * @return string 截取后的文本
+	 */
+	function gbk_substr( $string, $length, $from = 0 )
+	{
+		$string = strip_tags( $string );
+		if ( $length == 0 )
+		{
+			return $string;
+		}
+		else
+		{
+			return preg_replace( '#^(?:[\x00-\x7F]|[\xC0-\xFF][\x80-\xBF]+){0,' . $from . '}' .
+					'((?:[\x00-\x7F]|[\xC0-\xFF][\x80-\xBF]+){0,' . $length . '}).*#s', '$1', $string );
+		}
+	}
+
 }
 // end of app_helper

@@ -6,7 +6,8 @@
 		<?php foreach( $comments_data as $comment ) { ?>
 		<li>
 			<a href="<?php echo base_url("post/{$comment['urltitle']}"); ?>">
-				<strong><?php echo ( $comment['author'] ) ? $comment['author'] : $comment['username']; ?></strong><?php echo strip_tags( $comment['content'] ); ?>
+				<strong><?php echo ( $comment['author'] ) ? $comment['author'] : $comment['username']; ?></strong>
+				<?php echo gbk_substr( $comment['content'], 30 ); ?>
 			</a>
 			<?php echo get_time_diff($comment['commenttime']); ?>
 		</li>

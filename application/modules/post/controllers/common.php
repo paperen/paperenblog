@@ -110,7 +110,7 @@ class Post_Common_Module extends CI_Module
 	 * 最近文章
 	 * @param int $limit 获取条数
 	 */
-	public function latest_posts( $limit = 5 )
+	public function latest( $limit = 5 )
 	{
 		$limit = intval( $limit );
 		if ( empty( $limit ) ) $limit = 5;
@@ -120,7 +120,7 @@ class Post_Common_Module extends CI_Module
 		$this->_post_data = $this->querycache->get( 'post', 'get_all', 5 );
 		$data['posts_data'] = $this->_post_data;
 
-		$this->load->view( 'latest_posts', $data );
+		$this->load->view( 'latest', $data );
 	}
 
 	/**
@@ -176,8 +176,13 @@ class Post_Common_Module extends CI_Module
 		// 加工
 		$this->_prepare( FALSE );
 
+		$post_data = $this->_post_data;
+
+		// 註冊邊欄文章圖片挂入點
+		$this->hook->register('post_images', 'module_post/common/images', $post_data['id']);
+
 		$data = array(
-			'post' => $this->_post_data,
+			'post' => $post_data,
 		);
 
 		$this->load->view( 'single', $data );
@@ -208,6 +213,16 @@ class Post_Common_Module extends CI_Module
 			'extra_class' => $class,
 		);
 		$this->load->view( 'meta', $data );
+	}
+
+	/**
+	 * 獲取指定ID文章的附帶圖片列表
+	 * @param int $post_id 文章ID
+	 */
+	public function images( $post_id )
+	{
+		$data = array();
+		$this->load->view( 'images', $data );
 	}
 
 }

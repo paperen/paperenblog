@@ -13,19 +13,66 @@ class Post_Common_Module extends CI_Module
 {
 
 	/**
-	 * 文章分栏
+	 * 文章数据
+	 * @var array
+	 */
+	private $_post_data = array( );
+
+	/**
+	 * 对文章数据进行加工处理
+	 * @param bool $multi 是否文章数据是多个
+	 */
+	private function _prepare( $multi = TRUE )
+	{
+		if ( empty( $this->_post_data ) ) return NULL;
+
+		// 单篇文章
+		if ( !$multi ) $this->_post_data = array( $this->_post_data );
+
+		// 文章ID
+		$post_ids = array( );
+		// 多于一篇文章
+		foreach ( $this->_post_data as $single )
+			$post_ids[] = $single['id'];
+
+		// 查询文章的标签
+		$post_tags = $this->querycache->get( 'tag', 'get_by_post_ids', $post_ids );
+		$post_tags_format = array( );
+		foreach ( $post_tags as $single )
+			$post_tags_format[$single['postid']][] = $single['tag'];
+
+		// 获取评论数
+		$post_comments = $this->querycache->get( 'comment', 'total_by_post_ids', $post_ids );
+		$post_comments_format = array( );
+		foreach ( $post_comments as $single )
+			$post_comments_format[$single['postid']] = $single['num'];
+
+		// 拼合文章数据
+		$result = array( );
+		foreach ( $this->_post_data as $single )
+		{
+			// 拼入标签
+			$single['tags'] = isset( $post_tags_format[$single['id']] ) ? $post_tags_format[$single['id']] : array( );
+			// 拼入评论数
+			$single['commentnum'] = isset( $post_comments_format[$single['id']] ) ? $post_comments_format[$single['id']] : 0;
+
+			$result[] = $single;
+		}
+		$this->_post_data = (!$multi ) ? array_shift( $result ) : $result;
+	}
+
+	/**
+	 * 分栏格式化
 	 * @param array $post_data 文章数据
 	 * @param int $col_num 分栏数
-	 * @return array
 	 */
-	private function _posts_by_col( $posts_data, $col_num = 2 )
+	private function _format_by_col( $col_num = 2 )
 	{
 		$result = array( );
-		if ( empty( $posts_data ) ) return $result;
+		if ( empty( $this->_post_data ) ) return NULL;
 		for ( $i = 0; $i < $col_num; $i++ )
-			$result[$i][] = array_shift( $posts_data );
-
-		return $result;
+			$result[$i][] = array_shift( $this->_post_data );
+		$this->_post_data = $result;
 	}
 
 	/**
@@ -36,24 +83,16 @@ class Post_Common_Module extends CI_Module
 	{
 		$data = array( );
 
-		$posts_data = $this->querycache->get('post', 'get_all', config_item( 'per_page' ), $offset );
+		$this->_post_data = $this->querycache->get( 'post', 'get_all', config_item( 'per_page' ), $offset );
+		// 加工
+		$this->_prepare();
+		// 分栏
+		$this->_format_by_col();
 
-		// 分栏显示
-		$posts_data_by_col = $this->_posts_by_col( $posts_data );
-		$data['posts_data_by_col'] = $posts_data_by_col;
+		$data['posts_data_by_col'] = $this->_post_data;
 
 		// 博文数据
 		$this->load->view( 'fragment', $data );
-	}
-
-	/**
-	 * 根据文章ID或URL标题获取显示详细文章
-	 * @param string $postid_or_urltitle 文章ID或URL标题
-	 */
-	public function single( $postid_or_urltitle )
-	{
-		$data = array();
-		$this->load->view( 'single', $data );
 	}
 
 	/**
@@ -77,8 +116,8 @@ class Post_Common_Module extends CI_Module
 
 		$data = array( );
 
-		$latest_posts = $this->querycache->get('post', 'get_all', 5);
-		$data['posts_data'] = $latest_posts;
+		$this->_post_data = $this->querycache->get( 'post', 'get_all', 5 );
+		$data['posts_data'] = $this->_post_data;
 
 		$this->load->view( 'latest_posts', $data );
 	}
@@ -94,10 +133,51 @@ class Post_Common_Module extends CI_Module
 
 		$data = array( );
 
-		$hot_posts = $this->querycache->get('post', 'get_hot', $limit );
-		$data['posts_data'] = $hot_posts;
+		$this->_post_data = $this->querycache->get( 'post', 'get_hot', $limit );
+		$data['posts_data'] = $this->_post_data;
 
 		$this->load->view( 'hot', $data );
+	}
+
+	/**
+	 * 根据文章ID或URL标题获取文章数据
+	 * @param string $postid_or_urltitle 文章ID或URL标题
+	 * @return array
+	 */
+	public function get_by_postid_or_urltitle( $postid_or_urltitle )
+	{
+		// 如果是數字
+		if ( is_numeric( $postid_or_urltitle ) )
+		{
+			$post_id = intval( $postid_or_urltitle );
+			$post_data = $this->querycache->get( 'post', 'get_by_id', $post_id );
+		}
+		else
+		{
+			$post_data = $this->querycache->get( 'post', 'get_by_urltitle', $postid_or_urltitle );
+		}
+		return $post_data;
+	}
+
+	/**
+	 * 加载指定ID或URL标题的文章
+	 * @param string $postid_or_urltitle 指定ID或URL标题
+	 */
+	public function single( $postid_or_urltitle )
+	{
+		//
+		$post_data = $this->get_by_postid_or_urltitle( $postid_or_urltitle );
+
+		// 没有找到
+		if ( empty( $post_data ) ) show_404();
+		$this->_post_data = $post_data;
+
+		// 加工
+		$this->_prepare( FALSE );
+
+		$data = array();
+
+		$this->load->view('single', $data);
 	}
 
 }

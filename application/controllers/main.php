@@ -38,18 +38,7 @@ class Main extends MY_Controller
 	 */
 	public function post( $postid_or_urltitle )
 	{
-		$post_data = array();
-
-		// 如果是數字
-		if ( is_numeric( $postid_or_urltitle ) )
-		{
-			$post_id = intval( $postid_or_urltitle );
-			$post_data = $this->querycache->get( 'post', 'get_by_id', $post_id );
-		}
-		else
-		{
-			$post_data = $this->querycache->get( 'post', 'get_by_urltitle', $postid_or_urltitle );
-		}
+		$post_data = $this->load->module( 'post/common/get_by_postid_or_urltitle', $postid_or_urltitle, TRUE );
 
 		// 如果文章數據為空 404
 		if ( empty( $post_data ) ) show_404();

@@ -7,7 +7,7 @@
  * @link http://iamlze.cn
  * @version 0.0
  * @package paperenblog
- * @subpackage application/modules/post/models/
+ * @subpackage application/models/
  */
 class Comment_model extends CI_Model
 {
@@ -45,6 +45,19 @@ class Comment_model extends CI_Model
 		return $query->get()	->result_array();
 	}
 
+	/**
+	 * 根据指定文章ID获取相关文章的评论次数
+	 * @param array $post_ids 文章ID数组
+	 */
+	public function total_by_post_ids( $post_ids )
+	{
+		return $this->db->select( 'COUNT(`id`) as num, postid', FALSE )
+				->from( "{$this->_tables['comment']} as c" )
+				->group_by( 'postid' )
+				->get()
+				->result_array();
+	}
+
 }
 
-// end of Post_model
+// end of Comment_model

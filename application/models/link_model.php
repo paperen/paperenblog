@@ -7,7 +7,7 @@
  * @link http://iamlze.cn
  * @version 0.0
  * @package paperenblog
- * @subpackage application/modules/post/models/
+ * @subpackage application/models/
  */
 class Link_model extends CI_Model
 {
@@ -42,4 +42,4 @@ class Link_model extends CI_Model
 
 }
 
-// end of Post_model
+// end of Link_model

@@ -7,7 +7,7 @@
  * @link http://iamlze.cn
  * @version 0.0
  * @package paperenblog
- * @subpackage application/modules/post/models/
+ * @subpackage application/models/
  */
 class Post_model extends CI_Model
 {
@@ -93,41 +93,9 @@ class Post_model extends CI_Model
 				->where( 'p.ispublic', 1 );
 		if ( $per_page ) $query->limit( $per_page, $offset );
 
-		// 文章数据
-		$post_data = $query->order_by( 'p.posttime', 'desc' )
+		return $query->order_by( 'p.posttime', 'desc' )
 				->get()
 				->result_array();
-		if ( empty( $post_data ) ) return array( );
-
-		// 文章ID
-		$post_ids = array( );
-		foreach ( $post_data as $single )
-			$post_ids[] = $single['id'];
-
-		// 查询文章的标签
-		$post_tags = $this->tags( $post_ids );
-		$post_tags_format = array( );
-		foreach ( $post_tags as $single )
-			$post_tags_format[$single['postid']][] = $single['tag'];
-
-		// 获取评论数
-		$post_comments = $this->comments_num( $post_ids );
-		$post_comments_format = array( );
-		foreach ( $post_comments as $single )
-			$post_comments_format[$single['postid']] = $single['num'];
-
-		// 拼合文章数据
-		$result = array( );
-		foreach ( $post_data as $single )
-		{
-			// 拼入标签
-			$single['tags'] = isset( $post_tags_format[$single['id']] ) ? $post_tags_format[$single['id']] : array( );
-			// 拼入评论数
-			$single['commentnum'] = isset( $post_comments_format[$single['id']] ) ? $post_comments_format[$single['id']] : 0;
-
-			$result[] = $single;
-		}
-		return $result;
 	}
 
 	/**
@@ -142,19 +110,6 @@ class Post_model extends CI_Model
 				->join( "{$this->_tables['tag']} as t", 't.id = pt.tagid' )
 				->where_in( 'pt.postid', $post_ids )
 				->order_by( 't.id', 'desc' )
-				->get()
-				->result_array();
-	}
-
-	/**
-	 * 根据指定文章ID获取相关文章的评论次数
-	 * @param array $post_ids 文章ID数组
-	 */
-	public function comments_num( $post_ids )
-	{
-		return $this->db->select( 'COUNT(`id`) as num, postid', FALSE )
-				->from( "{$this->_tables['comment']} as c" )
-				->group_by( 'postid' )
 				->get()
 				->result_array();
 	}

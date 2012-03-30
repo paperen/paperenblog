@@ -35,7 +35,7 @@ class Querycache
 		$model_and_method = array_shift( $args ) . '_' . array_shift( $args );
 
 		// 索引
-		$hash = "{$model_and_method}_" . trim( implode( '_', $args ), '_' );
+		$hash = "{$model_and_method}_" . serialize( $args );
 
 		// 存在缓存直接返回
 		if ( isset( $this->_cache[$hash] ) ) return $this->_cache[$hash];

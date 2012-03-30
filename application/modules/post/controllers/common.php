@@ -58,7 +58,7 @@ class Post_Common_Module extends CI_Module
 
 			$result[] = $single;
 		}
-		$this->_post_data = (!$multi ) ? array_shift( $result ) : $result;
+		$this->_post_data = ( !$multi ) ? array_shift( $result ) : $result;
 	}
 
 	/**
@@ -70,8 +70,9 @@ class Post_Common_Module extends CI_Module
 	{
 		$result = array( );
 		if ( empty( $this->_post_data ) ) return NULL;
-		for ( $i = 0; $i < $col_num; $i++ )
-			$result[$i][] = array_shift( $this->_post_data );
+		$total = count( $this->_post_data );
+		for ( $i = 0; $i < $total; $i++ )
+			$result[$i%$col_num][] = array_shift( $this->_post_data );
 		$this->_post_data = $result;
 	}
 
@@ -175,9 +176,38 @@ class Post_Common_Module extends CI_Module
 		// 加工
 		$this->_prepare( FALSE );
 
-		$data = array();
+		$data = array(
+			'post' => $this->_post_data,
+		);
 
-		$this->load->view('single', $data);
+		$this->load->view( 'single', $data );
+	}
+
+	/**
+	 * 輸出文章屬性數據欄
+	 * @param array $post_data 文章數據
+	 * @param mixed $extra_class 額外CSS class
+	 * @param bool $display 是否顯示附加操作欄目（頂、踩）
+	 */
+	public function meta( $post_data, $extra_class = '', $display_op = FALSE )
+	{
+		if ( empty( $post_data ) ) return FALSE;
+
+		// 對額外的CSS class處理
+		$class = $extra_class;
+		if ( is_array( $extra_class ) )
+		{
+			foreach ( $extra_class as $single )
+				$class .= ' ' . $single;
+		}
+		$class = ' ' . trim( $class );
+
+		$data = array(
+			'post' => $post_data,
+			'display_op' => $display_op,
+			'extra_class' => $class,
+		);
+		$this->load->view( 'meta', $data );
 	}
 
 }

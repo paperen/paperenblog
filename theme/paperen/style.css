@@ -99,6 +99,7 @@ pre {
 }
 .sidebar .post-image .single {
 	margin: 0 3px 5px 0;
+	width: 55px;
 }
 .sidebar .recent-comment li {
 	border-bottom: 1px #F0F0F0 solid;

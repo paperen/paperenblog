@@ -1,5 +1,5 @@
 </div>
-    
+
 </div>
 <!-- container -->
 
@@ -36,6 +36,13 @@
         </div>
     </div>
 </footer>
-
+<script>
+	$(function(){
+		$('.post-content pre').each(function(){
+			$(this).addClass('prettyprint linenums');
+		});
+		prettyPrint();
+	});
+</script>
 </body>
 </html>

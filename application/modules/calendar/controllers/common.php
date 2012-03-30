@@ -39,7 +39,7 @@ class Calendar_Common_Module extends CI_Module
 		foreach ( $post_data as $post )
 		{
 			$extra[date( 'd', $post['posttime'] )] = array(
-				'url' => base_url( 'archive/' . date( 'Y-m-d', $post['posttime'] ) ),
+				'url' => archive_url( $year, $month, date('d', $post['posttime']) ),
 				'original' => '亲，这一天有发表文章哦',
 			);
 		}

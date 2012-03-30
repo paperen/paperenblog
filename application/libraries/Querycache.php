@@ -1,13 +1,7 @@
 <?php
-
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /**
- * Description of Querycache
- *
+ * 作為查詢緩存，避免不同模塊執行相同SQL導致性能下降一個組件
+ * 依賴于CI模型
  * @author paperen
  */
 class Querycache
@@ -51,3 +45,4 @@ class Querycache
 	}
 
 }
+// end of Querycache

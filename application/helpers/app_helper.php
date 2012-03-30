@@ -110,6 +110,7 @@ function get_time_diff( $unixtime, $prefix = '<strong>', $subfix = '</strong>' )
 
 if ( !function_exists( 'gbk_substr' ) )
 {
+
 	/**
 	 * 文本截取
 	 * @param string $str 中文文本
@@ -129,6 +130,7 @@ if ( !function_exists( 'gbk_substr' ) )
 					'((?:[\x00-\x7F]|[\xC0-\xFF][\x80-\xBF]+){0,' . $length . '}).*#s', '$1', $string );
 		}
 	}
+
 }
 
 /**
@@ -142,4 +144,72 @@ function add_http( $url )
 	if ( strpos( $url, $str ) === FALSE ) return $str . $url;
 	return $url;
 }
+
+/**
+ * 獲取文章固定連接URL
+ * @param array $urltitle 文章URL標題
+ * @return string
+ */
+function post_permalink( $urltitle )
+{
+	return base_url( "post/{$urltitle}" );
+}
+
+/**
+ * 獲取作者URL
+ * @param string $author 作者
+ * @return string
+ */
+function author_url( $author )
+{
+	return base_url( "author/{$author}" );
+}
+
+/**
+ * 獲取文章類別URL
+ * @param string $category 類別名稱
+ * @return string
+ */
+function category_url( $category )
+{
+	return base_url( "category/{$category}" );
+}
+
+/**
+ * 獲取標籤URL
+ * @param string $tag 標籤
+ * @return string
+ */
+function tag_url( $tag )
+{
+	return base_url( "tag/{$tag}" );
+}
+
+/**
+ * 生成歸檔路徑
+ * @param int $year 年份
+ * @param int $month 月份
+ * @param int $day 日
+ * @return string
+ */
+function archive_url( $year, $month, $day = '' )
+{
+	$args = func_get_args();
+	$delimiter = '-';
+	$temp = trim( implode( $delimiter, $args ), $delimiter );
+	return base_url( "archive/{$temp}" );
+}
+
+/**
+ * 生成評論URL
+ * @param string $urltitle 文章URL標題
+ * @return string
+ */
+function comment_url( $urltitle )
+{
+	$urltitle .= '#comment-form';
+	return base_url( "post/{$urltitle}" );
+}
+
+
 // end of app_helper

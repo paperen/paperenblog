@@ -23,6 +23,8 @@ class Post_model extends CI_Model
 		'tag' => 'tag',
 		'user' => 'user',
 		'comment' => 'comment',
+		'post_attachment' => 'post_attachment',
+		'attachment' => 'attachment',
 	);
 
 	/**
@@ -99,11 +101,27 @@ class Post_model extends CI_Model
 	}
 
 	/**
+	 * 根據文章ID獲取該文章的圖片
+	 * @param int $post_id 文章ID
+	 * @return array
+	 */
+	public function get_images( $post_id )
+	{
+		return $this->db->select('a.id,a.name,a.suffix,a.size,a.addtime,a.isthumbnail')
+						->from("{$this->_tables['post_attachment']} as pa")
+						->join("{$this->_tables['attachment']} as a", 'a.id = pa.attachmentid')
+						->where('pa.postid', $post_id)
+						->where('a.isimage', TRUE)
+						->get()
+						->result_array();
+	}
+
+	/**
 	 * 根据文章ID获取相关的标签
 	 * @param mixed $post_ids 单个ID或数组
 	 * @return array
 	 */
-	public function tags( $post_ids )
+	public function get_tags( $post_ids )
 	{
 		return $this->db->select( 't.id,t.tag,pt.postid' )
 				->from( "{$this->_tables['post_tag']} as pt" )

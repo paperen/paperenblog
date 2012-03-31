@@ -1,30 +1,16 @@
+<?php if( isset( $post_images ) && $post_images ) { ?>
 <div class="post-image">
-	<h3>附帶圖片 <small>5</small></h3>
+	<h3>附帶圖片 <small><?php echo $total; ?></small></h3>
 	<div class="row-fluid">
+		<?php foreach( $post_images as $col_images ) { ?>
 		<ul class="thumbnails span3 col">
+			<?php foreach( $col_images as $single ) { ?>
 			<li class="single">
-			<a href="http://localhost/ci-paperen/theme/paperen/image/180x180_2.jpg" class="thumbnail" title="查看大圖" data-original-title="查看大圖"><img src="http://localhost/ci-paperen/theme/paperen/image/180x180_2.jpg" alt=""></a>
+			<a href="<?php image_url( $single['id'] ); ?>" class="thumbnail" title="<?php echo $single['name']; ?>" data-original-title="查看大圖"><img src="<?php image_url( $single['id'] ); ?>" alt="<?php echo $single['name']; ?>"></a>
 			</li>
-			<li class="single">
-			<a href="http://localhost/ci-paperen/theme/paperen/image/large.jpg" class="thumbnail" title="查看大圖" data-original-title="查看大圖"><img src="http://localhost/ci-paperen/theme/paperen/image/large.jpg" alt=""></a>
-			</li>
-			<li class="single">
-			<a href="http://localhost/ci-paperen/theme/paperen/image/180x180_3.jpg" class="thumbnail" title="查看大圖" data-original-title="查看大圖"><img src="http://localhost/ci-paperen/theme/paperen/image/180x180_3.jpg" alt=""></a>
-			</li>
+			<?php } ?>
 		</ul>
-		<ul class="thumbnails span3 col">
-			<li class="single">
-			<a href="http://localhost/ci-paperen/theme/paperen/image/180x180_3.jpg" class="thumbnail" title="查看大圖" data-original-title="查看大圖"><img src="http://localhost/ci-paperen/theme/paperen/image/180x180_3.jpg" alt=""></a>
-			</li>
-			<li class="single">
-			<a href="http://localhost/ci-paperen/theme/paperen/image/180x180_2.jpg" class="thumbnail" title="查看大圖" data-original-title="查看大圖"><img src="http://localhost/ci-paperen/theme/paperen/image/180x180_2.jpg" alt=""></a>
-			</li>
-		</ul>
-		<ul class="thumbnails span3 col">
-			<li class="single">
-			<a href="http://localhost/ci-paperen/theme/paperen/image/180x180_1.jpg" class="thumbnail" title="查看大圖" data-original-title="查看大圖"><img src="http://localhost/ci-paperen/theme/paperen/image/180x180_1.jpg" alt=""></a>
-			</li>
-		</ul>
+		<?php } ?>
 	</div>
 </div>
 <?php echo js('slimbox/slimbox2.js'); ?>
@@ -34,3 +20,4 @@ $('.post-image .thumbnail').tooltip({
 });
 $('.thumbnails a').slimbox();
 </script>
+<?php } ?>

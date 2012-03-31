@@ -186,6 +186,16 @@ function tag_url( $tag )
 }
 
 /**
+ * 獲取圖片路徑
+ * @param int $id 圖片ID
+ * @return string
+ */
+function image_url( $id )
+{
+	return base_url( "image/{$id}" );
+}
+
+/**
  * 生成歸檔路徑
  * @param int $year 年份
  * @param int $month 月份

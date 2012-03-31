@@ -63,17 +63,17 @@ class Post_Common_Module extends CI_Module
 
 	/**
 	 * 分栏格式化
-	 * @param array $post_data 文章数据
+	 * @param array $data 待格式化数据
 	 * @param int $col_num 分栏数
 	 */
-	private function _format_by_col( $col_num = 2 )
+	private function _format_by_col( $data, $col_num = 2 )
 	{
 		$result = array( );
-		if ( empty( $this->_post_data ) ) return NULL;
-		$total = count( $this->_post_data );
+		if ( empty( $data ) ) return NULL;
+		$total = count( $data );
 		for ( $i = 0; $i < $total; $i++ )
-			$result[$i%$col_num][] = array_shift( $this->_post_data );
-		$this->_post_data = $result;
+			$result[$i%$col_num][] = array_shift( $data );
+		return $result;
 	}
 
 	/**
@@ -88,7 +88,7 @@ class Post_Common_Module extends CI_Module
 		// 加工
 		$this->_prepare();
 		// 分栏
-		$this->_format_by_col();
+		$this->_post_data = $this->_format_by_col( $this->_post_data, 2 );
 
 		$data['posts_data_by_col'] = $this->_post_data;
 
@@ -222,6 +222,15 @@ class Post_Common_Module extends CI_Module
 	public function images( $post_id )
 	{
 		$data = array();
+		$post_id = intval( $post_id );
+
+		// 根據文章ID獲取文章圖片數據
+		$post_images = $this->querycache->get('post', 'get_images', $post_id);
+
+		// 總數
+		$data['total'] = count( $post_images );
+		$data['post_images'] = $this->_format_by_col( $post_images, 3 );
+
 		$this->load->view( 'images', $data );
 	}
 

@@ -50,6 +50,15 @@ class Main extends MY_Controller
 		$this->load->view( 'post', $data );
 	}
 
+	/**
+	 * 獲取指定ID的附件數據
+	 * @param int $attachment_id 附件ID
+	 */
+	public function file( $attachment_id )
+	{
+		
+	}
+
 }
 
 // end of home

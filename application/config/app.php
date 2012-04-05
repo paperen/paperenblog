@@ -16,5 +16,8 @@ $config['theme'] = 'paperen';
 $config['sitename'] = 'paperen';
 // 每页显示条数
 $config['per_page'] = 8;
+// 上傳根目錄
+$config['upload_path'] = './upload/';
+
 
 // end of app

@@ -42,7 +42,7 @@ class Post_Common_Module extends CI_Module
 			$post_tags_format[$single['postid']][] = $single['tag'];
 
 		// 获取评论数
-		$post_comments = $this->querycache->get( 'comment', 'total_by_post_ids', $post_ids );
+		$post_comments = $this->querycache->get( 'comment', 'total_by_postids', $post_ids );
 		$post_comments_format = array( );
 		foreach ( $post_comments as $single )
 			$post_comments_format[$single['postid']] = $single['num'];

@@ -6,14 +6,13 @@
 		<ul class="thumbnails span3 col">
 			<?php foreach( $col_images as $single ) { ?>
 			<li class="single">
-			<a href="<?php image_url( $single['id'] ); ?>" class="thumbnail" title="<?php echo $single['name']; ?>" data-original-title="查看大圖"><img src="<?php image_url( $single['id'] ); ?>" alt="<?php echo $single['name']; ?>"></a>
+			<a href="<?php echo file_url( $single['id'] ); ?>" class="thumbnail" title="<?php echo $single['name']; ?>" data-original-title="查看大圖"><img src="<?php echo file_url( $single['id'] ); ?>" alt="<?php echo $single['name']; ?>"></a>
 			</li>
 			<?php } ?>
 		</ul>
 		<?php } ?>
 	</div>
 </div>
-<?php echo js('slimbox/slimbox2.js'); ?>
 <script>
 $('.post-image .thumbnail').tooltip({
 	placement: 'top'

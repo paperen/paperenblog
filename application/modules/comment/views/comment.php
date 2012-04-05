@@ -1,7 +1,7 @@
 <div class="row-fluid comment">
 	<div class="span2 comment-header">
 		<i class="icon-paperen icon-comment-large"></i>
-		<h2>評論</h2>100
+		<h2>評論</h2><?php echo $total; ?>
 	</div>
 	<div class="span10 comment-body">
 		<?php $this->load->module( 'comment/common/all', array( 1 ) );?>

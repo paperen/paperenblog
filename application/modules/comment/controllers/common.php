@@ -19,6 +19,15 @@ class Comment_Common_Module extends CI_Module
 	public function index( $post_id )
 	{
 		$data = array( );
+		try
+		{
+			$total = $this->querycache->get('comment', 'total_by_postid', $post_id);
+			$data['total'] = $total;
+		}
+		catch ( Exception $e )
+		{
+			//@todo
+		}
 		$this->load->view( 'comment', $data );
 	}
 
@@ -53,7 +62,7 @@ class Comment_Common_Module extends CI_Module
 
 		$data = array( );
 
-		$comments_data = $this->querycache->get('comment', 'get_all', $limit );
+		$comments_data = $this->querycache->get( 'comment', 'get_all', $limit );
 		$data['comments_data'] = $comments_data;
 
 		$this->load->view( 'recent', $data );

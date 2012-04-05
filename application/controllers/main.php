@@ -56,7 +56,26 @@ class Main extends MY_Controller
 	 */
 	public function file( $attachment_id )
 	{
-		
+		try
+		{
+			// 附件ID
+			$attachment_id = intval( $attachment_id );
+			if ( empty( $attachment_id ) ) throw new Exception( '錯誤操作', 0 );
+
+			// 附件數據
+			$attachment_data = $this->querycache->get( 'attachment', 'get_by_id', $attachment_id );
+			if ( empty( $attachment_data ) ) throw new Exception( '附件數據不存在', -1 );
+
+			// 文件路徑
+			$file_path = config_item( 'upload_path' ) . $attachment_data['path'];
+			if ( !file_exists( $file_path ) ) throw new Exception( '附件路徑錯誤', -2 );
+
+			$this->output->set_content_type( $attachment_data['suffix'] )->set_output( file_get_contents( $file_path ) );
+		}
+		catch ( Exception $e )
+		{
+			//@todo
+		}
 	}
 
 }

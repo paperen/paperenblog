@@ -13,3 +13,6 @@
 	</div>
 
 </div>
+<script>
+$('.post-content .post-image').slimbox();
+</script>

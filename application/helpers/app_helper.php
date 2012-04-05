@@ -186,13 +186,13 @@ function tag_url( $tag )
 }
 
 /**
- * 獲取圖片路徑
- * @param int $id 圖片ID
+ * 獲取文件路徑
+ * @param int $id 附件ID
  * @return string
  */
-function image_url( $id )
+function file_url( $id )
 {
-	return base_url( "image/{$id}" );
+	return base_url( "file/{$id}" );
 }
 
 /**

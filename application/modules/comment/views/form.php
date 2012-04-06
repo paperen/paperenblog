@@ -2,8 +2,7 @@
 <div class="comment-form" id="comment-form">
 	<div class="row-fluid">
 		<form class="span12">
-			<input type="hidden" name="commentid" id="commentid" value="" />
-
+			<input type="hidden" name="pid" id="pid" value="" />
 			<div class="alert alert-block alert-success">
 				<a class="close">&times;</a>
 				<h4 class="alert-heading"><i class="icon-ok-sign"></i> 評論成功</h4>
@@ -64,8 +63,8 @@
 					.attr('id', 'replyform')
 					.addClass('replyform');
 				}
-				//fill the commentID
-				reply_comment_form.find('#commentid').val( comment_id.split('-')[1] );
+				//fill the pid
+				reply_comment_form.find('#pid').val( comment_id.split('-')[1] );
 				$('#comment-form').hide();
 				$(this).html('關閉');
 				$(comment_id).append( reply_comment_form );

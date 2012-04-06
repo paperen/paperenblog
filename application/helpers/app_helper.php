@@ -186,6 +186,16 @@ function tag_url( $tag )
 }
 
 /**
+ * 獲取gravatar路徑
+ * @param string $email 郵箱
+ * @return string
+ */
+function gravatar_url( $email )
+{
+	return 'http://www.gravatar.com/avatar/' . md5( strtolower( trim( $email ) ) );
+}
+
+/**
  * 獲取文件路徑
  * @param int $id 附件ID
  * @return string

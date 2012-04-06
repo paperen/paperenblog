@@ -21,8 +21,10 @@ class Comment_Common_Module extends CI_Module
 		$data = array( );
 		try
 		{
-			$total = $this->querycache->get('comment', 'total_by_postid', $post_id);
+			$total = $this->querycache->get( 'comment', 'total_by_postid', $post_id );
 			$data['total'] = $total;
+
+			$data['post_id'] = $post_id;
 		}
 		catch ( Exception $e )
 		{
@@ -38,6 +40,32 @@ class Comment_Common_Module extends CI_Module
 	public function all( $post_id )
 	{
 		$data = array( );
+		try
+		{
+			$total = $this->querycache->get( 'comment', 'total_by_postid', $post_id );
+			$data['total'] = $total;
+
+			// 頂級評論數據
+			$comment_data = $this->querycache->get( 'comment', 'get_by_postid', $post_id );
+			// 回覆數據
+			$reply_data = $this->querycache->get( 'comment', 'get_reply_by_postid', $post_id );
+			$format_reply_data = array();
+			if ( $reply_data )
+			{
+				// 使用PID格式化
+				foreach( $reply_data as $single )
+				{
+					$format_reply_data[$single['pid']][] = $single;
+				}
+			}
+
+			$data['comment_data'] = $comment_data;
+			$data['reply_data'] = $format_reply_data;
+		}
+		catch ( Exception $e )
+		{
+			//@todo
+		}
 		$this->load->view( 'all', $data );
 	}
 

@@ -298,6 +298,9 @@ pre {
 .comment .comment-avatar {
 	width: 60px;
 }
+.comment .comment-entry {
+	width: 86%;
+}
 .comment .comment-entry h4 {
 	margin-bottom: 5px;
 	color: #0069D6;

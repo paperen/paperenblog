@@ -4,7 +4,7 @@
 		<h2>評論</h2><?php echo $total; ?>
 	</div>
 	<div class="span10 comment-body">
-		<?php $this->load->module( 'comment/common/all', array( 1 ) );?>
-		<?php $this->load->module( 'comment/common/form', array( 1 ) );?>
+		<?php $this->load->module( 'comment/common/all', array( $post_id ) );?>
+		<?php $this->load->module( 'comment/common/form', array( $post_id ) );?>
 	</div>
 </div>

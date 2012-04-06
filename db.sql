@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- 主机: localhost
--- 生成日期: 2012 年 04 月 05 日 16:59
+-- 生成日期: 2012 年 04 月 06 日 13:15
 -- 服务器版本: 5.0.83
 -- PHP 版本: 5.2.10
 
@@ -86,7 +86,7 @@ CREATE TABLE IF NOT EXISTS `comment` (
   `authorip` int(10) unsigned NOT NULL COMMENT '评论人IP',
   PRIMARY KEY  (`id`),
   KEY `postid` (`postid`,`userid`,`pid`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='评论表' AUTO_INCREMENT=4 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='评论表' AUTO_INCREMENT=6 ;
 
 --
 -- 转存表中的数据 `comment`
@@ -95,7 +95,9 @@ CREATE TABLE IF NOT EXISTS `comment` (
 INSERT INTO `comment` (`id`, `postid`, `userid`, `author`, `authoremail`, `authorurl`, `commenttime`, `ispublic`, `content`, `pid`, `isneednotice`, `authorip`) VALUES
 (1, 1, 0, '肥仔聪', 'fatboy@163.com', 'fatboy.com', 1257091200, 1, '<strong>我们理工</strong>类的面试应该都要解答一些实际而又基础的问题吧，如果问我为什么污水口的盖是圆的话，我真不太会了…', 0, 0, 3071236922),
 (2, 2, 0, 'mcc', '307133793@qq.com', '', 1260794169, 1, '虽然我专业不是计算机的，但是我对web开发发面还是很感兴趣的，对于兴趣嘛，社会总是残酷的，我觉得我们', 0, 0, 3051216922),
-(3, 1, 2, '', 'paperen@gmail.com', 'iamlze.cn', 1261883250, 1, '嗯…应该是与判断邮箱正确性的正则有关…算了，懒得改了，忽略你的邮箱', 1, 0, 3071234922);
+(3, 1, 2, 'paperen', 'paperen@gmail.com', 'iamlze.cn', 1261883250, 1, '嗯…应该是与判断邮箱正确性的正则有关…算了，懒得改了，忽略你的邮箱', 1, 0, 3071234922),
+(4, 1, 0, '测试者', 'test@gmail.com', NULL, 1261983250, 1, '为什么没有干你娘的车吧？为什么没有干你娘的车吧？为什么没有干你娘的车吧？为什么没有干你娘的车吧？为什么没有干你娘的车吧？为什么没有干你娘的车吧？为什么没有干你娘的车吧？为什么没有干你娘的车吧？为什么没有干你娘的车吧？为什么没有干你娘的车吧？', 1, 1, 0),
+(5, 1, 0, '想读书的人 ', 'reader@gmail.com', NULL, 1258091200, 1, '刚开始看到这部影片的时候并没有想那么多，纯属是想找一点娱乐，但看完以后，觉得内心暖暖的。 生活太孤独了，人生很寂寞，现在很多人经常看到自己网络账号上面有上百个好友，却找不到真正知心的。于是叹乎知己难求…… 知心，不是只有他知你，或者只有你知他，而是彼此互相知心，交谈之间不必害怕会说错什么话会伤害对方，而能知......', 0, 1, 0);
 
 -- --------------------------------------------------------
 

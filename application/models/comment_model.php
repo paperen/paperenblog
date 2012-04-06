@@ -46,6 +46,58 @@ class Comment_model extends CI_Model
 	}
 
 	/**
+	 * 獲取頂級評論數據
+	 * @param int $post_id 文章ID
+	 * @param int $per_page 每頁條數
+	 * @param int $offset 游標
+	 * @return array
+	 */
+	public function get_by_postid( $post_id, $per_page = 0, $offset = 0 )
+	{
+		$query = $this->db->select(
+						'c.id,c.postid,c.userid,c.author,c.authoremail,
+					c.authorurl,c.commenttime,c.content,c.pid,c.isneednotice,
+					u.name as username,
+					p.title,p.urltitle,p.authorid'
+				)
+				->from( "{$this->_tables['comment']} as c" )
+				->join( "{$this->_tables['post']} as p", 'p.id = c.postid' )
+				->join( "{$this->_tables['user']} as u", 'u.id = c.userid', 'left' )
+				->where( 'c.ispublic', 1 )
+				->where( 'c.postid', $post_id )
+				->where( 'c.pid', 0 )
+				->order_by( 'c.id', 'asc' );
+		if ( $per_page ) $query->limit( $per_page, $offset );
+		return $query->get()->result_array();
+	}
+
+	/**
+	 * 獲取子級評論數據
+	 * @param int $post_id 文章ID
+	 * @param int $per_page 每頁條數
+	 * @param int $offset 游標
+	 * @return array
+	 */
+	public function get_reply_by_postid( $post_id, $per_page = 0, $offset = 0 )
+	{
+		$query = $this->db->select(
+						'c.id,c.postid,c.userid,c.author,c.authoremail,
+					c.authorurl,c.commenttime,c.content,c.pid,c.isneednotice,
+					u.name as username,
+					p.title,p.urltitle,p.authorid'
+				)
+				->from( "{$this->_tables['comment']} as c" )
+				->join( "{$this->_tables['post']} as p", 'p.id = c.postid' )
+				->join( "{$this->_tables['user']} as u", 'u.id = c.userid', 'left' )
+				->where( 'c.ispublic', 1 )
+				->where( 'c.pid !=', 0 )
+				->where( 'c.postid', $post_id )
+				->order_by( 'c.id', 'asc' );
+		if ( $per_page ) $query->limit( $per_page, $offset );
+		return $query->get()->result_array();
+	}
+
+	/**
 	 * 根據文章ID獲取總評論數
 	 * @param int $post_id 文章ID
 	 * @return int 總數

@@ -31,8 +31,8 @@ class Comment_model extends CI_Model
 	public function get_all( $per_page = 0, $offset = 0 )
 	{
 		$query = $this->db->select(
-						'c.id,c.postid,c.userid,c.author,c.authoremail,
-					c.authorurl,c.commenttime,c.content,c.pid,c.isneednotice,
+						'c.id,c.postid,c.userid,c.author,c.email,
+					c.url,c.commenttime,c.content,c.pid,c.isneednotice,
 					u.name as username,
 					p.title,p.urltitle,p.authorid'
 				)
@@ -55,8 +55,8 @@ class Comment_model extends CI_Model
 	public function get_by_postid( $post_id, $per_page = 0, $offset = 0 )
 	{
 		$query = $this->db->select(
-						'c.id,c.postid,c.userid,c.author,c.authoremail,
-					c.authorurl,c.commenttime,c.content,c.pid,c.isneednotice,
+						'c.id,c.postid,c.userid,c.author,c.email,
+					c.url,c.commenttime,c.content,c.pid,c.isneednotice,
 					u.name as username,
 					p.title,p.urltitle,p.authorid'
 				)
@@ -81,8 +81,8 @@ class Comment_model extends CI_Model
 	public function get_reply_by_postid( $post_id, $per_page = 0, $offset = 0 )
 	{
 		$query = $this->db->select(
-						'c.id,c.postid,c.userid,c.author,c.authoremail,
-					c.authorurl,c.commenttime,c.content,c.pid,c.isneednotice,
+						'c.id,c.postid,c.userid,c.author,c.email,
+					c.url,c.commenttime,c.content,c.pid,c.isneednotice,
 					u.name as username,
 					p.title,p.urltitle,p.authorid'
 				)
@@ -105,8 +105,8 @@ class Comment_model extends CI_Model
 	public function total_by_postid( $post_id )
 	{
 		return $this->db->where( 'postid', $post_id )
-						->where( 'ispublic', TRUE )
-						->count_all_results( 'comment' );
+				->where( 'ispublic', TRUE )
+				->count_all_results( 'comment' );
 	}
 
 	/**
@@ -116,10 +116,34 @@ class Comment_model extends CI_Model
 	public function total_by_postids( $post_ids )
 	{
 		return $this->db->select( 'COUNT(`id`) as num, postid', FALSE )
-						->from( "{$this->_tables['comment']} as c" )
-						->group_by( 'postid' )
-						->get()
-						->result_array();
+				->from( "{$this->_tables['comment']} as c" )
+				->group_by( 'postid' )
+				->get()
+				->result_array();
+	}
+
+	/**
+	 * 插入新評論數據
+	 * @param array $data
+	 * @return int 評論ID
+	 */
+	public function insert( $data )
+	{
+		$insert_data = array(
+			'postid' => $data['postid'],
+			'userid' => isset( $data['userid'] ) ? $data['userid'] : 0,
+			'author' => $data['nickname'],
+			'email' => $data['email'],
+			'url' => isset( $data['blog'] ) ? $data['blog'] : NULL,
+			'commenttime' => time(),
+			'ispublic' => isset( $data['ispublic'] ) ? TRUE : FALSE,
+			'content' => $data['content'],
+			'pid' => isset( $data['pid'] ) ? $data['pid'] : 0,
+			'isneednotice' => isset( $data['isneednotice'] ) ? TRUE : FALSE,
+			'ip' => $data['ip'],
+		);
+		$this->db->insert( $this->_tables['comment'], $insert_data );
+		return $this->db->insert_id();
 	}
 
 }

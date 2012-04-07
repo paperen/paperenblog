@@ -231,5 +231,17 @@ function comment_url( $urltitle )
 	return base_url( "post/{$urltitle}" );
 }
 
+/**
+ * 創建表單令牌
+ * @return string
+ */
+function create_token()
+{
+	$CI = & get_instance();
+	$time = time();
+	$CI->session->set_userdata( 'token', $time );
+	return form_hidden( 'token', md5( $time ), 'id="token"' );
+}
+
 
 // end of app_helper

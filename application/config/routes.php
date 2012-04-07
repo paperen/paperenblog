@@ -47,6 +47,9 @@ $route['404'] = 'main/not_found';
 // 文章
 $route['post/(:any)'] = 'main/post/$1';
 
+// 發表評論
+$route['comment'] = 'main/comment';
+
 // 文件
 $route['file/(:num)'] = 'main/file/$1';
 

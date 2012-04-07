@@ -1,24 +1,25 @@
 <!-- comment-form -->
-<div class="comment-form" id="comment-form">
-	<div class="row-fluid">
-		<form class="span12">
-			<input type="hidden" name="pid" id="pid" value="" />
-			<div class="alert alert-block alert-success">
-				<a class="close">&times;</a>
-				<h4 class="alert-heading"><i class="icon-ok-sign"></i> 評論成功</h4>
-				<p>您的評論已經發送給paperen</p>
-			</div>
-			<div class="alert alert-block alert-danger">
-				<a class="close">&times;</a>
-				<h4 class="alert-heading"><i class="icon-remove-sign"></i> 評論失敗</h4>
-				<p>郵箱格式不合法</p>
-			</div>
+<div>
+	<div class="row-fluid" id="comment-div">
+		<?php echo form_open('', array(
+			'class' => 'span12 comment-form',
+			'id' => 'comment-form',
+		)); ?>
+		<?php echo form_hidden('postid', $postid, 'id="postid"'); ?>
+		<?php echo form_hidden('pid', '', 'id="pid"'); ?>
 			<div class="control-group span6">
 				<label class="control-label" for="nickname">暱稱</label>
 				<div class="controls">
 					<div class="input-prepend">
 						<span class="add-on"><i class="icon-user"></i></span>
-						<input class="span9" id="nickname" name="nickname" type="text" placeholder="Nickname">
+						<?php echo form_input(
+								array(
+									'class' => 'span9',
+									'id' => 'nickname',
+									'name' => 'nickname',
+									'placeholder' => 'Nickname',
+								)
+						); ?>
 					</div>
 				</div>
 			</div>
@@ -27,7 +28,14 @@
 				<div class="controls">
 					<div class="input-prepend">
 						<span class="add-on"><i class="icon-envelope"></i></span>
-						<input class="span9" id="email" name="email" type="text" placeholder="Email">
+						<?php echo form_input(
+								array(
+									'class' => 'span9',
+									'id' => 'email',
+									'name' => 'email',
+									'placeholder' => 'Email',
+								)
+						); ?>
 					</div>
 				</div>
 			</div>
@@ -35,47 +43,49 @@
 			<div class="control-group">
 				<label class="control-label" for="content">說點什麼</label>
 				<div class="controls">
-					<textarea class="span11" name="content" id="content" rows="3"></textarea>
+					<?php echo form_textarea(
+							array(
+								'class' => 'span11',
+								'id' => 'content',
+								'name' => 'content',
+								'rows' => 3,
+							)
+					); ?>
 				</div>
 			</div>
-			<div class="form-actions">
-				<button type="submit" class="btn btn-primary btn-submit btn-large"><i class="icon-white icon-plus"></i> 發 表</button>
+			<div class="control-group span6">
+				<label class="control-label" for="blog">個人博客/站點 [選填]</label>
+				<div class="controls">
+					<div class="input-prepend">
+						<span class="add-on"><i class="icon-home"></i></span>
+						<?php echo form_input(
+								array(
+									'class' => 'span9',
+									'id' => 'blog',
+									'name' => 'blog',
+									'placeholder' => 'Your Blog',
+								)
+						); ?>
+					</div>
+				</div>
 			</div>
+			<div class="c"></div>
+			<div class="form-actions">
+				<?php echo form_button(
+						array(
+							'id' => 'comment-submit-btn',
+							'class' => 'btn btn-primary btn-submit btn-large',
+						),
+						'<i class="icon-white icon-plus"></i> 發 表'
+				); ?>
+			</div>
+			<?php echo form_hidden('comment-submit-btn', md5( time() )); ?>
+			<?php echo create_token(); ?>
 		</form>
 	</div>
 </div>
 <script>
-	$(function(){
-		$('.reply-comment-btn').click(function(){
-			if ( $(this).html() == '回覆TA' ) {
-				//reply
-				//reback the text
-				$('.reply-comment-btn').html('回覆TA');
-				var comment_id = $(this).attr('rel');
-				var reply_comment_form;
-				if( $('#replyform').length > 0 ) {
-					reply_comment_form = $('#replyform').clone();
-					//kill the old one
-					$('#replyform').remove();
-				} else {
-					//clone post-commentform
-					reply_comment_form = $('#comment-form').clone()
-					.attr('id', 'replyform')
-					.addClass('replyform');
-				}
-				//fill the pid
-				reply_comment_form.find('#pid').val( comment_id.split('-')[1] );
-				$('#comment-form').hide();
-				$(this).html('關閉');
-				$(comment_id).append( reply_comment_form );
-			} else {
-				//close
-				//reback the text
-				$('.reply-comment-btn').html('回覆TA');
-				$('#replyform').remove();
-				$('#comment-form').show();
-			}
-		});
-	});
+var comment_url = '<?php echo base_url('comment'); ?>';
 </script>
+<?php echo js('comment.js'); ?>
 <!-- comment-form -->

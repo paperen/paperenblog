@@ -78,6 +78,15 @@ class Main extends MY_Controller
 		}
 	}
 
+	/**
+	 * 發表評論接收器
+	 */
+	public function comment()
+	{
+		// 調用評論模塊處理
+		$this->load->module( 'comment/common/add', array( ) );
+	}
+
 }
 
 // end of home

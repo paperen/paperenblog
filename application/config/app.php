@@ -18,6 +18,8 @@ $config['sitename'] = 'paperen';
 $config['per_page'] = 8;
 // 上傳根目錄
 $config['upload_path'] = './upload/';
+// 評論直接發佈
+$config['comment_ispublic'] = TRUE;
 
 
 // end of app

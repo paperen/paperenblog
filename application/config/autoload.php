@@ -57,6 +57,7 @@ $autoload['libraries'] = array(
 	'database',
 	'querycache',
 	'hook',
+	'form_validation'
 );
 
 
@@ -72,6 +73,7 @@ $autoload['libraries'] = array(
 $autoload['helper'] = array(
     'url',
     'app',
+	'form',
 );
 
 

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * 作為查詢緩存，避免不同模塊執行相同SQL導致性能下降一個組件
  * 依賴于CI模型
@@ -8,12 +9,25 @@ class Querycache
 {
 
 	private $_CI;
-
 	private $_cache;
 
 	function __construct()
 	{
-		$this->_CI =& get_instance();
+		$this->_CI = & get_instance();
+	}
+
+	/**
+	 * 直接執行模型操作
+	 * @param string $model_name 模型名
+	 * @param string $method 方法
+	 * @param mixed $args 參數
+	 * @return mixed
+	 */
+	public function execute( $model, $method, $args, $nowrap = FALSE )
+	{
+		$model_name = "{$model}_model";
+		if ( !isset( $this->_CI->$model_name ) ) $this->_CI->load->model( $model_name );
+		return call_user_func_array( array( $this->_CI->$model_name, $method ), ( $nowrap ? $args : array( $args ) ) );
 	}
 
 	/**
@@ -35,9 +49,7 @@ class Querycache
 		if ( isset( $this->_cache[$hash] ) ) return $this->_cache[$hash];
 
 		// 通过模型获取数据
-		$model_name = "{$model}_model";
-		if ( !isset( $this->_CI->$model_name ) ) $this->_CI->load->model( $model_name );
-		$result = call_user_func_array( array( $this->_CI->$model_name, $method ), $args );
+		$result = $this->execute( $model, $method, $args, TRUE );
 
 		// 缓存起来
 		$this->_cache[$hash] = $result;
@@ -45,4 +57,5 @@ class Querycache
 	}
 
 }
+
 // end of Querycache

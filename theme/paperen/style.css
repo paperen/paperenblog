@@ -248,10 +248,17 @@ pre {
 	padding-bottom: 20px;
 	border-bottom: 1px #EAEAEA solid;
 }
-
+.post-content {
+	padding-right: 6px;
+}
 /* pager */
 .pager {
 	padding-right: 7px;
+}
+
+/* archive */
+.archive h2 {
+	margin-bottom: 10px;
 }
 
 /* comment */
@@ -267,6 +274,9 @@ pre {
 }
 .comment .comment-list {
 	margin-left: 0;
+}
+.comment .reply-list {
+	margin: 10px 0 0 0;
 }
 .comment .comment-header {
 	text-align: center;
@@ -296,10 +306,10 @@ pre {
 	margin-right: 0;
 }
 .comment .comment-avatar {
-	width: 60px;
+	width: 10%;
 }
 .comment .comment-entry {
-	width: 86%;
+	width: 83%;
 }
 .comment .comment-entry h4 {
 	margin-bottom: 5px;
@@ -354,6 +364,9 @@ pre {
 .comment .comment-body .reply .comment-avatar {
 	float: right;
 	margin-right: 15px;
+}
+.comment .comment-alert {
+	margin-top: 10px;
 }
 /* reply */
 /* comment */

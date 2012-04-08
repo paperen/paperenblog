@@ -5,7 +5,7 @@
 	<ul>
 		<?php foreach( $comments_data as $comment ) { ?>
 		<li>
-			<a href="<?php echo post_permalink( $comment['urltitle'] ); ?>">
+			<a href="<?php echo comment_url( $comment['urltitle'], $comment['id'] ); ?>">
 				<strong><?php echo ( $comment['author'] ) ? $comment['author'] : $comment['username']; ?></strong>
 				<?php echo gbk_substr( $comment['content'], 30 ); ?>
 			</a>

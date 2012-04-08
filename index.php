@@ -1,5 +1,5 @@
 <?php
-
+if(function_exists('date_default_timezone_set')) date_default_timezone_set('PRC');
 /*
  *---------------------------------------------------------------
  * APPLICATION ENVIRONMENT
@@ -35,7 +35,7 @@ if (defined('ENVIRONMENT'))
 		case 'development':
 			error_reporting(E_ALL);
 		break;
-	
+
 		case 'testing':
 		case 'production':
 			error_reporting(0);

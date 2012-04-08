@@ -58,7 +58,7 @@ class Post_Common_Module extends CI_Module
 
 			$result[] = $single;
 		}
-		$this->_post_data = ( !$multi ) ? array_shift( $result ) : $result;
+		$this->_post_data = (!$multi ) ? array_shift( $result ) : $result;
 	}
 
 	/**
@@ -72,7 +72,7 @@ class Post_Common_Module extends CI_Module
 		if ( empty( $data ) ) return NULL;
 		$total = count( $data );
 		for ( $i = 0; $i < $total; $i++ )
-			$result[$i%$col_num][] = array_shift( $data );
+			$result[$i % $col_num][] = array_shift( $data );
 		return $result;
 	}
 
@@ -97,10 +97,34 @@ class Post_Common_Module extends CI_Module
 	}
 
 	/**
-	 * 归档
+	 * 文章歸檔
 	 */
 	public function archive()
 	{
+		$data = array( );
+		// 按時間歸檔
+		$data['order_by'] = 'time';
+		$result = array( );
+		// 所有文章數據
+		$post_data = $this->querycache->get( 'post', 'get_all' );
+		foreach( $post_data as $single )
+		{
+			$year = date('Y', $single['posttime']);
+			$month = date('m', $single['posttime']);
+			$result[$year][$month][] = $single;
+		}
+
+		$data['result'] = $result;
+		$this->load->view( 'archive', $data );
+	}
+
+	/**
+	 * 按年份歸檔
+	 * @param int $year[option]
+	 */
+	public function archive_by_year( $year = '' )
+	{
+		if ( empty( $year ) ) $year = date( 'Y' );
 		$data = array( );
 
 		$this->load->view( 'archive', $data );
@@ -145,7 +169,7 @@ class Post_Common_Module extends CI_Module
 	 * @param string $postid_or_urltitle 文章ID或URL标题
 	 * @return array
 	 */
-	public function get_by_postid_or_urltitle( $postid_or_urltitle )
+	private function _get_by_postid_or_urltitle( $postid_or_urltitle )
 	{
 		// 如果是數字
 		if ( is_numeric( $postid_or_urltitle ) )
@@ -167,7 +191,7 @@ class Post_Common_Module extends CI_Module
 	public function single( $postid_or_urltitle )
 	{
 		//
-		$post_data = $this->get_by_postid_or_urltitle( $postid_or_urltitle );
+		$post_data = $this->_get_by_postid_or_urltitle( $postid_or_urltitle );
 
 		// 没有找到
 		if ( empty( $post_data ) ) show_404();
@@ -179,7 +203,7 @@ class Post_Common_Module extends CI_Module
 		$post_data = $this->_post_data;
 
 		// 註冊邊欄文章圖片挂入點
-		$this->hook->register('post_images', 'module_post/common/images', $post_data['id']);
+		$this->hook->register( 'post_images', 'module_post/common/images', $post_data['id'] );
 
 		$data = array(
 			'post' => $post_data,
@@ -221,11 +245,11 @@ class Post_Common_Module extends CI_Module
 	 */
 	public function images( $post_id )
 	{
-		$data = array();
+		$data = array( );
 		$post_id = intval( $post_id );
 
 		// 根據文章ID獲取文章圖片數據
-		$post_images = $this->querycache->get('post', 'get_images', $post_id);
+		$post_images = $this->querycache->get( 'post', 'get_images', $post_id );
 
 		// 總數
 		$data['total'] = count( $post_images );

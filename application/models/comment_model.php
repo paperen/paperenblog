@@ -46,6 +46,26 @@ class Comment_model extends CI_Model
 	}
 
 	/**
+	 * 根據評論ID獲取評論數據
+	 * @param int $comment_id 評論ID
+	 * @return array
+	 */
+	public function get_by_id( $comment_id )
+	{
+		return $this->db->select(
+				'c.id,c.postid,c.userid,c.author,c.email,c.url,c.commenttime,c.content,c.pid,c.isneednotice,
+					u.name as username,
+					p.title,p.urltitle,p.authorid'
+				)
+				->from( "{$this->_tables['comment']} as c" )
+				->join( "{$this->_tables['post']} as p", 'p.id = c.postid' )
+				->join( "{$this->_tables['user']} as u", 'u.id = c.userid', 'left' )
+				->where( 'c.id', $comment_id )
+				->get()
+				->row_array();
+	}
+
+	/**
 	 * 獲取頂級評論數據
 	 * @param int $post_id 文章ID
 	 * @param int $per_page 每頁條數
@@ -132,9 +152,9 @@ class Comment_model extends CI_Model
 		$insert_data = array(
 			'postid' => $data['postid'],
 			'userid' => isset( $data['userid'] ) ? $data['userid'] : 0,
-			'author' => $data['nickname'],
+			'author' => $data['author'],
 			'email' => $data['email'],
-			'url' => isset( $data['blog'] ) ? $data['blog'] : NULL,
+			'url' => isset( $data['url'] ) ? $data['url'] : NULL,
 			'commenttime' => time(),
 			'ispublic' => isset( $data['ispublic'] ) ? TRUE : FALSE,
 			'content' => $data['content'],
@@ -142,6 +162,7 @@ class Comment_model extends CI_Model
 			'isneednotice' => isset( $data['isneednotice'] ) ? TRUE : FALSE,
 			'ip' => $data['ip'],
 		);
+
 		$this->db->insert( $this->_tables['comment'], $insert_data );
 		return $this->db->insert_id();
 	}

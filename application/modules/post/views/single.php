@@ -1,3 +1,4 @@
+<?php $this->load->module( 'header/common', array( 'archive', $post['title'] ) ); ?>
 <div class="span9 main">
 
 	<div class="post">
@@ -16,3 +17,5 @@
 <script>
 $('.post-content .post-image').slimbox();
 </script>
+<?php $this->load->module( 'sidebar/common', array( ) ); ?>
+<?php $this->load->module( 'footer/common', array( ) ); ?>

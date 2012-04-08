@@ -18,6 +18,7 @@
 									'id' => 'nickname',
 									'name' => 'nickname',
 									'placeholder' => 'Nickname',
+									'value' => isset( $comment_author['author'] ) ? $comment_author['author'] : '',
 								)
 						); ?>
 					</div>
@@ -34,6 +35,7 @@
 									'id' => 'email',
 									'name' => 'email',
 									'placeholder' => 'Email',
+									'value' => isset( $comment_author['email'] ) ? $comment_author['email'] : '',
 								)
 						); ?>
 					</div>
@@ -64,6 +66,7 @@
 									'id' => 'blog',
 									'name' => 'blog',
 									'placeholder' => 'Your Blog',
+									'value' => isset( $comment_author['url'] ) ? $comment_author['url'] : '',
 								)
 						); ?>
 					</div>
@@ -88,4 +91,5 @@
 var comment_url = '<?php echo base_url('comment'); ?>';
 </script>
 <?php echo js('comment.js'); ?>
+<?php echo js('jquery-ui-highlight.js'); ?>
 <!-- comment-form -->

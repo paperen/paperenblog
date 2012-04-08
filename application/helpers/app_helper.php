@@ -212,22 +212,46 @@ function file_url( $id )
  * @param int $day 日
  * @return string
  */
-function archive_url( $year, $month, $day = '' )
+function archive_url( $year = '', $month = '', $day = '' )
 {
-	$args = func_get_args();
-	$delimiter = '-';
-	$temp = trim( implode( $delimiter, $args ), $delimiter );
-	return base_url( "archive/{$temp}" );
+	if ( empty( $year ) )
+	{
+		return base_url( 'archive' );
+	}
+	else
+	{
+		$args = func_get_args();
+		$delimiter = '-';
+		$temp = trim( implode( $delimiter, $args ), $delimiter );
+		return base_url( "archive/{$temp}" );
+	}
+}
+/**
+ * 生成歸檔路徑(按文章類別)
+ * @param int $category_name 類別名稱
+ * @return string
+ */
+function archive_category_url( $category_name = '' )
+{
+	if ( $category_name == NULL )
+	{
+		return base_url( 'archive/category' );
+	}
+	else
+	{
+		return base_url( "archive/category/{$category_name}" );
+	}
 }
 
 /**
  * 生成評論URL
  * @param string $urltitle 文章URL標題
+ * @param int $comment_id 評論ID[option]
  * @return string
  */
-function comment_url( $urltitle )
+function comment_url( $urltitle, $comment_id = '' )
 {
-	$urltitle .= '#comment-form';
+	$urltitle .= ( $comment_id ) ? "#comment-{$comment_id}" :  '#comment-form';
 	return base_url( "post/{$urltitle}" );
 }
 

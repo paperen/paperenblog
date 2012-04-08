@@ -1,5 +1,5 @@
 <?php if( empty( $comment_data ) ) { ?>
-<div class="alert alert-block alert-info">
+<div class="alert alert-block alert-info" id="comment-empty">
 	<h3 class="alert-heading">沒有任何評論</h3>
 </div>
 <?php } else { ?>
@@ -18,10 +18,9 @@
 			<p><?php echo $comment['content']; ?></p>
 			<a href="javascript:void(0);" rel="#comment-<?php echo $comment['id']; ?>" class="btn btn-primary btn-small pull-right reply-comment-btn">回覆TA</a>
 		</div>
-	</li>
-	<?php
-	if ( isset( $reply_data[$comment['id']] ) )
-	{
+		<div class="c"></div>
+		<ul class="reply-list">
+	<?php if ( isset( $reply_data[$comment['id']] ) ) {
 		$reply = $reply_data[$comment['id']];
 		foreach( $reply as $single ) {
 	?>
@@ -41,7 +40,9 @@
 	<?php
 		}
 	}
-	}
 	?>
+		</ul>
+	</li>
+	<?php }	?>
 </ul>
 <?php } ?>

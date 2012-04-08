@@ -1,3 +1,4 @@
+<?php $this->load->module( 'header/common', array( 'home', '首页' ) ); ?>
 <div class="span9 main">
 
     <div class="pull-right btn-group margin-right15 display-style">
@@ -39,3 +40,5 @@
 <script>
 $('.post-content .post-image').slimbox();
 </script>
+<?php $this->load->module( 'sidebar/common', array( ) ); ?>
+<?php $this->load->module( 'footer/common', array( ) ); ?>

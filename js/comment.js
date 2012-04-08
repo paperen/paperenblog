@@ -27,18 +27,37 @@ $(function(){
 			type: "POST",
 			url: comment_url,
 			data: $('#comment-form').serialize(),
+			beforeSend: function() {
+				if ( $('#comment-alert').length ) $('#comment-alert').remove();
+				disabled_comment_form( true );
+			},
 			success: function( msg ){
+				//alert( msg );
 				if ( msg.success ) {
 					// success
+					$('#comment-empty').hide();
+					$('#comment-form #content').val('');
 					setTimeout(function(){
+						disabled_comment_form( false );
 						$('#comment-alert').fadeOut();
 					}, 4000);
 				} else {
 					// error
-					if ( $('#comment-alert').length ) $('#comment-alert').remove();
+					disabled_comment_form( false );
 				}
-				$('#comment-form').prepend( msg.data );
+				$('#comment-form').before( msg.data );
 			}
 		});
 	});
 });
+function disabled_comment_form( ac ) {
+	if ( ac ) {
+		$('#comment-form :text').attr('disabled', true);
+		$('#comment-form #content').attr('disabled', true);
+		$('#comment-form #comment-submit-btn').attr('disabled', true);
+	} else {
+		$('#comment-form :text').removeAttr('disabled');
+		$('#comment-form #content').removeAttr('disabled');
+		$('#comment-form #comment-submit-btn').removeAttr('disabled');
+	}
+}

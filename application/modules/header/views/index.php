@@ -16,6 +16,7 @@
 <?php echo js('bootstrap/bootstrap-popover.js'); ?>
 <?php echo js('bootstrap/bootstrap-fold.js'); ?>
 <?php echo js('slimbox/slimbox2.js'); ?>
+<?php echo js('blog.js'); ?>
 </head>
 
 <body>

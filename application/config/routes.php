@@ -38,27 +38,39 @@
 |
 */
 
-$route['default_controller'] = 'main';
+$route['default_controller'] = 'module/post/common/fragment';
 $route['404_override'] = '';
+
+// 分頁
+$route['page/(:num)'] = 'module/post/common/fragment/$1';
 
 // 404
 $route['404'] = 'main/not_found';
 
 // 文章
-$route['post/(:any)'] = 'main/post/$1';
+$route['post/(:any)'] = 'module/post/common/single/$1';
 
 // 發表評論
-$route['comment'] = 'main/comment';
+$route['comment'] = 'module/comment/common/add';
 
 // 文件
-$route['file/(:num)'] = 'main/file/$1';
+$route['file/(:num)'] = 'module/file/common/get/$1';
+
+// 關於
+$route['about'] = 'module/about/common/index';
+
+// 作者
+$route['author/(:any)'] = 'module/about/common/author/$1';
 
 // 归档
-$route['archive'] = 'main/archive/';
-$route['archive/(:num)/(:num)'] = 'main/archive_by_year/$1/$2';
-$route['archive/(:num)-(:num)/(:num)'] = 'main/archive_by_month/$1/$2/$3';
+$route['archive'] = 'module/post/common/archive';
+$route['archive/(:num)'] = 'module/post/common/archive_by_year/$1';
+$route['archive/(:num)-(:num)'] = 'module/post/common/archive_by_month/$1/$2';
+$route['archive/(:num)-(:num)-(:num)'] = 'module/post/common/archive_by_day/$1/$2/$3';
 
-
+// 標籤
+$route['tag'] = 'module/tag/common/index';
+$route['tag/(:any)'] = 'module/tag/common/get/$1';
 
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */

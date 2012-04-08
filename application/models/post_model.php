@@ -94,7 +94,6 @@ class Post_model extends CI_Model
 				->join( "{$this->_tables['user']} as u", 'u.id = p.authorid' )
 				->where( 'p.ispublic', 1 );
 		if ( $per_page ) $query->limit( $per_page, $offset );
-
 		return $query->order_by( 'p.posttime', 'desc' )
 				->get()
 				->result_array();

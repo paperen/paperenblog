@@ -1,4 +1,4 @@
-<?php echo $header;?>
+<?php $this->load->module( 'header/common', array( 'tag', '博客标签' ) ); ?>
 <div class="span9 main">
 
 	<div class="tag">
@@ -31,5 +31,5 @@
 	</div>
 
 </div>
-<?php echo $sidebar;?>
-<?php echo $footer;?>
+<?php $this->load->module( 'sidebar/common', array( ) ); ?>
+<?php $this->load->module( 'footer/common', array( ) ); ?>

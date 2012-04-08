@@ -15,7 +15,7 @@ class Tag_Common_Module extends CI_Module
 	public function index()
 	{
 		$data = array( );
-		$this->load->view( 'tag', $data );
+		$this->load->view( 'index', $data );
 	}
 
 }

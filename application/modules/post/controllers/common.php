@@ -107,10 +107,10 @@ class Post_Common_Module extends CI_Module
 		$result = array( );
 		// 所有文章數據
 		$post_data = $this->querycache->get( 'post', 'get_all' );
-		foreach( $post_data as $single )
+		foreach ( $post_data as $single )
 		{
-			$year = date('Y', $single['posttime']);
-			$month = date('m', $single['posttime']);
+			$year = date( 'Y', $single['posttime'] );
+			$month = date( 'm', $single['posttime'] );
 			$result[$year][$month][] = $single;
 		}
 
@@ -121,13 +121,22 @@ class Post_Common_Module extends CI_Module
 	/**
 	 * 按年份歸檔
 	 * @param int $year[option]
+	 * @param int $offset
 	 */
-	public function archive_by_year( $year = '' )
+	public function archive_by_year( $year = '', $offset = 0 )
 	{
 		if ( empty( $year ) ) $year = date( 'Y' );
 		$data = array( );
 
-		$this->load->view( 'archive', $data );
+		$start = mktime( 0, 0, 0, 1, 1, $year );
+		$end = mktime( 0, 0, 0, 1, 1, $year + 1 );
+
+		$this->_post_data = $this->querycache->get( 'post', 'get_posttime_between', $start, $end, $offset );
+		// 分栏
+		$this->_post_data = $this->_format_by_col( $this->_post_data, 2 );
+		$data['posts_data_by_col'] = $this->_post_data;
+
+		$this->load->view( 'fragment', $data );
 	}
 
 	/**

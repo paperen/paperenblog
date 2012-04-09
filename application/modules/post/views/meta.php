@@ -21,16 +21,18 @@
 	</ul>
 	<ul class="post-data">
 		<li>阅 <a href="<?php echo post_permalink( $post['urltitle'] ); ?>"><strong><?php echo $post['click']; ?></strong></a></li>
-		<li>评 <a href="<?php echo comment_url( $post['urltitle'] ); ?>"><strong><?php echo $post['commentnum']; ?></strong></a></li>
+		<li>评 <a href="<?php echo comment_url( $post['urltitle'] ); ?>"><strong><?php echo isset( $post['commentnum'] ) ? $post['commentnum'] : 0; ?></strong></a></li>
 	</ul>
 	<ul class="post-meta">
 		<li>作者 <a href="<?php echo author_url( $post['author'] ); ?>"><?php echo $post['author']; ?></a></li>
 		<li>类别 <a href="<?php echo category_url( $post['category'] ); ?>"><?php echo $post['category']; ?></a></li>
+		<?php if( isset( $post['tags'] ) && $post['tags'] ) { ?>
 		<li>标签
 			<?php foreach( $post['tags'] as $tag ) { ?>
 			<a href="<?php echo tag_url( $tag ); ?>"><?php echo $tag; ?></a>
 			<?php } ?>
 		</li>
+		<?php } ?>
 	</ul>
 	<?php if( isset( $display_op ) && $display_op ) { ?>
 	<div class="post-op">

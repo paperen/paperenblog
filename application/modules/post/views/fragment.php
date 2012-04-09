@@ -1,6 +1,6 @@
 <?php $this->load->module( 'header/common', array( 'home', '首页' ) ); ?>
 <div class="span9 main">
-
+<?php if( $posts_data_by_col ) { ?>
     <div class="pull-right btn-group margin-right15 display-style">
 	<a href="#" class="btn btn-small active" title="網格呈現" data-original-title="網格呈現"><i class="icon-th"></i></a>
 	<a href="#" class="btn btn-small" title="列表呈現" data-original-title="列表呈現"><i class="icon-th-list"></i></a>
@@ -35,10 +35,15 @@
 			<li class="next"><a href="#">Newer &raquo;</a></li>
 		</ul>
     </div>
-
+	<script>
+	$('.post-content .post-image').slimbox();
+	</script>
+<?php } else { ?>
+	<div class="alert alert-block alert-info">
+		<h3 class="alert-heading">親~沒有任何文章…</h3>
+	</div>
+<?php } ?>
 </div>
-<script>
-$('.post-content .post-image').slimbox();
-</script>
+
 <?php $this->load->module( 'sidebar/common', array( ) ); ?>
 <?php $this->load->module( 'footer/common', array( ) ); ?>

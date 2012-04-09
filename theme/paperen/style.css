@@ -260,6 +260,13 @@ pre {
 .archive h2 {
 	margin-bottom: 10px;
 }
+.archive .archive-attr {
+	text-align: right;
+	padding-right: 5px;
+}
+.archive .single {
+	margin-top: 10px;
+}
 
 /* comment */
 .comment {

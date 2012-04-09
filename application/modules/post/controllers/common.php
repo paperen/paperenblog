@@ -119,6 +119,26 @@ class Post_Common_Module extends CI_Module
 	}
 
 	/**
+	 * 按照類別歸檔
+	 */
+	public function archive_category()
+	{
+		$data = array( );
+		// 按類別歸檔
+		$data['order_by'] = 'category';
+		$result = array( );
+		// 所有文章數據
+		$post_data = $this->querycache->get( 'post', 'get_all' );
+		foreach ( $post_data as $single )
+		{
+			$result[$single['category']][] = $single;
+		}
+
+		$data['result'] = $result;
+		$this->load->view( 'archive_category', $data );
+	}
+
+	/**
 	 * 按年份歸檔
 	 * @param int $year[option]
 	 * @param int $offset
@@ -130,6 +150,75 @@ class Post_Common_Module extends CI_Module
 
 		$start = mktime( 0, 0, 0, 1, 1, $year );
 		$end = mktime( 0, 0, 0, 1, 1, $year + 1 );
+
+		$this->_post_data = $this->querycache->get( 'post', 'get_posttime_between', $start, $end, $offset );
+		// 分栏
+		$this->_post_data = $this->_format_by_col( $this->_post_data, 2 );
+		$data['posts_data_by_col'] = $this->_post_data;
+
+		$this->load->view( 'fragment', $data );
+	}
+
+	/**
+	 * 按照月份進行文章的歸檔
+	 * @param int $year 年份
+	 * @param int $month 月份
+	 * @param int $offset 游標
+	 */
+	public function archive_by_month( $year = '', $month = '', $offset = 0 )
+	{
+		if ( $year == NULL || $month == NULL )
+		{
+			$year = date('Y');
+			$month = date('m');
+		}
+
+		$start = mktime( 0, 0, 0, $month, 1, $year );
+		$end = mktime( 0, 0, 0, $month+1, 1, $year );
+
+		$this->_post_data = $this->querycache->get( 'post', 'get_posttime_between', $start, $end, $offset );
+		// 分栏
+		$this->_post_data = $this->_format_by_col( $this->_post_data, 2 );
+		$data['posts_data_by_col'] = $this->_post_data;
+
+		$this->load->view( 'fragment', $data );
+	}
+
+	/**
+	 * 按照日進行文章的歸檔
+	 * @param int $year 年份
+	 * @param int $month 月份
+	 * @param int $day 日
+	 * @param int $offset 游標
+	 */
+	public function archive_by_day( $year = '', $month = '', $day = '', $offset = 0 )
+	{
+		if ( $year == NULL || $month == NULL || $day == NULL )
+		{
+			$year = date('Y');
+			$month = date('m');
+			//$day = date('d');
+		}
+
+		$start = mktime( 0, 0, 0, $month, $day, $year );
+		$end = mktime( 0, 0, 0, $month, $day+1, $year );
+
+		$this->_post_data = $this->querycache->get( 'post', 'get_posttime_between', $start, $end, $offset );
+		// 分栏
+		$this->_post_data = $this->_format_by_col( $this->_post_data, 2 );
+		$data['posts_data_by_col'] = $this->_post_data;
+
+		$this->load->view( 'fragment', $data );
+	}
+
+	/**
+	 * 按照文章類別歸檔
+	 * @param string $category 類別名
+	 * @param int $offset 游標
+	 */
+	public function archive_by_category( $category, $offset = 0 )
+	{
+
 
 		$this->_post_data = $this->querycache->get( 'post', 'get_posttime_between', $start, $end, $offset );
 		// 分栏

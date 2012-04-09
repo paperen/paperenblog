@@ -64,13 +64,20 @@ $route['author/(:any)'] = 'module/about/common/author/$1';
 
 // 归档
 $route['archive'] = 'module/post/common/archive';
+$route['archive/category'] = 'module/post/common/archive_category';
+$route['archive/category/(:any)'] = 'module/post/common/archive_by_category/$1';
+$route['archive/category/(:any)/page/(:num)'] = 'module/post/common/archive_by_category/$1/$2';
 $route['archive/(:num)'] = 'module/post/common/archive_by_year/$1';
+$route['archive/(:num)/page/(:num)'] = 'module/post/common/archive_by_year/$1/$2';
 $route['archive/(:num)-(:num)'] = 'module/post/common/archive_by_month/$1/$2';
+$route['archive/(:num)-(:num)/page/(:num)'] = 'module/post/common/archive_by_month/$1/$2/$3';
 $route['archive/(:num)-(:num)-(:num)'] = 'module/post/common/archive_by_day/$1/$2/$3';
+$route['archive/(:num)-(:num)-(:num)/page/(:num)'] = 'module/post/common/archive_by_day/$1/$2/$3/$4';
 
 // 標籤
 $route['tag'] = 'module/tag/common/index';
 $route['tag/(:any)'] = 'module/tag/common/get/$1';
+$route['tag/(:any)/page/(:num)'] = 'module/tag/common/get/$1/$2';
 
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */

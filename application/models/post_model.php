@@ -132,6 +132,47 @@ class Post_model extends CI_Model
 	}
 
 	/**
+	 * 按照類別名獲取類別數據
+	 * @param string $category 類別名
+	 * @return array
+	 */
+	public function get_category_by_name( $category )
+	{
+		return $this->db->select( 'c.id,c.category,c.pid,c.ispublic' )
+				->from( "{$this->_tables['category']} as c" )
+				->where( 'c.category', $category )
+				->get()
+				->row_array();
+	}
+
+	/**
+	 * 根據指定的類別ID獲取相關的文章數據
+	 * @param int $category_id 類別ID
+	 * @param int $per_page 每页显示条数
+	 * @param int $offset 游标
+	 * @return array
+	 */
+	public function get_by_category( $category_id, $per_page = 5, $offset = 0 )
+	{
+		$query = $this->db->select(
+						'p.id,p.title,p.urltitle,
+						 p.categoryid,p.content,
+						 p.authorid,p.click,p.good,
+						 p.bad,p.posttime,
+						 c.category,
+						 u.name as author'
+				)
+				->from( "{$this->_tables['post']} as p" )
+				->join( "{$this->_tables['category']} as c", 'c.id = p.categoryid' )
+				->join( "{$this->_tables['user']} as u", 'u.id = p.authorid' )
+				->where( 'c.id', $category_id );
+		if ( $per_page ) $query->limit( $per_page, $offset );
+		return $query->order_by( 'p.id', 'desc' )
+				->get()
+				->result_array();
+	}
+
+	/**
 	 * 根据发布时间戳区间获取符合的文章数据
 	 * @param int $lower 时间下限
 	 * @param int $upper 时间上限

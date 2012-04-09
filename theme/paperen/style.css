@@ -24,6 +24,9 @@ pre {
 .margin-right15 {
 	margin-right: 15px;
 }
+.margin-top15 {
+	margin-top: 15px;
+}
 /* navbar */
 .navbar .navbar-inner {
 	filter:alpha(opacity=80);

@@ -9,7 +9,7 @@
 	</div>
 	<div class="c"></div>
 	<?php foreach( $result as $year => $year_post ) { ?>
-	<div class="archive archive-by-time border-top">
+	<div class="archive margin-top15">
 		<h2>
 			<span class="timeline-txt"><?php echo $year; ?>年</span>
 			<?php

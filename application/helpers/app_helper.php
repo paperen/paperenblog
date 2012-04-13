@@ -267,5 +267,13 @@ function create_token()
 	return form_hidden( 'token', md5( $time ), 'id="token"' );
 }
 
+/**
+ * 404頁面URL
+ * @return string
+ */
+function page_not_found()
+{
+	redirect( base_url('404') );
+}
 
 // end of app_helper

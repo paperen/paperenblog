@@ -113,8 +113,11 @@ class Post_Common_Module extends CI_Module
 			$month = date( 'm', $single['posttime'] );
 			$result[$year][$month][] = $single;
 		}
-
 		$data['result'] = $result;
+
+		// 標記是歸檔
+		$data['is_archive'] = TRUE;
+
 		$this->load->view( 'archive', $data );
 	}
 
@@ -134,6 +137,9 @@ class Post_Common_Module extends CI_Module
 			$result[$single['category']][] = $single;
 		}
 
+		// 標記是歸檔
+		$data['is_archive'] = TRUE;
+
 		$data['result'] = $result;
 		$this->load->view( 'archive_category', $data );
 	}
@@ -151,10 +157,16 @@ class Post_Common_Module extends CI_Module
 		$start = mktime( 0, 0, 0, 1, 1, $year );
 		$end = mktime( 0, 0, 0, 1, 1, $year + 1 );
 
-		$this->_post_data = $this->querycache->get( 'post', 'get_posttime_between', $start, $end, $offset );
+		$this->_post_data = $this->querycache->get( 'post', 'get_posttime_between', $start, $end, config_item( 'per_page' ), $offset );
+		// 準備文章
+		$this->_prepare();
+
 		// 分栏
 		$this->_post_data = $this->_format_by_col( $this->_post_data, 2 );
 		$data['posts_data_by_col'] = $this->_post_data;
+
+		// 標記是歸檔
+		$data['is_archive'] = TRUE;
 
 		$this->load->view( 'fragment', $data );
 	}
@@ -176,10 +188,13 @@ class Post_Common_Module extends CI_Module
 		$start = mktime( 0, 0, 0, $month, 1, $year );
 		$end = mktime( 0, 0, 0, $month+1, 1, $year );
 
-		$this->_post_data = $this->querycache->get( 'post', 'get_posttime_between', $start, $end, $offset );
+		$this->_post_data = $this->querycache->get( 'post', 'get_posttime_between', $start, $end, config_item( 'per_page' ), $offset );
 		// 分栏
 		$this->_post_data = $this->_format_by_col( $this->_post_data, 2 );
 		$data['posts_data_by_col'] = $this->_post_data;
+
+		// 標記是歸檔
+		$data['is_archive'] = TRUE;
 
 		$this->load->view( 'fragment', $data );
 	}
@@ -197,16 +212,19 @@ class Post_Common_Module extends CI_Module
 		{
 			$year = date('Y');
 			$month = date('m');
-			//$day = date('d');
+			$day = date('d');
 		}
 
 		$start = mktime( 0, 0, 0, $month, $day, $year );
 		$end = mktime( 0, 0, 0, $month, $day+1, $year );
 
-		$this->_post_data = $this->querycache->get( 'post', 'get_posttime_between', $start, $end, $offset );
+		$this->_post_data = $this->querycache->get( 'post', 'get_posttime_between', $start, $end, config_item( 'per_page' ) , $offset );
 		// 分栏
 		$this->_post_data = $this->_format_by_col( $this->_post_data, 2 );
 		$data['posts_data_by_col'] = $this->_post_data;
+
+		// 標記是歸檔
+		$data['is_archive'] = TRUE;
 
 		$this->load->view( 'fragment', $data );
 	}
@@ -218,12 +236,17 @@ class Post_Common_Module extends CI_Module
 	 */
 	public function archive_by_category( $category, $offset = 0 )
 	{
+		// 根據類別名稱獲取類別數據
+		$category_data = $this->querycache->get( 'category', 'get_by_name', $category );
+		if ( empty( $category_data ) ) page_not_found();
 
-
-		$this->_post_data = $this->querycache->get( 'post', 'get_posttime_between', $start, $end, $offset );
+		$this->_post_data = $this->querycache->get( 'post', 'get_by_category', $category_data['id'], config_item( 'per_page' ), $offset );
 		// 分栏
 		$this->_post_data = $this->_format_by_col( $this->_post_data, 2 );
 		$data['posts_data_by_col'] = $this->_post_data;
+
+		// 標記是歸檔
+		$data['is_archive'] = TRUE;
 
 		$this->load->view( 'fragment', $data );
 	}

@@ -1,6 +1,10 @@
-<?php $this->load->module( 'header/common', array( 'home', '首页' ) ); ?>
+<?php if( isset( $is_archive ) && $is_archive ) { ?>
+	<?php $this->load->module( 'header/common', array( 'archive', '歸檔' ) ); ?>
+<?php } else { ?>
+	<?php $this->load->module( 'header/common', array( 'home', '首頁' ) ); ?>
+<?php } ?>
 <div class="span9 main">
-<?php if( $posts_data_by_col ) { ?>
+<?php if( isset( $posts_data_by_col ) && $posts_data_by_col ) { ?>
     <div class="pull-right btn-group margin-right15 display-style">
 	<a href="#" class="btn btn-small active" title="網格呈現" data-original-title="網格呈現"><i class="icon-th"></i></a>
 	<a href="#" class="btn btn-small" title="列表呈現" data-original-title="列表呈現"><i class="icon-th-list"></i></a>

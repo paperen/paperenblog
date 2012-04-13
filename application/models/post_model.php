@@ -132,20 +132,6 @@ class Post_model extends CI_Model
 	}
 
 	/**
-	 * 按照類別名獲取類別數據
-	 * @param string $category 類別名
-	 * @return array
-	 */
-	public function get_category_by_name( $category )
-	{
-		return $this->db->select( 'c.id,c.category,c.pid,c.ispublic' )
-				->from( "{$this->_tables['category']} as c" )
-				->where( 'c.category', $category )
-				->get()
-				->row_array();
-	}
-
-	/**
 	 * 根據指定的類別ID獲取相關的文章數據
 	 * @param int $category_id 類別ID
 	 * @param int $per_page 每页显示条数

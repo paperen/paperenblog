@@ -37,6 +37,34 @@ class Tag_model extends CI_Model
 				->result_array();
 	}
 
+	/**
+	 * 根据標籤名稱獲取數據
+	 * @param string $tag
+	 * @return array
+	 */
+	public function get_by_name( $tag )
+	{
+		return $this->db->select( 'id,tag' )
+				->from( $this->_tables['tag'] )
+				->where( 'tag', $tag )
+				->get()
+				->row_array();
+	}
+
+	/**
+	 * 獲取所有標籤
+	 * @param int $per_page
+	 * @param int $offset
+	 * @return array
+	 */
+	public function get_all( $per_page = 5, $offset = 0 )
+	{
+		$query = $this->db->select( 'id,tag' )
+						->from( $this->_tables['tag'] );
+		if ( $per_page ) $query->limit( $per_page, $offset );
+		return	$query->get()->result_array();
+	}
+
 }
 
 // end of Tag_model

@@ -127,7 +127,7 @@ if ( !function_exists( 'gbk_substr' ) )
 		else
 		{
 			return preg_replace( '#^(?:[\x00-\x7F]|[\xC0-\xFF][\x80-\xBF]+){0,' . $from . '}' .
-					'((?:[\x00-\x7F]|[\xC0-\xFF][\x80-\xBF]+){0,' . $length . '}).*#s', '$1', $string );
+							'((?:[\x00-\x7F]|[\xC0-\xFF][\x80-\xBF]+){0,' . $length . '}).*#s', '$1', $string );
 		}
 	}
 
@@ -221,11 +221,12 @@ function archive_url( $year = '', $month = '', $day = '' )
 	else
 	{
 		$args = func_get_args();
-		$delimiter = '-';
+		$delimiter = '/';
 		$temp = trim( implode( $delimiter, $args ), $delimiter );
 		return base_url( "archive/{$temp}" );
 	}
 }
+
 /**
  * 生成歸檔路徑(按文章類別)
  * @param int $category_name 類別名稱
@@ -251,7 +252,7 @@ function archive_category_url( $category_name = '' )
  */
 function comment_url( $urltitle, $comment_id = '' )
 {
-	$urltitle .= ( $comment_id ) ? "#comment-{$comment_id}" :  '#comment-form';
+	$urltitle .= ( $comment_id ) ? "#comment-{$comment_id}" : '#comment-form';
 	return base_url( "post/{$urltitle}" );
 }
 
@@ -268,12 +269,21 @@ function create_token()
 }
 
 /**
+ * 純屬惡搞，隨機獲取變形金剛圖片
+ * @return string
+ */
+function bxjg_random()
+{
+	return base_url( 'upload/thumbnail' ) . '/' . 'bxjg_' . rand( 1, 11 ) . '.gif';
+}
+
+/**
  * 404頁面URL
  * @return string
  */
 function page_not_found()
 {
-	redirect( base_url('404') );
+	redirect( base_url( '404' ) );
 }
 
 // end of app_helper

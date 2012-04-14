@@ -18,7 +18,7 @@
 			<div class="single">
 				<ul class="unstyled">
 					<?php foreach( $posts as $single ) { ?>
-					<li><a href="<?php echo post_permalink($single['urltitle']); ?>"><?php echo $single['title']; ?></a></li>
+					<li><a href="<?php echo post_permalink($single['urltitle']); ?>" rel="bookmark"><?php echo $single['title']; ?></a></li>
 					<?php } ?>
 				</ul>
 			</div>

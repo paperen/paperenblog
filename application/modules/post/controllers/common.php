@@ -13,6 +13,33 @@ class Post_Common_Module extends CI_Module
 {
 
 	/**
+	 * 列顯示
+	 */
+	const DISPLAY_COLUMN = 'column';
+	/**
+	 * 行顯示
+	 */
+	const DISPLAY_ROW = 'row';
+
+	/**
+	 * 顯示方式的cookie鍵值
+	 * @var string
+	 */
+	private $_display_cookie_key = 'display_type';
+
+	/**
+	 * cookie過期時間(7天)
+	 * @var int
+	 */
+	private $_display_cookie_expired = 604800;
+
+	/**
+	 * 顯示方式
+	 * @var string
+	 */
+	private $_display_type;
+
+	/**
 	 * 文章数据
 	 * @var array
 	 */
@@ -47,6 +74,12 @@ class Post_Common_Module extends CI_Module
 		foreach ( $post_comments as $single )
 			$post_comments_format[$single['postid']] = $single['num'];
 
+		// 獲取文章代表圖片
+		$post_thumbnails = $this->querycache->get( 'attachment', 'get_thumbnail_by_post_ids', $post_ids );
+		$post_thumbnails_format = array( );
+		foreach ( $post_thumbnails as $single )
+			$post_thumbnails_format[$single['postid']] = $single['id'];
+
 		// 拼合文章数据
 		$result = array( );
 		foreach ( $this->_post_data as $single )
@@ -56,9 +89,18 @@ class Post_Common_Module extends CI_Module
 			// 拼入评论数
 			$single['commentnum'] = isset( $post_comments_format[$single['id']] ) ? $post_comments_format[$single['id']] : 0;
 
+			// 拼入代表圖片
+			$single['thumbnail'] = isset( $post_thumbnails_format[$single['id']] ) ? $post_thumbnails_format[$single['id']] : '';
+
 			$result[] = $single;
 		}
 		$this->_post_data = (!$multi ) ? array_shift( $result ) : $result;
+
+		// 多篇文章 && 列顯示
+		if ( $multi && $this->_display_get() == self::DISPLAY_COLUMN )
+		{
+			$this->_post_data = $this->_format_by_col( $this->_post_data, 2 );
+		}
 	}
 
 	/**
@@ -78,19 +120,32 @@ class Post_Common_Module extends CI_Module
 
 	/**
 	 * 文章列表
-	 * @param int $offset 游标
+	 * @param int $page 頁數
 	 */
-	public function fragment( $offset = 0 )
+	public function fragment( $page = 1 )
 	{
 		$data = array( );
 
-		$this->_post_data = $this->querycache->get( 'post', 'get_all', config_item( 'per_page' ), $offset );
+		// 總數
+		$total = $this->querycache->get( 'post', 'total' );
+		// 每頁顯示條數
+		$per_page = config_item( 'per_page' );
+		$pagination_config = array(
+			'base_url' => base_url( 'page' ),
+			'total_rows' => $total,
+			'per_page' => $per_page,
+			'uri_segment' => 2,
+		);
+		$this->pagination->initialize( $pagination_config );
+		$data['pagination'] = $this->pagination->create_pages();
+		$this->_post_data = $this->querycache->get( 'post', 'get_all', $per_page, ( $this->pagination->get_cur_page() - 1 ) * $per_page );
 		// 加工
 		$this->_prepare();
-		// 分栏
-		$this->_post_data = $this->_format_by_col( $this->_post_data, 2 );
 
-		$data['posts_data_by_col'] = $this->_post_data;
+		$data['posts_data'] = $this->_post_data;
+
+		// 顯示方式
+		$data['display'] = $this->_display_get();
 
 		// 博文数据
 		$this->load->view( 'fragment', $data );
@@ -147,9 +202,9 @@ class Post_Common_Module extends CI_Module
 	/**
 	 * 按年份歸檔
 	 * @param int $year[option]
-	 * @param int $offset
+	 * @param int $page
 	 */
-	public function archive_by_year( $year = '', $offset = 0 )
+	public function archive_by_year( $year = '', $page = 1 )
 	{
 		if ( empty( $year ) ) $year = date( 'Y' );
 		$data = array( );
@@ -157,16 +212,32 @@ class Post_Common_Module extends CI_Module
 		$start = mktime( 0, 0, 0, 1, 1, $year );
 		$end = mktime( 0, 0, 0, 1, 1, $year + 1 );
 
-		$this->_post_data = $this->querycache->get( 'post', 'get_posttime_between', $start, $end, config_item( 'per_page' ), $offset );
+		$total = $this->querycache->get( 'post', 'total_posttime_between', $start, $end );
+
+		// 分頁
+		$per_page = config_item( 'per_page' );
+		$pagination_config = array(
+			'base_url' => archive_url( $year ) . '/page',
+			'total_rows' => $total,
+			'per_page' => $per_page,
+			'uri_segment' => 4,
+		);
+		$this->pagination->initialize( $pagination_config );
+		$data['pagination'] = $this->pagination->create_pages();
+
+		$this->_post_data = $this->querycache->get( 'post', 'get_posttime_between', $start, $end, config_item( 'per_page' ), ( $this->pagination->get_cur_page() - 1 ) * $per_page );
 		// 準備文章
 		$this->_prepare();
-
-		// 分栏
-		$this->_post_data = $this->_format_by_col( $this->_post_data, 2 );
-		$data['posts_data_by_col'] = $this->_post_data;
+		$data['posts_data'] = $this->_post_data;
 
 		// 標記是歸檔
 		$data['is_archive'] = TRUE;
+
+		// 顯示方式
+		$data['display'] = $this->_display_get();
+
+		//
+		$data['by_time'] = "{$year}年";
 
 		$this->load->view( 'fragment', $data );
 	}
@@ -175,26 +246,44 @@ class Post_Common_Module extends CI_Module
 	 * 按照月份進行文章的歸檔
 	 * @param int $year 年份
 	 * @param int $month 月份
-	 * @param int $offset 游標
+	 * @param int $page 頁
 	 */
-	public function archive_by_month( $year = '', $month = '', $offset = 0 )
+	public function archive_by_month( $year = '', $month = '', $page = 1 )
 	{
 		if ( $year == NULL || $month == NULL )
 		{
-			$year = date('Y');
-			$month = date('m');
+			$year = date( 'Y' );
+			$month = date( 'm' );
 		}
 
 		$start = mktime( 0, 0, 0, $month, 1, $year );
-		$end = mktime( 0, 0, 0, $month+1, 1, $year );
+		$end = mktime( 0, 0, 0, $month + 1, 1, $year );
 
-		$this->_post_data = $this->querycache->get( 'post', 'get_posttime_between', $start, $end, config_item( 'per_page' ), $offset );
-		// 分栏
-		$this->_post_data = $this->_format_by_col( $this->_post_data, 2 );
-		$data['posts_data_by_col'] = $this->_post_data;
+		$total = $this->querycache->get( 'post', 'total_posttime_between', $start, $end );
+
+		// 分頁
+		$per_page = config_item( 'per_page' );
+		$pagination_config = array(
+			'base_url' => archive_url( $year ) . '/page',
+			'total_rows' => $total,
+			'per_page' => $per_page,
+			'uri_segment' => 5,
+		);
+		$this->pagination->initialize( $pagination_config );
+		$data['pagination'] = $this->pagination->create_pages();
+
+		$this->_post_data = $this->querycache->get( 'post', 'get_posttime_between', $start, $end, $per_page, ( $this->pagination->get_cur_page() - 1 ) * $per_page );
+		$this->_prepare();
+		$data['posts_data'] = $this->_post_data;
 
 		// 標記是歸檔
 		$data['is_archive'] = TRUE;
+
+		// 顯示方式
+		$data['display'] = $this->_display_get();
+
+		//
+		$data['by_time'] = "{$year}年{$month}月";
 
 		$this->load->view( 'fragment', $data );
 	}
@@ -204,27 +293,46 @@ class Post_Common_Module extends CI_Module
 	 * @param int $year 年份
 	 * @param int $month 月份
 	 * @param int $day 日
-	 * @param int $offset 游標
+	 * @param int $page 頁
 	 */
-	public function archive_by_day( $year = '', $month = '', $day = '', $offset = 0 )
+	public function archive_by_day( $year = '', $month = '', $day = '', $page = 1 )
 	{
 		if ( $year == NULL || $month == NULL || $day == NULL )
 		{
-			$year = date('Y');
-			$month = date('m');
-			$day = date('d');
+			$year = date( 'Y' );
+			$month = date( 'm' );
+			$day = date( 'd' );
 		}
 
 		$start = mktime( 0, 0, 0, $month, $day, $year );
-		$end = mktime( 0, 0, 0, $month, $day+1, $year );
+		$end = mktime( 0, 0, 0, $month, $day + 1, $year );
 
-		$this->_post_data = $this->querycache->get( 'post', 'get_posttime_between', $start, $end, config_item( 'per_page' ) , $offset );
-		// 分栏
-		$this->_post_data = $this->_format_by_col( $this->_post_data, 2 );
-		$data['posts_data_by_col'] = $this->_post_data;
+		$total = $this->querycache->get( 'post', 'total_posttime_between', $start, $end );
+
+		// 分頁
+		$per_page = config_item( 'per_page' );
+		$pagination_config = array(
+			'base_url' => archive_url( $year ) . '/page',
+			'total_rows' => $total,
+			'per_page' => $per_page,
+			'uri_segment' => 6,
+		);
+		$this->pagination->initialize( $pagination_config );
+		$data['pagination'] = $this->pagination->create_pages();
+
+		$this->_post_data = $this->querycache->get( 'post', 'get_posttime_between', $start, $end, $per_page, ( $this->pagination->get_cur_page() - 1 ) * $per_page );
+
+		$this->_prepare();
+		$data['posts_data'] = $this->_post_data;
 
 		// 標記是歸檔
 		$data['is_archive'] = TRUE;
+
+		// 顯示方式
+		$data['display'] = $this->_display_get();
+
+		//
+		$data['by_time'] = "{$year}年{$month}月{$day}日";
 
 		$this->load->view( 'fragment', $data );
 	}
@@ -232,21 +340,83 @@ class Post_Common_Module extends CI_Module
 	/**
 	 * 按照文章類別歸檔
 	 * @param string $category 類別名
-	 * @param int $offset 游標
+	 * @param int $page 頁
 	 */
-	public function archive_by_category( $category, $offset = 0 )
+	public function archive_by_category( $category, $page = 1 )
 	{
+		// 類別名
+		$category = htmlspecialchars( urldecode( $category ) );
+		$data['by_category'] = $category;
 		// 根據類別名稱獲取類別數據
 		$category_data = $this->querycache->get( 'category', 'get_by_name', $category );
-		if ( empty( $category_data ) ) page_not_found();
+		if ( $category_data )
+		{
+			$total = $this->querycache->get( 'post', 'total_by_category', $category_data['id'] );
 
-		$this->_post_data = $this->querycache->get( 'post', 'get_by_category', $category_data['id'], config_item( 'per_page' ), $offset );
-		// 分栏
-		$this->_post_data = $this->_format_by_col( $this->_post_data, 2 );
-		$data['posts_data_by_col'] = $this->_post_data;
+			// 分頁
+			$per_page = config_item( 'per_page' );
+			$pagination_config = array(
+				'base_url' => category_url( $category_data['category'] ) . '/page',
+				'total_rows' => $total,
+				'per_page' => $per_page,
+				'uri_segment' => 4,
+			);
+			$this->pagination->initialize( $pagination_config );
+			$data['pagination'] = $this->pagination->create_pages();
 
+			// 不為空
+			$this->_post_data = $this->querycache->get( 'post', 'get_by_category', $category_data['id'], $per_page, ( $this->pagination->get_cur_page() - 1 ) * $per_page );
+
+			$this->_prepare();
+			$data['posts_data'] = $this->_post_data;
+		}
 		// 標記是歸檔
 		$data['is_archive'] = TRUE;
+
+		// 顯示方式
+		$data['display'] = $this->_display_get();
+
+		$this->load->view( 'fragment', $data );
+	}
+
+	/**
+	 * 按照标签歸檔
+	 * @param string $category 類別名
+	 * @param int $page 頁
+	 */
+	public function archive_by_tag( $tag, $page = 1 )
+	{
+		// 标签
+		$tag = htmlspecialchars( urldecode( $tag ) );
+		$data['by_tag'] = $tag;
+		// 根據類別名稱獲取類別數據
+		$tag_data = $this->querycache->get( 'tag', 'get_by_name', $tag );
+		if ( $tag_data )
+		{
+			$total = $this->querycache->get( 'post', 'total_by_tag', $tag_data['id'] );
+
+			// 分頁
+			$per_page = config_item( 'per_page' );
+			$pagination_config = array(
+				'base_url' => tag_url( $tag_data['tag'] ) . '/page',
+				'total_rows' => $total,
+				'per_page' => $per_page,
+				'uri_segment' => 4,
+			);
+			$this->pagination->initialize( $pagination_config );
+			$data['pagination'] = $this->pagination->create_pages();
+
+			// 不為空
+			$this->_post_data = $this->querycache->get( 'post', 'get_by_tag', $tag_data['id'], $per_page, ( $this->pagination->get_cur_page() - 1 ) * $per_page );
+
+			$this->_prepare();
+			$data['posts_data'] = $this->_post_data;
+		}
+		// 標記是歸檔
+		$data['is_archive'] = TRUE;
+
+		// 顯示方式
+		$data['display'] = $this->_display_get();
 
 		$this->load->view( 'fragment', $data );
 	}
@@ -377,6 +547,39 @@ class Post_Common_Module extends CI_Module
 		$data['post_images'] = $this->_format_by_col( $post_images, 3 );
 
 		$this->load->view( 'images', $data );
+	}
+
+	/**
+	 * 顯示方式選擇欄
+	 */
+	public function display_bar()
+	{
+		$data = array( );
+		$data['display'] = $this->_display_get();
+		$this->load->view( 'display', $data );
+	}
+
+	/**
+	 * 獲取顯示方式
+	 * @return string
+	 */
+	private function _display_get()
+	{
+		$display_type = $this->input->cookie( $this->_display_cookie_key );
+		if ( empty( $display_type ) )
+		{
+			$this->display_set( self::DISPLAY_COLUMN );
+			return self::DISPLAY_COLUMN;
+		}
+		return $display_type;
+	}
+
+	/**
+	 * 設置顯示方式
+	 */
+	public function display_set( $type = self::DISPLAY_COLUMN )
+	{
+		$this->input->set_cookie( $this->_display_cookie_key, $type, $this->_display_cookie_expired );
 	}
 
 }

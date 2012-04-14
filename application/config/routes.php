@@ -41,6 +41,12 @@
 $route['default_controller'] = 'module/post/common/fragment';
 $route['404_override'] = '';
 
+// 列排列
+$route['column'] = 'module/post/common/display_set/column';
+
+// 行排列
+$route['row'] = 'module/post/common/display_set/row';
+
 // 分頁
 $route['page/(:num)'] = 'module/post/common/fragment/$1';
 
@@ -65,19 +71,19 @@ $route['author/(:any)'] = 'module/about/common/author/$1';
 // 归档
 $route['archive'] = 'module/post/common/archive';
 $route['archive/category'] = 'module/post/common/archive_category';
-$route['archive/category/(:any)'] = 'module/post/common/archive_by_category/$1';
-$route['archive/category/(:any)/page/(:num)'] = 'module/post/common/archive_by_category/$1/$2';
+$route['category/(:any)'] = 'module/post/common/archive_by_category/$1';
+$route['category/(:any)/page/(:num)'] = 'module/post/common/archive_by_category/$1/$2';
 $route['archive/(:num)'] = 'module/post/common/archive_by_year/$1';
 $route['archive/(:num)/page/(:num)'] = 'module/post/common/archive_by_year/$1/$2';
-$route['archive/(:num)-(:num)'] = 'module/post/common/archive_by_month/$1/$2';
-$route['archive/(:num)-(:num)/page/(:num)'] = 'module/post/common/archive_by_month/$1/$2/$3';
-$route['archive/(:num)-(:num)-(:num)'] = 'module/post/common/archive_by_day/$1/$2/$3';
-$route['archive/(:num)-(:num)-(:num)/page/(:num)'] = 'module/post/common/archive_by_day/$1/$2/$3/$4';
+$route['archive/(:num)/(:num)'] = 'module/post/common/archive_by_month/$1/$2';
+$route['archive/(:num)/(:num)/page/(:num)'] = 'module/post/common/archive_by_month/$1/$2/$3';
+$route['archive/(:num)/(:num)/(:num)'] = 'module/post/common/archive_by_day/$1/$2/$3';
+$route['archive/(:num)/(:num)/(:num)/page/(:num)'] = 'module/post/common/archive_by_day/$1/$2/$3/$4';
 
 // 標籤
 $route['tag'] = 'module/tag/common/index';
-$route['tag/(:any)'] = 'module/tag/common/get/$1';
-$route['tag/(:any)/page/(:num)'] = 'module/tag/common/get/$1/$2';
+$route['tag/(:any)'] = 'module/post/common/archive_by_tag/$1';
+$route['tag/(:any)/page/(:num)'] = 'module/post/common/archive_by_tag/$1/$2';
 
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */

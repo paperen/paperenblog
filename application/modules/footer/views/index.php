@@ -3,7 +3,7 @@
 </div>
 <!-- container -->
 
-<footer>
+<div class="footer">
 	<div class="inner">
     	<div class="container-fluid">
             <div class="row-fluid">
@@ -35,8 +35,9 @@
             </div>
         </div>
     </div>
-</footer>
+</div>
 <script>
+	var base_url = '<?php echo base_url(); ?>';
 	$(function(){
 		$('.post-content pre').each(function(){
 			$(this).addClass('prettyprint linenums');

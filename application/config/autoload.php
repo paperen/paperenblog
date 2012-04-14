@@ -57,7 +57,8 @@ $autoload['libraries'] = array(
 	'database',
 	'querycache',
 	'hook',
-	'form_validation'
+	'form_validation',
+	'pagination',
 );
 
 

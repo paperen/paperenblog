@@ -7,7 +7,7 @@
  * @link http://iamlze.cn
  * @version 0.0
  * @package paperenblog
- * @subpackage application/modules/post/controllers/
+ * @subpackage application/modules/tag/controllers/
  */
 class Tag_Common_Module extends CI_Module
 {
@@ -15,6 +15,8 @@ class Tag_Common_Module extends CI_Module
 	public function index()
 	{
 		$data = array( );
+		$tag_data = $this->querycache->get( 'tag', 'get_all', 0 );
+		$data['tag_data'] = $tag_data;
 		$this->load->view( 'index', $data );
 	}
 

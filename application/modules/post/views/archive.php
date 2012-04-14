@@ -31,7 +31,7 @@
 					<div class="span8 archive-list">
 						<ul class="unstyled">
 							<?php foreach( $month_post as $single ) { ?>
-							<li><a href="<?php echo post_permalink($single['urltitle']); ?>"><?php echo $single['title']; ?></a></li>
+							<li><a href="<?php echo post_permalink($single['urltitle']); ?>" rel="bookmark"><?php echo $single['title']; ?></a></li>
 							<?php } ?>
 						</ul>
 					</div>

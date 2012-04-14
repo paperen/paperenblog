@@ -4,7 +4,7 @@
 	<h3>最近文章</h3>
 	<ul>
 		<?php foreach( $posts_data as $post ) { ?>
-		<li><a href="<?php echo post_permalink( $post['urltitle'] ); ?>"><?php echo $post['title']; ?></a></li>
+		<li><a href="<?php echo post_permalink( $post['urltitle'] ); ?>" rel="bookmark"><?php echo $post['title']; ?></a></li>
 		<?php } ?>
 	</ul>
 </div>

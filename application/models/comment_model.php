@@ -33,7 +33,7 @@ class Comment_model extends CI_Model
 		$query = $this->db->select(
 						'c.id,c.postid,c.userid,c.author,c.email,
 					c.url,c.commenttime,c.content,c.pid,c.isneednotice,
-					u.name as username,
+					u.name as username,u.email as useremail,u.url as userurl,
 					p.title,p.urltitle,p.authorid'
 				)
 				->from( "{$this->_tables['comment']} as c" )
@@ -54,7 +54,7 @@ class Comment_model extends CI_Model
 	{
 		return $this->db->select(
 				'c.id,c.postid,c.userid,c.author,c.email,c.url,c.commenttime,c.content,c.pid,c.isneednotice,
-					u.name as username,
+					u.name as username,u.email as useremail,u.url as userurl,
 					p.title,p.urltitle,p.authorid'
 				)
 				->from( "{$this->_tables['comment']} as c" )
@@ -77,7 +77,7 @@ class Comment_model extends CI_Model
 		$query = $this->db->select(
 						'c.id,c.postid,c.userid,c.author,c.email,
 					c.url,c.commenttime,c.content,c.pid,c.isneednotice,
-					u.name as username,
+					u.name as username,u.email as useremail,u.url as userurl,
 					p.title,p.urltitle,p.authorid'
 				)
 				->from( "{$this->_tables['comment']} as c" )
@@ -103,7 +103,7 @@ class Comment_model extends CI_Model
 		$query = $this->db->select(
 						'c.id,c.postid,c.userid,c.author,c.email,
 					c.url,c.commenttime,c.content,c.pid,c.isneednotice,
-					u.name as username,
+					u.name as username,u.email as useremail,u.url as userurl,
 					p.title,p.urltitle,p.authorid'
 				)
 				->from( "{$this->_tables['comment']} as c" )

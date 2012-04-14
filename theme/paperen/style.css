@@ -244,7 +244,10 @@ pre {
 	text-indent: 2em;
 	padding: 0 5px;
 }
-
+/* post-row */
+.post-row .post-entry {
+	margin-left: 16.89361702%;
+}
 /* post-fragment */
 .post-fragment {
 	margin-bottom: 20px;
@@ -381,8 +384,16 @@ pre {
 /* reply */
 /* comment */
 
+/* tag */
+.tag {
+	padding-right: 15px;
+}
+.tag a {
+	line-height: 1em;
+}
+
 /* footer */
-footer{
+.footer{
 	background: #F0F0F0;
 	z-index: -999;
 	border: none;
@@ -391,24 +402,24 @@ footer{
 	border-top: 1px #CCC solid;
 	padding: 0;
 }
-footer .inner{
+.footer .inner{
 	border-top: 1px #FFF solid;
 }
-footer .single h4 {
+.footer .single h4 {
 	padding-bottom: 7px;
 }
-footer .single{
+.footer .single{
 	padding: 25px 0 20px 0;
 }
-footer .single ul{
+.footer .single ul{
 	margin: 0 0 5px 0;
 	padding-bottom: 10px;
 }
-footer .single li{
+.footer .single li{
 	position: relative;
 	line-height: 18px;
 }
-footer li a{
+.footer li a{
 	color: #666;
 	font-size: 1em;
 	display: block;
@@ -418,15 +429,15 @@ footer li a{
 	-moz-box-shadow: 0 1px 0 rgba(255,255,255,1);
 	box-shadow: 0 1px 0 rgba(255,255,255,1);
 }
-footer li a:hover{
+.footer li a:hover{
 	color: #000;
 	text-decoration: none;
 }
-footer .third-party-app li .icon{
+.footer .third-party-app li .icon{
 	left: 5px;
 	top: 5px;
 }
-footer .single h4{
+.footer .single h4{
 	text-shadow: 0 1px 0 #FFF;
 	font-size: 1.1em;
 	border-bottom: 1px #DDD solid;
@@ -434,7 +445,7 @@ footer .single h4{
 	-moz-box-shadow: 0 1px 0 rgba(255,255,255,1);
 	box-shadow: 0 1px 0 rgba(255,255,255,1);
 }
-footer .logo{
+.footer .logo{
 	display: block;
 	background: url(image/icon.gif) no-repeat 0 -262px;
 	width: 170px;
@@ -494,6 +505,9 @@ footer .logo{
 	background-position: 0 -145px;
 	width: 16px;
 	height: 14px;
+}
+.alert-empty {
+	margin-right: 15px;
 }
 
 /* SLIMBOX2 */

@@ -1,32 +1,19 @@
-<?php $this->load->module( 'header/common', array( 'tag', '博客标签' ) ); ?>
+<?php $this->load->module( 'header/common', array( 'tag', '博客所有标签' ) ); ?>
 <div class="span9 main">
 
 	<div class="tag">
 		<div class="row-fluid">
-
-			<h3>標籤雲 Tags Cloud</h3>
-
-			<a href="#">cloud</a>
-			<a href="#">tag</a>
-			<a href="#">paperen</a>
-			<a href="#">開發</a>
-			<a href="#">paperen</a>
-			<a href="#">SVN同步</a>
-			<a href="#">用戶動作記錄器</a>
-			<a href="#">paperen</a>
-			<a href="#">paperen</a>
-			<a href="#">開發</a>
-			<a href="#">paperen</a>
-			<a href="#">paperen</a>
-			<a href="#">開發</a>
-			<a href="#">paperen</a>
-			<a href="#">paperen</a>
-			<a href="#">開發</a>
-			<a href="#">paperen</a>
-			<a href="#">paperen</a>
-			<a href="#">開發</a>
-			<a href="#">paperen</a>
-
+			<?php if( count($tag_data) ) { ?>
+			<h3>标签云 <?php echo count( $tag_data ); ?></h3>
+			<hr>
+			<?php foreach( $tag_data as $single ) { ?>
+			<a href="<?php echo tag_url( $single['tag'] ); ?>" rel="tag" style="font-size:<?php echo rand(14,35); ?>px;"><?php echo $single['tag']; ?></a>
+			<?php } ?>
+			<?php } else { ?>
+			<div class="alert alert-block alert-info alert-empty">
+				<h3 class="alert-heading">親~博客目前没有任何标签喔~</h3>
+			</div>
+			<?php } ?>
 		</div>
 	</div>
 

@@ -50,7 +50,9 @@ class Post_model extends CI_Model
 						 p.authorid,p.click,p.good,
 						 p.bad,p.posttime,
 						 c.category,
-						 u.name as author'
+						 u.name as author,
+						 u.email as authoremail,
+						 u.url as authorurl'
 						)
 						->from( "{$this->_tables['post']} as p" )
 						->join( "{$this->_tables['category']} as c", 'c.id = p.categoryid' )
@@ -99,7 +101,9 @@ class Post_model extends CI_Model
 						 p.authorid,p.click,p.good,
 						 p.bad,p.posttime,
 						 c.category,
-						 u.name as author'
+						 u.name as author,
+						 u.email as authoremail,
+						 u.url as authorurl'
 				)
 				->from( "{$this->_tables['post']} as p" )
 				->join( "{$this->_tables['category']} as c", 'c.id = p.categoryid' )
@@ -219,8 +223,8 @@ class Post_model extends CI_Model
 	 */
 	public function total_by_tag( $tag_id )
 	{
-		return $this->db->from("{$this->_tables['post_tag']} as pt")
-						->join("{$this->_tables['post']} as p", 'p.id = pt.postid')
+		return $this->db->from( "{$this->_tables['post_tag']} as pt" )
+						->join( "{$this->_tables['post']} as p", 'p.id = pt.postid' )
 						->where( 'pt.tagid', $tag_id )
 						->where( 'p.ispublic', TRUE )
 						->count_all_results();
@@ -293,6 +297,28 @@ class Post_model extends CI_Model
 				->order_by( 'p.good', 'desc' );
 		if ( $limit ) $query->limit( $limit );
 		return $query->get()->result_array();
+	}
+
+	/**
+	 * 讓指定文章的好評數+1
+	 * @param int $post_id
+	 */
+	public function update_good( $post_id )
+	{
+		$this->db->set( 'good', 'good+1', FALSE )
+				->where( 'id', $post_id )
+				->update( $this->_tables['post'] );
+	}
+
+	/**
+	 * 讓指定文章的差評數+1
+	 * @param int $post_id
+	 */
+	public function update_bad( $post_id )
+	{
+		$this->db->set( 'bad', 'bad+1', FALSE )
+				->where( 'id', $post_id )
+				->update( $this->_tables['post'] );
 	}
 
 }

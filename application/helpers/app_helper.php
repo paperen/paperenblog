@@ -147,7 +147,7 @@ function add_http( $url )
 
 /**
  * 獲取文章固定連接URL
- * @param array $urltitle 文章URL標題
+ * @param array $urltitle 文章URL標題或ID
  * @return string
  */
 function post_permalink( $urltitle )
@@ -254,6 +254,15 @@ function comment_url( $urltitle, $comment_id = '' )
 {
 	$urltitle .= ( $comment_id ) ? "#comment-{$comment_id}" : '#comment-form';
 	return base_url( "post/{$urltitle}" );
+}
+
+/**
+ * 獲取RSS路徑
+ * @return string
+ */
+function rss_url()
+{
+	return base_url( 'rss' );
 }
 
 /**

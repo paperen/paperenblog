@@ -2,7 +2,7 @@ body {
 	padding-top: 40px;
 }
 body, p, label, textarea, input {
-	font-family: 'Montserrat', '微软雅黑', sans-serif;
+	font-family: "Montserrat", "Microsoft YaHei", "arial", "sans-serif";
 	line-height: 1.6em;
 }
 textarea {
@@ -35,6 +35,7 @@ pre {
 }
 .navbar a {
 	font-size: 15px;
+	font-weight: bold;
 }
 
 /* main */
@@ -508,6 +509,15 @@ pre {
 }
 .alert-empty {
 	margin-right: 15px;
+}
+/* p-modal */
+.p-modal.fade.in {
+	top: 70%;
+	overflow: hidden;
+}
+.modal-backdrop, .modal-backdrop.fade.in {
+	opacity: 0.2;
+	filter: alpha(opacity=20);
 }
 
 /* SLIMBOX2 */

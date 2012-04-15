@@ -53,6 +53,10 @@ $route['page/(:num)'] = 'module/post/common/fragment/$1';
 // 404
 $route['404'] = 'main/not_found';
 
+// 頂
+$route['post/(:num)/ding'] = 'module/post/common/feedback/$1/ding';
+// 踩
+$route['post/(:num)/cai'] = 'module/post/common/feedback/$1/cai';
 // 文章
 $route['post/(:any)'] = 'module/post/common/single/$1';
 
@@ -84,6 +88,9 @@ $route['archive/(:num)/(:num)/(:num)/page/(:num)'] = 'module/post/common/archive
 $route['tag'] = 'module/tag/common/index';
 $route['tag/(:any)'] = 'module/post/common/archive_by_tag/$1';
 $route['tag/(:any)/page/(:num)'] = 'module/post/common/archive_by_tag/$1/$2';
+
+// RSS
+$route['rss'] = 'module/post/common/rss';
 
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */

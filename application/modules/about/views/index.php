@@ -1,4 +1,4 @@
-<?php $this->load->module( 'header/common', array( 'about', '首页' ) ); ?>
+<?php $this->load->module( 'header/common', array( 'about', '关于博客' ) ); ?>
 <div class="span9 main">
 
 	<div class="about">

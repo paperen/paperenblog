@@ -38,6 +38,8 @@ class Post_Common_Module extends CI_Module
 	 * @var string
 	 */
 	private $_display_type;
+	private $_session_ding_key = 'ding';
+	private $_session_cai_key = 'cai';
 
 	/**
 	 * 文章数据
@@ -476,6 +478,63 @@ class Post_Common_Module extends CI_Module
 	}
 
 	/**
+	 * 對文章進行頂踩評價
+	 * @param int $post_id
+	 * @param string $act
+	 */
+	public function feedback( $post_id, $act = 'ding' )
+	{
+		try
+		{
+			if ( !$this->input->is_ajax_request() ) throw new Exception( '親~請不要進行非法操作', 0 );
+
+			// 驗證文章
+			$post_id = intval( $post_id );
+			$post_data = $this->querycache->get( 'post', 'get_by_id', $post_id );
+			if ( empty( $post_data ) ) throw new Exception( '親~請不要進行非法操作', -1 );
+
+			// 判斷是否重複頂或踩
+			$already_ding = $this->session->userdata( $this->_session_ding_key );
+			$already_cai = $this->session->userdata( $this->_session_cai_key );
+
+			if ( $act == 'cai' )
+			{
+				// 踩
+				if ( $already_cai && in_array( $post_id, $already_cai ) ) throw new Exception( "親~不用踩這麼重，{$post_data['author']}快被踩扁了…" );
+				$this->querycache->execute( 'post', 'update_bad', $post_id, TRUE );
+				$post_data['bad']++;
+				$data['message'] = '多謝您的反饋與批評';
+
+				// 記錄
+				$already_cai[] = $post_id;
+				$this->session->set_userdata( $this->_session_cai_key, array_unique( $already_cai ) );
+			}
+			else
+			{
+				// 頂
+				if ( $already_ding && in_array( $post_id, $already_ding ) ) throw new Exception( "親~不要頂這麼激烈，我頂唔順啦~" );
+
+				$this->querycache->execute( 'post', 'update_good', $post_id, TRUE );
+				$post_data['good']++;
+				$data['message'] = '多謝您的支持與鼓勵';
+
+				// 記錄
+				$already_ding[] = $post_id;
+				$this->session->set_userdata( $this->_session_ding_key, array_unique( $already_ding ) );
+			}
+
+			$data['post_data'] = $post_data;
+		}
+		catch ( Exception $e )
+		{
+			$error_message = $e->getMessage();
+			$error_code = $e->getCode();
+			$data['error'] = $error_message;
+		}
+		$this->load->view( 'feedback', $data );
+	}
+
+	/**
 	 * 加载指定ID或URL标题的文章
 	 * @param string $postid_or_urltitle 指定ID或URL标题
 	 */
@@ -580,6 +639,36 @@ class Post_Common_Module extends CI_Module
 	public function display_set( $type = self::DISPLAY_COLUMN )
 	{
 		$this->input->set_cookie( $this->_display_cookie_key, $type, $this->_display_cookie_expired );
+	}
+
+	/**
+	 * RSS
+	 */
+	public function rss()
+	{
+		$this->load->library( 'rss2' );
+		$channel = $this->rss2->new_channel();
+		$channel->atom_link( rss_url() );
+		$channel->set_title( config_item( 'sitename' ) );
+		$channel->set_link( base_url() );
+		$channel->set_description( config_item( 'description' ) );
+		$post_data = $this->querycache->get( 'post', 'get_all' );
+		foreach ( $post_data as $post )
+		{
+			$item = $channel->new_item();
+			$item->set_title( $post['title'] );
+			$item->set_link( post_permalink( $post['urltitle'] ) );
+			$item->set_guid( $post['id'] );
+			$item->set_attribute( 'pubDate', date('Y-m-d H:i', $post['posttime']) );
+			$item->set_description( get_post_fragment( $post['content'] ) );
+			$item->set_author( $post['author'] );
+			$channel->add_item( $item );
+		}
+
+		$this->rss2->pack( $channel );
+		header( $this->rss2->headers() );
+		echo $this->rss2->render();
+		exit();
 	}
 
 }

@@ -14,6 +14,8 @@
 $config['theme'] = 'paperen';
 // 站点名
 $config['sitename'] = 'paperen博客';
+// 站點描述
+$config['description'] = '這是paperen的博客，對了，本站不完全支持IE6、7（並非歧視）';
 // 每页显示条数
 $config['per_page'] = 8;
 // 上傳根目錄

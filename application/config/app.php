@@ -27,5 +27,9 @@ $config['comment_isneednotice'] = TRUE;
 // 博客使用郵箱
 $config['blog_email'] = 'paperen@163.com';
 
+// ICP
+$config['ICP'] = 'http://www.miibeian.gov.cn/';
+// 微博
+$config['weibo'] = 'http://www.weibo.com/paperen';
 
 // end of app

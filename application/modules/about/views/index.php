@@ -4,7 +4,7 @@
 	<div class="about">
 		<div class="row-fluid">
 			<div class="span2 about-attr">
-				<a href="#" class="thumbnail"><img src="http://localhost/ci-paperen/image/paperen.jpg" alt=""></a>
+				<a href="<?php echo base_url(); ?>" class="thumbnail"><img src="<?php echo base_url('upload/author'); ?>/paperen.jpg" alt=""></a>
 				<ul class="vote">
 					<li>文章 <strong><a href="#">65</a></strong></li>
 				</ul>

@@ -14,7 +14,7 @@
 				<div class="span3">
 					<h3>職業</h3>
 					<ul>
-						<li><a href="#">PHP Coder</a></li>
+						<li><a href="http://zh.wikipedia.org/wiki/Web_developer" rel="nofollow">web developer</a></li>
 					</ul>
 				</div>
 				<div class="span4">
@@ -24,8 +24,8 @@
 				<div class="span3">
 					<h3>出沒領域</h3>
 					<ul>
-						<li><a href="#">新浪微博</a></li>
-						<li><a href="#">豆瓣</a></li>
+						<li><a href="http://weibo.com" rel="nofollow">新浪微博</a></li>
+						<li><a href="http://douban.com" rel="nofollow">豆瓣</a></li>
 					</ul>
 				</div>
 				<div class="span11">

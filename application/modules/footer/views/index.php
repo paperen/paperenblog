@@ -8,13 +8,13 @@
     	<div class="container-fluid">
             <div class="row-fluid">
                 <div class="span3 single">
-                	<a href="#" class="logo"></a>
+                	<a href="<?php echo base_url(); ?>" class="logo"></a>
                 </div>
                 <div class="span3 single">
                     <h4>Follow Me</h4>
                     <ul class="unstyled third-party-app">
                         <li>
-                        <a href="#"><i class="icon-paperen icon-weibo-16x16"></i>WeiBo</a>
+                        <a href="<?php echo config_item('weibo'); ?>"><i class="icon-paperen icon-weibo-16x16" rel="nofollow"></i>paperen的微博</a>
                         </li>
                     </ul>
                 </div>
@@ -28,8 +28,8 @@
                 <div class="span3 single">
                     <h4>Other</h4>
                     <ul class="unstyled">
-                    	<li><a href="http://creativecommons.org/licenses/by/3.0/deed.zh_HK">姓名標示Unported (CC BY 3.0)</a></li>
-                        <li><a href="#">粤ICP备09209790号</a></li>
+                    	<li rel="nofollow"><a href="http://creativecommons.org/licenses/by/3.0/deed.zh_HK">姓名標示Unported (CC BY 3.0)</a></li>
+                        <li><a href="<?php echo config_item('ICP'); ?>" rel="nofollow">粤ICP备09209790号</a></li>
                     </ul>
                 </div>
             </div>

@@ -51,7 +51,7 @@ $route['row'] = 'module/post/common/display_set/row';
 $route['page/(:num)'] = 'module/post/common/fragment/$1';
 
 // 404
-$route['404'] = 'main/not_found';
+$route['404'] = 'module/post/common/not_found';
 
 // 頂
 $route['post/(:num)/ding'] = 'module/post/common/feedback/$1/ding';

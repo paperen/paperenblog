@@ -26,13 +26,11 @@ class Post_Common_Module extends CI_Module
 	 * @var string
 	 */
 	private $_display_cookie_key = 'display_type';
-
 	/**
 	 * cookie過期時間(7天)
 	 * @var int
 	 */
 	private $_display_cookie_expired = 604800;
-
 	/**
 	 * 顯示方式
 	 * @var string
@@ -40,7 +38,6 @@ class Post_Common_Module extends CI_Module
 	private $_display_type;
 	private $_session_ding_key = 'ding';
 	private $_session_cai_key = 'cai';
-
 	/**
 	 * 文章数据
 	 * @var array
@@ -659,7 +656,7 @@ class Post_Common_Module extends CI_Module
 			$item->set_title( $post['title'] );
 			$item->set_link( post_permalink( $post['urltitle'] ) );
 			$item->set_guid( $post['id'] );
-			$item->set_attribute( 'pubDate', date('Y-m-d H:i', $post['posttime']) );
+			$item->set_attribute( 'pubDate', date( 'Y-m-d H:i', $post['posttime'] ) );
 			$item->set_description( get_post_fragment( $post['content'] ) );
 			$item->set_author( $post['author'] );
 			$channel->add_item( $item );
@@ -669,6 +666,15 @@ class Post_Common_Module extends CI_Module
 		header( $this->rss2->headers() );
 		echo $this->rss2->render();
 		exit();
+	}
+
+	/**
+	 * 404頁面
+	 */
+	public function not_found()
+	{
+		$data = array( );
+		$this->load->view( '404', $data );
 	}
 
 }

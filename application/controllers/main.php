@@ -11,15 +11,7 @@
  */
 class Main extends MY_Controller
 {
-
-	/**
-	 * 404頁面
-	 */
-	public function not_found()
-	{
-		echo '404';
-	}
-
+	// nothing
 }
 
 // end of home

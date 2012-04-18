@@ -295,4 +295,11 @@ function page_not_found()
 	redirect( base_url( '404' ) );
 }
 
+function favicon_ico( $name = '' )
+{
+	if ( empty( $name ) ) $name = 'favicon.ico';
+	$url = base_url( 'theme' ) . '/' . trim( config_item( 'theme' ), '/' ) . '/image/' . $name;
+	return "<link rel=\"shortcut icon\" href=\"{$url}\" />";
+}
+
 // end of app_helper

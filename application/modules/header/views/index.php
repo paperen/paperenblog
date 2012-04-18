@@ -11,6 +11,7 @@
 <?php echo css($single); ?>
 <?php } ?>
 <link rel="alternate" type="application/rss+xml" title="<?php echo config_item('sitename'); ?> Feed" href="<?php echo rss_url(); ?>" />
+<?php echo favicon_ico(); ?>
 <?php echo js('jquery-1.7.1.min.js'); ?>
 <?php echo js('google-code-prettify/prettify.js'); ?>
 <?php echo js('bootstrap/bootstrap-tooltip.js'); ?>

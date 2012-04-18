@@ -40,6 +40,6 @@
 <!-- navbar -->
 
 <!-- container -->
-<div class="container-fluid">
+<div class="container-fluid wrap">
 
     <div class="row-fluid">

@@ -37,7 +37,9 @@ pre {
 	font-size: 15px;
 	font-weight: bold;
 }
-
+/* wrap */
+.wrap {
+}
 /* main */
 .main {
 	background: #FFF;
@@ -401,7 +403,7 @@ pre {
 	margin: 0;
 	height: auto;
 	border-top: 1px #CCC solid;
-	padding: 20px 0 0 0;
+	padding: 0;
 }
 .footer .inner{
 	border-top: 1px #FFF solid;

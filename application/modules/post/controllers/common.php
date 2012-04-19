@@ -26,11 +26,13 @@ class Post_Common_Module extends CI_Module
 	 * @var string
 	 */
 	private $_display_cookie_key = 'display_type';
+
 	/**
 	 * cookie過期時間(7天)
 	 * @var int
 	 */
 	private $_display_cookie_expired = 604800;
+
 	/**
 	 * 顯示方式
 	 * @var string
@@ -38,6 +40,8 @@ class Post_Common_Module extends CI_Module
 	private $_display_type;
 	private $_session_ding_key = 'ding';
 	private $_session_cai_key = 'cai';
+	private $_session_click_key = 'click';
+
 	/**
 	 * 文章数据
 	 * @var array
@@ -498,7 +502,7 @@ class Post_Common_Module extends CI_Module
 			{
 				// 踩
 				if ( $already_cai && in_array( $post_id, $already_cai ) ) throw new Exception( "親~不用踩這麼重，{$post_data['author']}快被踩扁了…" );
-				$this->querycache->execute( 'post', 'update_bad', $post_id, TRUE );
+				$this->querycache->execute( 'post', 'update_bad', array( $post_id ) );
 				$post_data['bad']++;
 				$data['message'] = '多謝您的反饋與批評';
 
@@ -511,7 +515,7 @@ class Post_Common_Module extends CI_Module
 				// 頂
 				if ( $already_ding && in_array( $post_id, $already_ding ) ) throw new Exception( "親~不要頂這麼激烈，我頂唔順啦~" );
 
-				$this->querycache->execute( 'post', 'update_good', $post_id, TRUE );
+				$this->querycache->execute( 'post', 'update_good', array( $post_id ) );
 				$post_data['good']++;
 				$data['message'] = '多謝您的支持與鼓勵';
 
@@ -532,6 +536,21 @@ class Post_Common_Module extends CI_Module
 	}
 
 	/**
+	 * 更新指定文章的點擊數
+	 * @param int $post_id
+	 */
+	private function _update_post_clicknum( $post_id )
+	{
+		$already_click = $this->session->userdata( $this->_session_click_key );
+		// 已经阅读过
+		if ( !empty( $already_click ) && in_array( $post_id, $already_click ) ) return FALSE;
+
+		$this->querycache->execute( 'post', 'update_click', array( $post_id ) );
+		$already_click[] = $post_id;
+		$this->session->set_userdata( $this->_session_click_key, array_unique( $already_click ) );
+	}
+
+	/**
 	 * 加载指定ID或URL标题的文章
 	 * @param string $postid_or_urltitle 指定ID或URL标题
 	 */
@@ -543,6 +562,9 @@ class Post_Common_Module extends CI_Module
 		// 没有找到
 		if ( empty( $post_data ) ) show_404();
 		$this->_post_data = $post_data;
+
+		// 更新阅读数
+		$this->_update_post_clicknum( $post_data['id'] );
 
 		// 加工
 		$this->_prepare( FALSE );

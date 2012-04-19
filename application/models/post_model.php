@@ -311,6 +311,17 @@ class Post_model extends CI_Model
 	}
 
 	/**
+	 * 讓指定文章的點擊數+1
+	 * @param type $post_id
+	 */
+	public function update_click( $post_id )
+	{
+		$this->db->set( 'click', 'click+1', FALSE )
+				->where( 'id', $post_id )
+				->update( $this->_tables['post'] );
+	}
+
+	/**
 	 * 讓指定文章的差評數+1
 	 * @param int $post_id
 	 */

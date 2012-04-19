@@ -203,7 +203,7 @@ class Comment_Common_Module extends CI_Module
 			// 個人站點URL
 			if ( $comment_data['url'] ) $comment_data['url'] = $this->form_validation->prep_url( $comment_data['url'] );
 
-			$comment_id = $this->querycache->execute( 'comment', 'insert', $comment_data );
+			$comment_id = $this->querycache->execute( 'comment', 'insert', array( $comment_data ) );
 			if ( empty( $comment_id ) ) throw new Exception( '親，博客出現一些問題，請重試看看', -3 );
 			$comment_data['id'] = $comment_id;
 

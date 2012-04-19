@@ -23,11 +23,11 @@ class Querycache
 	 * @param mixed $args 參數
 	 * @return mixed
 	 */
-	public function execute( $model, $method, $args, $nowrap = FALSE )
+	public function execute( $model, $method, $args )
 	{
 		$model_name = "{$model}_model";
 		if ( !isset( $this->_CI->$model_name ) ) $this->_CI->load->model( $model_name );
-		return call_user_func_array( array( $this->_CI->$model_name, $method ), ( $nowrap ? $args : array( $args ) ) );
+		return call_user_func_array( array( $this->_CI->$model_name, $method ), $args );
 	}
 
 	/**

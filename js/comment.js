@@ -35,6 +35,7 @@ $(function(){
 				//alert( msg );
 				if ( msg.success ) {
 					// success
+					$('#comment-num').html( parseInt( $('#comment-num').html() ) + 1 ).effect('highlight', {}, 2500);
 					$('#comment-empty').hide();
 					$('#comment-form #content').val('');
 					setTimeout(function(){

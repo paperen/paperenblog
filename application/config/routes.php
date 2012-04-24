@@ -62,6 +62,7 @@ $route['post/(:any)'] = 'module/post/common/single/$1';
 
 // 發表評論
 $route['comment'] = 'module/comment/common/add';
+$route['commenttoken'] = 'module/comment/common/token';
 
 // 文件
 $route['file/(:num)'] = 'module/file/common/get/$1';

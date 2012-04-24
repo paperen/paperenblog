@@ -276,6 +276,15 @@ class Comment_Common_Module extends CI_Module
 		$this->email->send();
 	}
 
+	/**
+	 * 刷新評論令牌
+	 */
+	public function token()
+	{
+		if ( !$this->input->is_ajax_request() ) exit();
+		echo create_token( TRUE );
+	}
+
 }
 
 // end of common

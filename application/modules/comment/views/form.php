@@ -89,6 +89,7 @@
 </div>
 <script>
 var comment_url = '<?php echo base_url('comment'); ?>';
+var comment_token_url = '<?php echo base_url('commenttoken'); ?>';
 </script>
 <?php echo js('comment.js'); ?>
 <?php echo js('jquery-ui-highlight.js'); ?>

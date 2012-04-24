@@ -11,7 +11,7 @@ class MY_Form_validation extends CI_Form_validation
 {
 
 	public $CI;
-	private $debug = TRUE;
+	private $debug = FALSE;
 	// 错误定界符
 	var $error_prefix = '<li>';
 	var $error_suffix = '</li>';

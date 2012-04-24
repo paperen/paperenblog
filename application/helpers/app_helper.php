@@ -267,13 +267,15 @@ function rss_url()
 
 /**
  * 創建表單令牌
+ * @param bool 是否返回令牌值
  * @return string
  */
-function create_token()
+function create_token( $ret = FALSE )
 {
 	$CI = & get_instance();
 	$time = time();
 	$CI->session->set_userdata( 'token', $time );
+	if ( $ret ) return md5( $time );
 	return form_hidden( 'token', md5( $time ), 'id="token"' );
 }
 

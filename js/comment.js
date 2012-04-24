@@ -46,6 +46,7 @@ $(function(){
 					// error
 					disabled_comment_form( false );
 				}
+				refresh_comment_token();
 				$('#comment-form').before( msg.data );
 			}
 		});
@@ -61,4 +62,13 @@ function disabled_comment_form( ac ) {
 		$('#comment-form #content').removeAttr('disabled');
 		$('#comment-form #comment-submit-btn').removeAttr('disabled');
 	}
+}
+function refresh_comment_token() {
+	$.ajax({
+		type: "POST",
+		url: comment_token_url,
+		success: function( token ){
+			$('#token').val( token );
+		}
+	});
 }

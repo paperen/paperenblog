@@ -1,0 +1,150 @@
+body,
+p {
+	font-family: '微软雅黑', Verdana, Geneva, sans-serif;
+}
+body {
+	padding-top: 40px;
+	/*background: url(image/bg.jpg) left top repeat-y;*/
+}
+label,
+input,
+button,
+select,
+textarea {
+	font-family: '微软雅黑', Verdana, Geneva, sans-serif;
+}
+.c {
+	clear: both;
+}
+/* ---------------- navbar ------------------ */
+.navbar-inner {
+	background: #CCC;
+	-webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.5), inset 0 -1px 0 rgba(255, 255, 255, 1);
+	-moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.5), inset 0 -1px 0 rgba(255, 255, 255, 1);
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.5), inset 0 -1px 0 rgba(255, 255, 255, 1);
+}
+.navbar .brand {
+	color: #000;
+	text-shadow: 0 1px 0 #FFF;
+}
+.navbar .divider-vertical {
+	background: #FFF;
+}
+.navbar .nav .txt {
+	line-height: 37px;
+}
+.navbar .nav > li > a{
+	color: #000;
+	text-shadow: 0 1px 0 #FFF;
+}
+.navbar [class^="icon-"] {
+	margin-right: 6px;
+	margin-top: 3px;
+}
+.navbar .nav > li > a:hover {
+	color: #333;
+}
+.navbar .nav .dropdown-toggle .caret, .navbar .nav .open.dropdown .caret {
+	background-color: #000;
+	border-top-color: #000;
+}
+.navbar .nav .open > .dropdown-toggle, .navbar .nav .active > .dropdown-toggle, .navbar .nav .open.active > .dropdown-toggle {
+	color: #000;
+}
+.dropdown-menu [class^="icon-"] {
+	margin-right: 6px;
+	margin-top: 3px;
+}
+/* ---------------- sidebar ------------------*/
+.sidebar .menu {
+	margin-right: 0;
+	margin-bottom: 0;
+	float: none;
+}
+.sidebar .menu .nav {
+	margin-bottom: 10px;
+}
+.sidebar .menu .nav .header a{
+	border: 1px #B0B0B0 solid;
+	-webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.5), inset 0 -1px 0 rgba(255, 255, 255, 1);
+	-moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.5), inset 0 -1px 0 rgba(255, 255, 255, 1);
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 1);
+	-webkit-border-radius: 9px 9px 0 0;
+  	-moz-border-radius: 9px 9px 0 0;
+  	border-radius: 9px 9px 0 0;
+	background: url(image/menu-bits.gif) 0 0;
+	margin-bottom: 1px;
+	font-weight: bold;
+	color: #333;
+	font-size: 1.1em;
+	position: relative;
+	height: 25px;
+	padding-bottom: 0;
+	padding-top: 5px;
+}
+.sidebar .menu .nav .header a [class^="icon-"] {
+	margin: 3px 6px 0 0;
+}
+.sidebar .menu .nav .header a .nav-sub-toggle {
+	position: absolute;
+	display: block;
+	cursor: pointer;
+	width: 25px;
+	height: 30px;
+	right: 0;
+	top: 0;
+	background: url(image/menu-bits.gif) 0 -205px;
+	text-align: center;
+	line-height: 30px;
+	overflow: hidden;
+}
+.sidebar .menu .nav-sub {
+	border: 1px #B0B0B0 solid;
+	border-top: none;
+	padding-bottom: 1px;
+	margin-bottom: 0;
+}
+.sidebar .menu .nav-sub li a {
+	padding: 8px;
+	background: #F6F6F6;
+}
+.sidebar .menu .nav-sub li.active a {
+	padding-left: 15px;
+	color: #333;
+	font-weight: bold;
+	background: #FFF;
+}
+.sidebar .menu .nav-sub a {
+	border: none;
+}
+/* ---------- box ----------------*/
+.box {
+	padding: 10px;
+	background: #FAFAFA;
+	border: 1px #C0C0C0 solid;
+	-webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.5), inset 0 -1px 0 rgba(255, 255, 255, 1);
+	-moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.5), inset 0 -1px 0 rgba(255, 255, 255, 1);
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 1);
+}
+.box-radius {
+	border: 1px #C0C0C0 solid;
+	-webkit-border-radius: 10px;
+  	-moz-border-radius: 10px;
+	border-radius: 10px;
+}
+.box-headtitle .title {
+	background: url(image/menu-bits.gif) 0 0;
+	height: 20px;
+	padding: 5px 10px;
+	margin: -10px -10px 10px -10px;
+	-webkit-border-radius: 9px 9px 0 0;
+  	-moz-border-radius: 9px 9px 0 0;
+  	border-radius: 9px 9px 0 0;
+	border-bottom: 1px #B0B0B0 solid;
+	font-weight: 700;
+	font-size:15px;
+}
+/* ------------- wrap ------------- */
+.wrap {
+	padding: 20px 0;
+}

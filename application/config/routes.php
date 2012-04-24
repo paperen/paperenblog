@@ -93,5 +93,8 @@ $route['tag/(:any)/page/(:num)'] = 'module/post/common/archive_by_tag/$1/$2';
 // RSS
 $route['rss'] = 'module/post/common/rss';
 
+// admin
+$route['manage'] = 'module/admin/header/common';
+
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */

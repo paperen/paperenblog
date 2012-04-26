@@ -1,0 +1,61 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<title>用户登陆</title>
+<link href='http://fonts.googleapis.com/css?family=Asap:700|Righteous' rel='stylesheet' type='text/css'>
+<link href="../theme/paperen/bootstrap.css" rel="stylesheet">
+<link href="../theme/paperen/bootstrap-responsive.css" rel="stylesheet">
+<link href="../theme/paperen/login.css" rel="stylesheet">
+</head>
+
+<body class="login" onLoad="autoFocus();">
+
+<div class="container">
+    <div class="row">
+        <div class="span8 offset3">
+        
+            <h1 class="logo">Paperen Manager</h1>
+            <div class="login-form">
+            
+            	<!-- alert -->
+                <div class="alert alert-danger">
+                <h4 class="alert-heading">登陆失败</h4>
+                <p>用户名或密码有误</p>
+                </div>
+                <!-- alert -->
+                
+                <form>
+                <div class="control-group">
+                    <label for="username">Username</label>
+                    <div class="input-append">
+                        <input class="input-large" id="username" type="text" name="username" maxlength="30" placeholder="username 用户名">
+                        <label class="add-on" for="username"><i class="icon-user"></i></label>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label for="password">Password</label>
+                    <div class="input-append">
+                    	<input class="input-large" type="password" name="password" id="password" placeholder="password 密码">
+                    	<label class="add-on" for="password"><i class="icon-lock"></i></label>
+                    </div>
+                </div>
+                <hr>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-success btn-large pull-right">Login</button>
+                </div>
+                <div class="c"></div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+function autoFocus() {
+	document.getElementById('username').focus();
+}
+</script>
+</body>
+</html>

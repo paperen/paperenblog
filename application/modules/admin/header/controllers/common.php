@@ -9,7 +9,7 @@
  * @package paperenblog
  * @subpackage application/modules/admin/header/controllers/
  */
-class Admin_Header_Common_Module extends CI_Module
+class Admin_Header_Common_Module extends MY_Module
 {
 
 	public function index()

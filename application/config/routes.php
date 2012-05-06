@@ -94,7 +94,10 @@ $route['tag/(:any)/page/(:num)'] = 'module/post/common/archive_by_tag/$1/$2';
 $route['rss'] = 'module/post/common/rss';
 
 // admin
-$route['manage'] = 'module/admin/panel/index';
+$route['logout'] = 'module/admin/user/common/logout';
+$route['user_setting'] = 'module/admin/user/common/setting';
+$route['manage'] = 'module/admin/user/common/panel';
+$route['login'] = 'module/admin/login/common';
 
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */

@@ -1,18 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="utf-8">
-	<title>页面基本布局</title>
-	<meta name="description" content="">
-	<meta name="author" content="">
-
-	<!-- Le styles -->
-	<link href="<?php echo base_url();?>theme/paperen/bootstrap.css" rel="stylesheet">
-	<link href="<?php echo base_url();?>theme/paperen/admin.css" rel="stylesheet">
-
-	<script src="<?php echo base_url();?>js/jquery-1.7.1.min.js"></script>
-	<script src="<?php echo base_url();?>js/bootstrap/bootstrap-fold.js"></script>
-
+<meta charset="utf-8">
+<?php echo page_title( ( isset( $page_title ) ? $page_title : '管理') ); ?>
+<?php echo css('bootstrap.css'); ?>
+<?php echo css('admin.css'); ?>
+<?php echo js('jquery-1.7.1.min.js'); ?>
+<?php echo js('bootstrap/bootstrap-fold.js'); ?>
 </head>
 
 <body>
@@ -21,17 +15,12 @@
 <div class="header navbar navbar-fixed-top">
 	<div class="navbar-inner">
 		<div class="container-fluid">
-			<a class="brand" href="#">Admin Platform</a>
+			<a class="brand" href="#"><?php echo config_item('sitename'); ?> 管理</a>
 			<ul class="nav pull-right">
 				<li class="dropdown">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-cog"></i>个人设置</a>
-					<ul class="dropdown-menu">
-						<li><a href="#"><i class="icon-lock"></i>密码设置</a></li>
-						<li class="divider"></li>
-						<li><a href="#"><i class="icon-exclamation-sign"></i>登陆记录</a></li>
-					</ul>
+					<a href="<?php echo base_url('user_setting'); ?>" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-cog"></i>个人设置</a>
 				</li>
-				<li><a href="#"><i class="icon-off"></i>注销</a></li>
+				<li><a href="<?php echo base_url('logout'); ?>"><i class="icon-off"></i>注销</a></li>
 			</ul>
 		</div>
 	</div>

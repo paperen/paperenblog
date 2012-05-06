@@ -1,6 +1,6 @@
 body,
 p {
-	font-family: '微软雅黑', Verdana, Geneva, sans-serif;
+	font-family: "Microsoft YaHei","Hiragino Sans GB",STHeiti,Tahoma,SimHei,sans-serif;
 }
 body {
 	padding-top: 40px;
@@ -11,7 +11,7 @@ input,
 button,
 select,
 textarea {
-	font-family: '微软雅黑', Verdana, Geneva, sans-serif;
+	font-family: "Microsoft YaHei","Hiragino Sans GB",STHeiti,Tahoma,SimHei,sans-serif;
 }
 .c {
 	clear: both;
@@ -103,10 +103,14 @@ textarea {
 	border-top: none;
 	padding-bottom: 1px;
 	margin-bottom: 0;
+	border-radius: 0 0 5px 5px;
 }
 .sidebar .menu .nav-sub li a {
 	padding: 8px;
 	background: #F6F6F6;
+}
+.sidebar .menu .nav-sub li a:hover {
+	background: #FFF;
 }
 .sidebar .menu .nav-sub li.active a {
 	padding-left: 15px;

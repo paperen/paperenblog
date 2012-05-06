@@ -303,5 +303,4 @@ function favicon_ico( $name = '' )
 	$url = base_url( 'theme' ) . '/' . trim( config_item( 'theme' ), '/' ) . '/image/' . $name;
 	return "<link rel=\"shortcut icon\" href=\"{$url}\" />";
 }
-
 // end of app_helper

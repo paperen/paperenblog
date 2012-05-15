@@ -98,6 +98,10 @@ $route['logout'] = 'module/admin/user/common/logout';
 $route['user_setting'] = 'module/admin/user/common/setting';
 $route['manage'] = 'module/admin/user/common/panel';
 $route['login'] = 'module/admin/login/common';
+$route['add_post'] = 'module/admin/post/common/add';
+$route['upload'] = 'module/admin/file/common/upload';
+$route['file_manager'] = 'module/admin/file/common/manager';
+$route['save_draft'] = 'module/admin/post/common/save';
 
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */

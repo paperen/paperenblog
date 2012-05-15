@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- 主机: localhost
--- 生成日期: 2012 年 05 月 06 日 10:52
+-- 生成日期: 2012 年 05 月 15 日 15:59
 -- 服务器版本: 5.0.83
 -- PHP 版本: 5.2.10
 
@@ -21,8 +21,8 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
 CREATE TABLE IF NOT EXISTS `attachment` (
   `id` int(10) unsigned NOT NULL auto_increment,
-  `name` varchar(30) NOT NULL,
-  `path` varchar(30) NOT NULL,
+  `name` varchar(32) NOT NULL,
+  `path` varchar(50) NOT NULL,
   `suffix` varchar(10) NOT NULL COMMENT '后缀',
   `size` double(6,1) unsigned NOT NULL default '0.0',
   `isimage` tinyint(1) unsigned NOT NULL default '1',

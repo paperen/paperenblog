@@ -8,7 +8,7 @@
 		<?php echo css( 'login.css' );?>
 	</head>
 
-	<body class="login" onLoad="autoFocus();">
+	<body class="login">
 
 		<div class="container">
 			<div class="row">
@@ -56,6 +56,7 @@
 			function autoFocus() {
 				document.getElementById('username').focus();
 			}
+			autoFocus();
 		</script>
 		<?php } ?>
 	</body>

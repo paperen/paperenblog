@@ -5,6 +5,7 @@ p {
 body {
 	padding-top: 40px;
 	/*background: url(image/bg.jpg) left top repeat-y;*/
+	background: #FFF;
 }
 label,
 input,
@@ -15,6 +16,12 @@ textarea {
 }
 .c {
 	clear: both;
+}
+a {
+	color: #0069D6;
+}
+a:hover {
+	color: #03C;
 }
 /* ---------------- navbar ------------------ */
 .navbar-inner {
@@ -151,4 +158,33 @@ textarea {
 /* ------------- wrap ------------- */
 .wrap {
 	padding: 20px 0;
+}
+/* ---------- table-wordpress ----------*/
+.table-wordpress {
+	margin-top: 7px;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+	border-width: 1px;
+	border-style: solid;
+	border-color: #DFDFDF;
+	background-color: #F9F9F9;
+}
+.table-wordpress th {
+	background-color: #F1F1F1;
+	background-image: -ms-linear-gradient(top,#f9f9f9,#ececec);
+	background-image: -moz-linear-gradient(top,#f9f9f9,#ececec);
+	background-image: -o-linear-gradient(top,#f9f9f9,#ececec);
+	background-image: -webkit-gradient(linear,left top,left bottom,from(#f9f9f9),to(#ececec));
+	background-image: -webkit-linear-gradient(top,#f9f9f9,#ececec);
+	background-image: linear-gradient(top,#f9f9f9,#ececec);
+}
+.table-wordpress th,.table-wordpress td {
+	padding: 7px 8px;
+}
+/* --------- post-form ------- */
+.post-form input[type="radio"] {
+	display: inline;
+}
+.margin-top10 {
+	margin-top: 10px;
 }

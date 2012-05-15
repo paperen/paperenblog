@@ -56,7 +56,7 @@ textarea {
 }
 .login-form .control-group .add-on {
 	height: 28px;
-	width: 30px;
+	width: 28px;
 	-webkit-box-shadow: 0 1px 0px #fff;
 	-moz-box-shadow: 0 1px 0px #fff;
 	-o-box-shadow: 0 1px 0px #fff;
@@ -71,7 +71,7 @@ textarea {
     padding: 9px 12px;
     font-size: 15px;
     color: #444;
-    width: 333px;	
+    width: 333px;
 	-webkit-box-shadow: 0 1px 0px #fff;
 	-moz-box-shadow: 0 1px 0px #fff;
 	-o-box-shadow: 0 1px 0px #fff;

@@ -67,6 +67,27 @@ class Attachment_model extends CI_Model
 						->result_array();
 	}
 
+	/**
+	 * 插入附件信息
+	 * @param array $data
+	 * @return int
+	 */
+	public function insert( $data )
+	{
+		$insert_data = array(
+			'name' => $data['name'],
+			'path' => $data['path'],
+			'suffix' => $data['suffix'],
+			'size' => $data['size'],
+			'isimage' => $data['isimage'],
+			'isthumbnail' => $data['isthumbnail'],
+			'addtime' => time(),
+			'userid' => $data['userid'],
+		);
+		$this->db->insert($this->_tables['attachment'], $insert_data);
+		return $this->db->insert_id();
+	}
+
 }
 
 // end of Post_model

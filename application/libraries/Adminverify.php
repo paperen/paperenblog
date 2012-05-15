@@ -64,6 +64,26 @@ class Adminverify
 		$this->_CI->session->unset_userdata( $this->_session_key );
 	}
 
+	/**
+	 * __Get
+	 * @param string $name
+	 * <code>
+	 * id
+	 * name
+	 * url
+	 * email
+	 * lastlogin
+	 * lastip
+	 * identity
+	 * role
+	 * </code>
+	 * @return mixed
+	 */
+	function __get( $name )
+	{
+		return isset( $this->_user_data[$name] ) ? $this->_user_data[$name] : '';
+	}
+
 }
 
 // end of Adminverify

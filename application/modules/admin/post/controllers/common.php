@@ -19,10 +19,47 @@ class Admin_Post_Common_Module extends MY_Module
 	{
 		// 檢查是否具有編輯權限
 		if ( $this->adminverify->deny_permission( adminverify::AUTHOR ) ) deny();
-		$data = array( );
-		$this->load->view( 'form', $data );
+		if ( $this->input->post('post_btn') && $this->form_validation->check_token() )
+		{
+			// 提交
+			$this->_submit();
+		}
+		else
+		{
+			$this->load->view( 'form', $data );
+		}
 	}
 
+	/**
+	 * 處理文章提交數據
+	 */
+	private function _submit()
+	{
+		$post_data = $this->_form_data();
+		$post_id = $post_data['postid'];
+		
+		try
+		{
+			// 表單驗證
+			if ( !$this->_validation() ) throw new Exception( '非法操作', 0 );
+		
+			// 檢查文章類別是否合法
+			if ( !$this->_valid_category( $post_data['categoryid'] ) ) throw new Exception( '非法操作', -1 );
+			
+			if ( empty( $post_id ) )
+			{
+				// 
+			}
+			
+		}
+		catch ( Exception $e )
+		{
+			
+		}
+		
+		
+	}
+	
 	/**
 	 * 收集表單數據
 	 * @return array

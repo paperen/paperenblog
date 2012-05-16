@@ -17,7 +17,7 @@
 				'class' => 'span11 input-autosave',
 				'placeholder' => '文章標題',
 			)); ?></p>
-			<p>固定鏈接 http://iamlze.cn/post/
+			<p>固定鏈接 <?php echo post_permalink(''); ?>
 			<?php echo form_input(array(
 				'id' => 'urltitle',
 				'name' => 'urltitle',

@@ -16,13 +16,17 @@ class Admin_Login_Common_Module extends CI_Module
 	{
 		parent::__construct();
 		$this->load->library( 'adminverify' );
+	}
 
+	private function _already_login()
+	{
 		// 如果已登錄的話
 		if ( $this->adminverify->valid() ) redirect( 'manage' );
 	}
 
 	public function index()
 	{
+		$this->_already_login();
 		if ( $this->form_validation->check_token() )
 		{
 			// 登錄數據提交
@@ -112,6 +116,15 @@ class Admin_Login_Common_Module extends CI_Module
 	public function get_password_hash( $password_raw )
 	{
 		return md5( $password_raw );
+	}
+
+	/**
+	 * 沒有權限
+	 */
+	public function deny()
+	{
+		echo '沒有操作權限';
+		exit;
 	}
 
 }

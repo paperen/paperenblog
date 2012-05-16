@@ -39,7 +39,7 @@
 			) ); ?>
 			</div>
 			<div class="span3 post-sidebar">
-				<div id="autosave-tip" class="alert alert-block">
+				<div id="autosave-tip" class="alert alert-block hide">
 				</div>
 				<div class="box box-radius box-headtitle">
 					<h4 class="title">草稿</h4>
@@ -52,14 +52,16 @@
 				</div>
 				<div class="box box-radius box-headtitle margin-top10">
 					<h4 class="title">標籤</h4>
+					<ul class="unstyled" id="tag_list"></ul>
 					<?php echo form_input( array(
-						'id' => 'tag',
+						'id' => 'tag_input',
 						'class' => 'input-small'
 					) ); ?>
 					<?php echo form_button(array(
 						'id' => 'tag_btn',
 						'class' => 'btn btn-small'
 					), '添加'); ?>
+					<?php echo form_hidden('tag', '', 'id="tag"'); ?>
 				</div>
 				<div class="box box-radius box-headtitle margin-top10">
 					<h4 class="title">特色圖像</h4>
@@ -67,6 +69,7 @@
 						'id' => 'thumbimg_btn',
 						'class' => 'btn btn-small'
 					), '設置'); ?>
+					<?php echo form_hidden('thumbimg', '', 'id="thumbimg"'); ?>
 				</div>
 				<hr>
 				<div>
@@ -90,7 +93,9 @@
 <?php echo js( base_url('editor/kindeditor-min.js') ); ?>
 <?php echo js( base_url('editor/lang/zh_CN.js') ); ?>
 <?php echo js( base_url('editor/default-options.js') ); ?>
-<?php echo js( 'autosave.js' ); ?>
+<?php echo js( 'jquery-ui-highlight.js' ); ?>
+<?php echo js( 'admin/post.js' ); ?>
+<?php echo js( 'admin/tag.js' ); ?>
 <script>
 $(function(){
 	$('#urltitle').bind({
@@ -105,13 +110,16 @@ $(function(){
 	var editor;
 	KindEditor.ready(function(K) {
 		editor = K.create('textarea[name="content"]', DEFAULT_OPTIONS);
-		// 
+		//
 		editor.edit.doc.onkeyup = function() {
+			editor.sync();
 			autosave_on( 5000 );
 		}
 	});
 	// auto save
-	autosave_init('#post-form', '<?php echo base_url('save_draft'); ?>')
+	autosave_init('#post-form', '#autosave-tip', '<?php echo base_url('save_draft'); ?>');
+	// tag
+	$('#tag').tag();
 });
 </script>
 <!-- main -->

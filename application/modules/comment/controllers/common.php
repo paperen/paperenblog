@@ -185,7 +185,7 @@ class Comment_Common_Module extends CI_Module
 			// 檢測文章ID合法性
 			$post_id = $comment_data['postid'];
 			$post_data = $this->querycache->get( 'post', 'get_by_id', $post_id );
-			if ( empty( $post_data ) ) throw new Exception( '親，請不要進行非法操作~', 0 );
+			if ( empty( $post_data ) || !$post_data['ispublic'] ) throw new Exception( '親，請不要進行非法操作~', 0 );
 			$data['post_data'] = $post_data;
 
 			// 評論ID

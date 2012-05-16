@@ -303,4 +303,14 @@ function favicon_ico( $name = '' )
 	$url = base_url( 'theme' ) . '/' . trim( config_item( 'theme' ), '/' ) . '/image/' . $name;
 	return "<link rel=\"shortcut icon\" href=\"{$url}\" />";
 }
+
+/**
+ * 拒絕操作
+ * @param string $url
+ */
+function deny( $url = '' )
+{
+	$url = empty( $url ) ? base_url('deny') : $url;
+	redirect( $url );
+}
 // end of app_helper

@@ -9,13 +9,12 @@ class Adminverify
 {
 
 	private $_CI;
-
 	private $_session_key = 'paperenblog_admin';
 	private $_user_data;
 
-	const ADMIN = 4;
-	const AUTHOR = 2;
-	const READER = 1;
+	const ADMIN = 2;
+	const AUTHOR = 1;
+	const READER = 0;
 
 	function __construct()
 	{
@@ -82,6 +81,18 @@ class Adminverify
 	function __get( $name )
 	{
 		return isset( $this->_user_data[$name] ) ? $this->_user_data[$name] : '';
+	}
+
+	/**
+	 * 檢查是否有權限操作
+	 * @param int $upper_level 最低權限要求
+	 */
+	public function deny_permission( $need_level )
+	{
+		$no_permission = FALSE;
+		$user_level = $this->_CI->level->GetLevel( $this->role );
+		$no_permission = ( $user_level < 0 ) ? TRUE : !in_array( $need_level, $user_level );
+		return $no_permission;
 	}
 
 }

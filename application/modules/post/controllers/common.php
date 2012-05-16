@@ -475,7 +475,8 @@ class Post_Common_Module extends CI_Module
 		{
 			$post_data = $this->querycache->get( 'post', 'get_by_urltitle', $postid_or_urltitle );
 		}
-		return $post_data;
+		if ( $post_data['ispublic'] ) return $post_data;
+		return FALSE;
 	}
 
 	/**
@@ -492,7 +493,7 @@ class Post_Common_Module extends CI_Module
 			// 驗證文章
 			$post_id = intval( $post_id );
 			$post_data = $this->querycache->get( 'post', 'get_by_id', $post_id );
-			if ( empty( $post_data ) ) throw new Exception( '親~請不要進行非法操作', -1 );
+			if ( empty( $post_data ) || !$post_data['ispublic'] ) throw new Exception( '親~請不要進行非法操作', -1 );
 
 			// 判斷是否重複頂或踩
 			$already_ding = $this->session->userdata( $this->_session_ding_key );

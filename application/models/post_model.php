@@ -57,7 +57,6 @@ class Post_model extends CI_Model
 						->from( "{$this->_tables['post']} as p" )
 						->join( "{$this->_tables['category']} as c", 'c.id = p.categoryid' )
 						->join( "{$this->_tables['user']} as u", 'u.id = p.authorid' )
-						->where( 'p.ispublic', TRUE )
 						->where( 'p.id', $post_id )
 						->get()
 						->row_array();
@@ -330,6 +329,56 @@ class Post_model extends CI_Model
 		$this->db->set( 'bad', 'bad+1', FALSE )
 				->where( 'id', $post_id )
 				->update( $this->_tables['post'] );
+	}
+
+	/**
+	 * 更新
+	 * @param array $data
+	 * @param int $post_id
+	 * @return int 影響行數
+	 */
+	public function update( $data, $post_id )
+	{
+		$update_data = array(
+			'title' => $data['title'],
+			'urltitle' => $data['urltitle'],
+			'categoryid' => $data['categoryid'],
+			'content' => $data['content'],
+			'ispublic' => isset( $data['ispublic'] ) ? $data['ispublic'] : 1,
+			'savetime' => isset( $data['savetime'] ) ? $data['savetime'] : time(),
+		);
+		if ( isset( $data['authorid'] ) ) $update_data['authorid'] = $data['authorid'];
+		if ( isset( $data['click'] ) ) $update_data['click'] = $data['click'];
+		if ( isset( $data['good'] ) ) $update_data['good'] = $data['good'];
+		if ( isset( $data['bad'] ) ) $update_data['bad'] = $data['bad'];
+		$this->db->where( 'id', $post_id )
+				->update($this->_tables['post'], $update_data);
+		return $this->db->affected_rows();
+	}
+
+	/**
+	 * 插入文章數據
+	 * @param array $data
+	 * @return int
+	 */
+	public function insert( $data )
+	{
+		$insert_data = array(
+			'title' => $data['title'],
+			'urltitle' => $data['urltitle'],
+			'categoryid' => $data['categoryid'],
+			'content' => $data['content'],
+			'authorid' => $data['authorid'],
+			'ispublic' => isset( $data['ispublic'] ) ? $data['ispublic'] : 1,
+			'click' => isset( $data['click'] ) ? $data['click'] : 0,
+			'good' => isset( $data['good'] ) ? $data['good'] : 0,
+			'bad' => isset( $data['bad'] ) ? $data['bad'] : 0,
+			'savetime' => isset( $data['savetime'] ) ? $data['savetime'] : time(),
+			'posttime' => isset( $data['posttime'] ) ? $data['posttime'] : time(),
+			'isdraft' => isset( $data['isdraft'] ) ? $data['isdraft'] : 0,
+		);
+		$this->db->insert( $this->_tables['post'], $insert_data );
+		return $this->db->insert_id();
 	}
 
 }

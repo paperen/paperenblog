@@ -34,6 +34,20 @@ class Category_model extends CI_Model
 				->row_array();
 	}
 
+	/**
+	 * 根據類別ID獲取類別數據
+	 * @param int $id
+	 * @return array
+	 */
+	public function get_by_id( $id )
+	{
+		return $this->db->select( 'c.id,c.category,c.pid,c.ispublic' )
+				->from( "{$this->_tables['category']} as c" )
+				->where( 'c.id', $id )
+				->get()
+				->row_array();
+	}
+
 }
 
 // end of Tag_model

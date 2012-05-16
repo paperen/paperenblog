@@ -94,6 +94,7 @@ $route['tag/(:any)/page/(:num)'] = 'module/post/common/archive_by_tag/$1/$2';
 $route['rss'] = 'module/post/common/rss';
 
 // admin
+$route['deny'] = 'module/admin/login/common/deny';
 $route['logout'] = 'module/admin/user/common/logout';
 $route['user_setting'] = 'module/admin/user/common/setting';
 $route['manage'] = 'module/admin/user/common/panel';

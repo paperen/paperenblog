@@ -16,30 +16,45 @@
 			</tr>
 		</thead>
 		<tbody>
+			<?php foreach( $post_data as $single ) { ?>
 			<tr>
-				<td rowspan="2">新版博客的面世</td>
-				<td>吹水</td>
-				<td><span class="btn btn-success disabled btn-small">是</span></td>
-				<td>2012-05-07 14:34</td>
-				<td><span class="btn disabled btn-small">否</span></td>
+				<td rowspan="2"><?php echo $single['title']; ?></td>
+				<td><?php echo $single['category']; ?></td>
+				<td>
+					<?php if( $single['ispublic'] ) { ?>
+					<span class="btn btn-success disabled btn-small">是</span>
+					<?php } else { ?>
+					<span class="btn disabled btn-small">否</span>
+					<?php } ?>
+				</td>
+				<td><?php echo get_time_diff($single['posttime']); ?></td>
+				<td>
+					<?php if( $single['isdraft'] ) { ?>
+					<span class="btn btn-success disabled btn-small">是</span>
+					<?php } else { ?>
+					<span class="btn disabled btn-small">否</span>
+					<?php } ?>
+				</td>
 				<td>
 					<div class="btn-group">
-						<a href="#" class="btn btn-small">查看</a>
-						<a href="#" class="btn btn-small">查看評論</a>
-						<a href="#" class="btn btn-small ">更改</a>
-						<a href="#" class="btn btn-small btn-danger">回收站</a>
+						<a href="<?php echo post_permalink( $single['urltitle'] ); ?>" class="btn btn-small" target="_blank">查看</a>
+						<a href="<?php echo comment_url( $single['urltitle'] ); ?>" target="_blank" class="btn btn-small">查看評論</a>
+						<a href="<?php echo base_url("edit/{$single['id']}"); ?>" class="btn btn-small">更改</a>
+						<a href="<?php echo base_url("trash/{$single['id']}"); ?>" class="btn btn-small btn-danger">回收站</a>
 					</div>
 				</td>
 			</tr>
 			<tr>
 				<td colspan="5">
 					<ul class="unstyled meta">
-						<li title="瀏覽數"><i class="icon-eye-open"></i><strong>58</strong></li>
-						<li title="頂"><i class="icon-heart"></i><strong>5</strong></li>
-						<li title="踩"><i class="icon-trash"></i><strong>2</strong></li>
+						<li title="瀏覽數"><i class="icon-eye-open"></i><strong><?php echo $single['click']; ?></strong></li>
+						<li title="頂"><i class="icon-heart"></i><strong><?php echo $single['good']; ?></strong></li>
+						<li title="踩"><i class="icon-trash"></i><strong><?php echo $single['bad']; ?></strong></li>
+						<li title="作者"><i class="icon-user"></i><strong><?php echo $single['author']; ?></strong></li>
 					</ul>
 				</td>
 			</tr>
+			<?php } ?>
 		</tbody>
 	</table>
 	<?php echo $pagination; ?>

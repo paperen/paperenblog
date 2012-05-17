@@ -328,6 +328,7 @@ class Admin_Post_Common_Module extends MY_Module
 		$total = $this->querycache->get( 'post', 'total_by_authorid', $this->adminverify->id );
 		$data['total'] = $total;
 
+		// 分頁
 		$this->load->library( 'pagination' );
 		$pagination_config = array(
 			'base_url' => base_url( 'my_post' ),
@@ -338,6 +339,10 @@ class Admin_Post_Common_Module extends MY_Module
 		$this->pagination->initialize( $pagination_config );
 		$pagination = $this->pagination->create_links();
 		$data['pagination'] = $pagination;
+
+		// 數據
+		$post_data = $this->querycache->get( 'post', 'get_by_authorid', $this->adminverify->id, $per_page, ( $this->pagination->get_cur_page() - 1 ) * $per_page );
+		$data['post_data'] = $post_data;
 
 		$this->load->view( 'list', $data );
 	}

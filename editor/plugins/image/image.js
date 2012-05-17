@@ -171,7 +171,7 @@ KindEditor.plugin('image', function(K) {
 							return false;
 						}
 					});
-					var url = K.formatUrl(data.url, 'absolute');
+					var url = K.formatUrl(data.url, 'all');
 					clickFn.call(self, url, title, width, height, 0, align);
 					if (self.afterUpload) {
 						self.afterUpload.call(self, url);

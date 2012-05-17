@@ -16,6 +16,9 @@ class Admin_Footer_Common_Module extends MY_Module
 	{
 		$data = array();
 		$this->load->view( 'index', $data );
+
+		// 调试数据
+		$this->output->enable_profiler( defined( 'ENVIRONMENT' ) && ENVIRONMENT == 'development' );
 	}
 
 }

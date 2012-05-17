@@ -19,47 +19,157 @@ class Admin_Post_Common_Module extends MY_Module
 	{
 		// 檢查是否具有編輯權限
 		if ( $this->adminverify->deny_permission( adminverify::AUTHOR ) ) deny();
-		if ( $this->input->post('post_btn') && $this->form_validation->check_token() )
+		if ( $this->input->post( 'post_btn' ) && $this->form_validation->check_token() )
 		{
-			// 提交
-			$this->_submit();
+			// 發佈文章
+			$this->_publish();
 		}
 		else
 		{
-			$this->load->view( 'form', $data );
+			// 顯示表單
+			$this->_form();
 		}
+	}
+
+	/**
+	 * 顯示表單
+	 */
+	private function _form()
+	{
+		$data = array( );
+
+		// 獲取分類數據
+		$data['category_data'] = $this->_category_all();
+
+		$this->load->view( 'form', $data );
+	}
+
+	/**
+	 * 獲取所有文章分類（用於下拉框）
+	 * @return array
+	 */
+	private function _category_all()
+	{
+		$category_data = $this->querycache->get( 'category', 'get_all' );
+		$category_format_data = array( );
+		foreach ( $category_data as $single )
+			$category_format_data[$single['id']] = $single['category'];
+		return $category_format_data;
 	}
 
 	/**
 	 * 處理文章提交數據
 	 */
-	private function _submit()
+	private function _publish()
 	{
+		$data = array( );
+
 		$post_data = $this->_form_data();
-		$post_id = $post_data['postid'];
-		
+		$data['post_data'] = $post_data;
 		try
 		{
 			// 表單驗證
-			if ( !$this->_validation() ) throw new Exception( '非法操作', 0 );
-		
+			if ( !$this->_validation() ) throw new Exception( validation_errors(), 0 );
+
 			// 檢查文章類別是否合法
 			if ( !$this->_valid_category( $post_data['categoryid'] ) ) throw new Exception( '非法操作', -1 );
-			
+
+			$post_id = $post_data['postid'];
 			if ( empty( $post_id ) )
 			{
-				// 
+				// 插入
+				$post_id = $this->querycache->execute( 'post', 'insert', array( $post_data ) );
+				if ( empty( $post_id ) ) throw new Exception( '系統錯誤', -3 );
 			}
-			
+			else
+			{
+				// 更新
+				// 是否合法
+				if ( !$this->_valid_post( $post_id ) ) throw new Exception( '錯誤操作', -4 );
+				if ( !$this->querycache->execute( 'post', 'update', array( $post_data, $post_data['postid'] ) ) ) throw new Exception( '系統錯誤', -5 );
+			}
+
+			// 添加標籤
+			$this->_add_tag( $post_id, $post_data['tag'] );
+
+			// 設置特色圖像
+			$this->_set_thumbimg( $post_id, $post_data['thumbimg'], $post_data['content'] );
+
+			// 關聯文章與圖片
+			$this->_set_postimage( $post_id, $post_data['content'] );
+
+			// 標記為不是草稿
+			$this->querycache->execute( 'post', 'update_undraft', array( $post_id ) );
+
+			$data['success'] = array(
+				'title' => "{$post_data['title']} 已成功發佈",
+				'post_url' => post_permalink( $post_data['urltitle'] ),
+			);
 		}
 		catch ( Exception $e )
 		{
-			
+			$err_code = $e->getCode();
+			$err_message = $e->getMessage();
+			if ( $err_code != 0 ) $err_message = $this->form_validation->wrap_error( $err_message );
+			$data['error'] = $err_message;
 		}
-		
-		
+
+		// 獲取所有文章分類
+		$data['category_data'] = $this->_category_all();
+		$this->load->view( 'form', $data );
 	}
-	
+
+	/**
+	 * 關聯文章與圖片
+	 * @param int $post_id
+	 * @param string $post_content
+	 */
+	private function _set_postimage( $post_id, $post_content )
+	{
+		if ( empty( $post_id ) || empty( $post_content ) ) return;
+
+		// 解除之前的關聯
+		$this->querycache->execute( 'post', 'delete_attachment', array( $post_id ) );
+
+		$file_ids = get_file_from_string( $post_content, -1 );
+		if ( empty( $file_ids ) ) return;
+
+		$this->querycache->execute( 'post', 'insert_attachment', array( $file_ids, $post_id ) );
+	}
+
+	/**
+	 * 設置指定
+	 * @param type $thumbimg_id
+	 * @param type $post_id
+	 */
+	private function _set_thumbimg( $post_id, $thumbimg_id, $post_content )
+	{
+		if ( empty( $thumbimg_id ) && empty( $post_content ) ) return;
+		if ( $thumbimg_id )
+		{
+			// nothing
+		}
+		else if ( $post_content )
+		{
+			$thumbimg_id = get_thumbimg_from_string( $post_content );
+			if ( empty( $thumbimg_id ) ) return;
+		}
+		return $this->querycache->execute( 'attachment', 'update_isthumbnail', array( $thumbimg_id ) );
+	}
+
+	/**
+	 * 表單驗證
+	 * @return bool
+	 */
+	private function _validation()
+	{
+		$this->form_validation->set_rules( 'title', '文章標題', 'required|max_length[50]' );
+		$this->form_validation->set_rules( 'urltitle', '固定鏈接', 'required|max_length[50]' );
+		$this->form_validation->set_rules( 'categoryid', '文章所屬類別', 'required|is_natural_no_zero' );
+		$this->form_validation->set_rules( 'content', '內容', 'required' );
+		return $this->form_validation->run();
+	}
+
 	/**
 	 * 收集表單數據
 	 * @return array
@@ -122,7 +232,7 @@ class Admin_Post_Common_Module extends MY_Module
 			}
 
 			// 添加標籤
-			$this->_add_tag( $post_data['tag'], $post_id );
+			$this->_add_tag( $post_id, $post_data['tag'] );
 
 			$result = array(
 				'err' => 0,
@@ -143,7 +253,7 @@ class Admin_Post_Common_Module extends MY_Module
 	 * 添加標籤
 	 * @param string $tags
 	 */
-	private function _add_tag( $tags, $post_id )
+	private function _add_tag( $post_id, $tags )
 	{
 		if ( empty( $tags ) ) return;
 
@@ -172,9 +282,10 @@ class Admin_Post_Common_Module extends MY_Module
 		// 關聯文章
 		// 刪除之前的標籤
 		$this->querycache->execute( 'tag', 'delete_by_postid', array( $post_id ) );
-		$tags_ids = array();
-		foreach( $tags_data as $single ) $tags_ids[] = $single['id'];
-		$this->querycache->execute('tag', 'insert_post_tag', array( $tags_ids , $post_id ) );
+		$tags_ids = array( );
+		foreach ( $tags_data as $single )
+			$tags_ids[] = $single['id'];
+		$this->querycache->execute( 'tag', 'insert_post_tag', array( $tags_ids, $post_id ) );
 	}
 
 	/**
@@ -200,6 +311,35 @@ class Admin_Post_Common_Module extends MY_Module
 		// 不是該文章的作者
 		if ( $post_data['authorid'] != $this->adminverify->id ) return FALSE;
 		return $post_data;
+	}
+
+	/**
+	 * 文章列表
+	 * @param int $page 頁數
+	 */
+	public function my( $page = 1 )
+	{
+		$data = array( );
+
+		// 每頁顯示條數
+		$per_page = config_item( 'per_page' );
+
+		// 當前人的文章總數
+		$total = $this->querycache->get( 'post', 'total_by_authorid', $this->adminverify->id );
+		$data['total'] = $total;
+
+		$this->load->library( 'pagination' );
+		$pagination_config = array(
+			'base_url' => base_url( 'my_post' ),
+			'total_rows' => $total,
+			'per_page' => $per_page,
+			'uri_segment' => 2,
+		);
+		$this->pagination->initialize( $pagination_config );
+		$pagination = $this->pagination->create_links();
+		$data['pagination'] = $pagination;
+
+		$this->load->view( 'list', $data );
 	}
 
 }

@@ -84,8 +84,22 @@ class Attachment_model extends CI_Model
 			'addtime' => time(),
 			'userid' => $data['userid'],
 		);
-		$this->db->insert($this->_tables['attachment'], $insert_data);
+		$this->db->insert( $this->_tables['attachment'], $insert_data );
 		return $this->db->insert_id();
+	}
+
+	/**
+	 * 更新指定附件記錄為特色圖像
+	 * @param int $attachment_id
+	 */
+	public function update_isthumbnail( $attachment_id )
+	{
+		$update_data = array(
+			'isthumbnail' => TRUE,
+		);
+		$this->db->where( 'id', $attachment_id )
+				->update( $this->_tables['attachment'], $update_data );
+		return $this->db->affected_rows();
 	}
 
 }

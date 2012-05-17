@@ -48,7 +48,7 @@ class Post_model extends CI_Model
 								'p.id,p.title,p.urltitle,
 						 p.categoryid,p.content,
 						 p.authorid,p.click,p.good,
-						 p.bad,p.posttime,
+						 p.bad,p.posttime,p.ispublic,
 						 c.category,
 						 u.name as author,
 						 u.email as authoremail,
@@ -73,7 +73,7 @@ class Post_model extends CI_Model
 								'p.id,p.title,p.urltitle,
 						 p.categoryid,p.content,
 						 p.authorid,p.click,p.good,
-						 p.bad,p.posttime,
+						 p.bad,p.posttime,p.ispublic,
 						 c.category,
 						 u.name as author'
 						)
@@ -351,8 +351,23 @@ class Post_model extends CI_Model
 		if ( isset( $data['click'] ) ) $update_data['click'] = $data['click'];
 		if ( isset( $data['good'] ) ) $update_data['good'] = $data['good'];
 		if ( isset( $data['bad'] ) ) $update_data['bad'] = $data['bad'];
+		if ( isset( $data['posttime'] ) ) $update_data['posttime'] = $data['posttime'];
 		$this->db->where( 'id', $post_id )
-				->update($this->_tables['post'], $update_data);
+				->update( $this->_tables['post'], $update_data );
+		return $this->db->affected_rows();
+	}
+
+	/**
+	 * 更新指定文章為不是草稿
+	 * @param int $post_id 文章ID
+	 */
+	public function update_undraft( $post_id )
+	{
+		$update_data = array(
+			'isdraft' => FALSE,
+		);
+		$this->db->where( 'id', $post_id )
+				->update( $this->_tables['post'], $update_data );
 		return $this->db->affected_rows();
 	}
 
@@ -379,6 +394,57 @@ class Post_model extends CI_Model
 		);
 		$this->db->insert( $this->_tables['post'], $insert_data );
 		return $this->db->insert_id();
+	}
+
+	/**
+	 * 解除指定文章所有附件的關係
+	 * @param int $post_id
+	 * @return int
+	 */
+	public function delete_attachment( $post_id )
+	{
+		$this->db->where( 'postid', $post_id )
+				->delete( $this->_tables['post_attachment'] );
+		return $this->db->affected_rows();
+	}
+
+	/**
+	 * 建立指定文章與指定文件的關係
+	 * @param array $file_ids
+	 * @param int $post_id
+	 * @return int
+	 */
+	public function insert_attachment( $file_ids, $post_id )
+	{
+		$insert_data = array( );
+		if ( is_array( $file_ids ) )
+		{
+			foreach ( $file_ids as $file_id )
+				$insert_data[] = array(
+					'postid' => $post_id,
+					'attachmentid' => $file_id,
+				);
+		}
+		else
+		{
+			$insert_data[] = array(
+				'postid' => $post_id,
+				'attachmentid' => $file_id,
+			);
+		}
+		$this->db->insert_batch( $this->_tables['post_attachment'], $insert_data );
+		return $this->db->affected_rows();
+	}
+
+	/**
+	 * 獲取指定作者所有文章總數
+	 * @param int $author_id
+	 * @return int
+	 */
+	public function total_by_authorid( $author_id )
+	{
+		return $this->db->where( 'authorid', $author_id )
+				->count_all_results( $this->_tables['post'] );
 	}
 
 }

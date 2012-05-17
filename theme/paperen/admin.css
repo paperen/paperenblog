@@ -188,3 +188,12 @@ a:hover {
 .margin-top10 {
 	margin-top: 10px;
 }
+/* -------- postlist-table -------- */
+.postlist-table .meta li {
+	float: left;
+	margin-right: 25px;
+}
+.postlist-table .meta li i {
+	margin-top: 3px;
+	margin-right: 5px;
+}

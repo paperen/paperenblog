@@ -26,6 +26,8 @@ class MY_Security extends CI_Security
 	 */
 	protected function _remove_evil_attributes($str, $is_image)
 	{
+		return $str;
+
 		// All javascript event handlers (e.g. onload, onclick, onmouseover), style, and xmlns
 		$evil_attributes = array('on\w*', 'style', 'xmlns');
 

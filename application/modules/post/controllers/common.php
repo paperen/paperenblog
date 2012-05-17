@@ -473,6 +473,7 @@ class Post_Common_Module extends CI_Module
 		}
 		else
 		{
+			$postid_or_urltitle = urldecode( $postid_or_urltitle );
 			$post_data = $this->querycache->get( 'post', 'get_by_urltitle', $postid_or_urltitle );
 		}
 		if ( $post_data['ispublic'] ) return $post_data;

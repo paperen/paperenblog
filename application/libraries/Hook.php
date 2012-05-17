@@ -53,7 +53,7 @@ class Hook
 			if ( strpos( $name, 'module_' ) !== FALSE )
 			{
 				// 模塊調用
-				$this->_CI->load->module( str_replace( 'module_', '', $name ), $args );
+				$this->_CI->load->module( str_replace( 'module_', '', $name ), array( $args ) );
 			}
 			else
 			{

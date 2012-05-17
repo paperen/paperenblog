@@ -103,6 +103,8 @@ $route['add_post'] = 'module/admin/post/common/add';
 $route['upload'] = 'module/admin/file/common/upload';
 $route['file_manager'] = 'module/admin/file/common/manager';
 $route['save_draft'] = 'module/admin/post/common/save';
+$route['my_post'] = 'module/admin/post/common/my';
+$route['my_post/(:num)'] = 'module/admin/post/common/my/$1';
 
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */

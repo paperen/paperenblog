@@ -18,7 +18,10 @@ function autosave_run() {
 		type: "POST",
 		url: save_url,
 		data: $(save_formid).serialize(),
-		success: function( ret ){
+		beforeSend: function() {
+			$('#post_btn').attr('disabled', true);
+		},
+		success: function( ret ) {
 			//alert( ret );
 			//ret = eval('(' + ret + ')');
 			if ( typeof( ret ) === 'object' ) {
@@ -34,6 +37,7 @@ function autosave_run() {
 				setTimeout('$("'+save_tipid+'").slideUp();', 2000);
 				save_timeout = clearInterval( save_timeout );
 			}
+			$('#post_btn').attr('disabled', false);
 		}
 	});
 }

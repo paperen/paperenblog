@@ -13,16 +13,30 @@ if ( !defined( 'BASEPATH' ) ) exit( 'No direct script access allowed' );
 class MY_Pagination extends CI_Pagination
 {
 
-	var $full_tag_open = '<ul class="pager">';
-	var $full_tag_close = '</ul><div class="c"></div>';
-	var $first_tag_open = '<li class="previous">';
-	var $first_tag_close = '</li>';
-	var $first_tag_text = '&laquo; 較後';
-	var $last_tag_open = '<li class="next">';
-	var $last_tag_close = '<li>';
-	var $last_tag_text = '&laquo; 較前';
-	var $use_page_numbers = TRUE;
+	// --------------- 後臺 ----------------------
+	var $full_tag_open = '<div class="btn-group">';
+	var $full_tag_close = '</div>';
+	var $anchor_class = 'btn';
+	var $first_link = '&lsaquo; 第一頁';
+	var $next_link = '&gt;';
+	var $prev_link = '&lt;';
+	var $last_link = '最後頁 &rsaquo;';
+	var $cur_tag_open = '<a href="javascript:void(0);" class="btn active">';
+	var $cur_tag_close = '</a>';
+	var $num_links = 3;
+
+	// --------------- 前臺 ----------------------
+	var $full_tag_open2 = '<ul class="pager">';
+	var $full_tag_close2 = '</ul><div class="c"></div>';
+	var $first_tag_open2 = '<li class="previous">';
+	var $first_tag_close2 = '</li>';
+	var $first_tag_text2 = '&laquo; 較後';
+	var $last_tag_open2 = '<li class="next">';
+	var $last_tag_close2 = '<li>';
+	var $last_tag_text2 = '&laquo; 較前';
+
 	var $num_pages;
+	var $use_page_numbers = TRUE;
 
 	public function get_cur_page()
 	{
@@ -150,21 +164,21 @@ class MY_Pagination extends CI_Pagination
 		if ( $this->cur_page == 1 )
 		{
 			$next = $this->cur_page + 1;
-			$output .= $this->first_tag_open . '<a href="' . $this->base_url . $next . '" rel="prev">'.$this->first_tag_text.'</a>' . $this->first_tag_close;
+			$output .= $this->first_tag_open2 . '<a href="' . $this->base_url . $next . '" rel="prev">'.$this->first_tag_text2.'</a>' . $this->first_tag_close2;
 		}
 		else if ( $this->cur_page == $num_pages )
 		{
 			$next = $this->cur_page - 1;
-			$output .= $this->last_tag_open . '<a href="'. $this->base_url . $next .'" rel="next">'.$this->last_tag_text.'</a>' . $this->last_tag_close;
+			$output .= $this->last_tag_open2 . '<a href="'. $this->base_url . $next .'" rel="next">'.$this->last_tag_text2.'</a>' . $this->last_tag_close2;
 		}
 		else
 		{
 			$next = $this->cur_page + 1;
-			$output .= $this->first_tag_open . '<a href="'. $this->base_url . $next .'" rel="prev">'.$this->first_tag_text.'</a>' . $this->first_tag_close;
+			$output .= $this->first_tag_open2 . '<a href="'. $this->base_url . $next .'" rel="prev">'.$this->first_tag_text2.'</a>' . $this->first_tag_close2;
 			$next = $this->cur_page - 1;
-			$output .= $this->last_tag_open . '<a href="'. $this->base_url . $next .'" rel="next">'.$this->last_tag_text.'</a>' . $this->last_tag_close;
+			$output .= $this->last_tag_open2 . '<a href="'. $this->base_url . $next .'" rel="next">'.$this->last_tag_text2.'</a>' . $this->last_tag_close2;
 		}
-		return $this->full_tag_open . $output . $this->full_tag_close;
+		return $this->full_tag_open2 . $output . $this->full_tag_close2;
 	}
 
 }

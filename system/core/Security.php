@@ -335,7 +335,7 @@ class CI_Security {
 
 		// Remove Strings that are never allowed
 		$str = $this->_do_never_allowed($str);
-
+		
 		/*
 		 * Makes PHP tags safe
 		 *

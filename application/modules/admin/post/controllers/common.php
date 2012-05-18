@@ -33,13 +33,29 @@ class Admin_Post_Common_Module extends MY_Module
 
 	/**
 	 * 顯示表單
+	 * @param int $post_id
 	 */
-	private function _form()
+	private function _form( $post_id = '' )
 	{
 		$data = array( );
 
 		// 獲取分類數據
 		$data['category_data'] = $this->_category_all();
+
+		try
+		{
+			if ( $post_id )
+			{
+				// 獲取文章數據
+				$post_data = $this->_valid_post( $post_id );
+				if ( empty( $post_data ) || $post_data['istrash'] ) throw new Exception( '非法操作', -1 );
+				$data['post_data'] = $post_data;
+			}
+		}
+		catch ( Exception $e )
+		{
+			$data['illegal_msg'] = $e->getMessage();
+		}
 
 		$this->load->view( 'form', $data );
 	}
@@ -74,7 +90,7 @@ class Admin_Post_Common_Module extends MY_Module
 			// 檢查文章類別是否合法
 			if ( !$this->_valid_category( $post_data['categoryid'] ) ) throw new Exception( '非法操作', -1 );
 
-			$post_id = $post_data['postid'];
+			$post_id = $post_data['id'];
 			if ( empty( $post_id ) )
 			{
 				// 插入
@@ -85,8 +101,9 @@ class Admin_Post_Common_Module extends MY_Module
 			{
 				// 更新
 				// 是否合法
-				if ( !$this->_valid_post( $post_id ) ) throw new Exception( '錯誤操作', -4 );
-				if ( !$this->querycache->execute( 'post', 'update', array( $post_data, $post_data['postid'] ) ) ) throw new Exception( '系統錯誤', -5 );
+				$post_raw_data = $this->_valid_post( $post_id );
+				if ( empty( $post_raw_data ) || $post_raw_data['istrash'] ) throw new Exception( '錯誤操作', -4 );
+				if ( !$this->querycache->execute( 'post', 'update', array( $post_data, $post_data['id'] ) ) ) throw new Exception( '系統錯誤', -5 );
 			}
 
 			// 添加標籤
@@ -177,7 +194,7 @@ class Admin_Post_Common_Module extends MY_Module
 	private function _form_data()
 	{
 		return array(
-			'postid' => intval( $this->input->post( 'postid' ) ),
+			'id' => intval( $this->input->post( 'postid' ) ),
 			'title' => $this->input->post( 'title' ),
 			'urltitle' => $this->input->post( 'urltitle' ),
 			'categoryid' => intval( $this->input->post( 'categoryid' ) ),
@@ -206,16 +223,16 @@ class Admin_Post_Common_Module extends MY_Module
 
 			// 檢查文章類別是否合法
 			if ( !$this->_valid_category( $post_data['categoryid'] ) ) throw new Exception( '非法操作', -2 );
-			// 未發佈
-			$post_data['ispublic'] = 0;
-			// 發佈時間為0
-			$post_data['posttime'] = 0;
-			// 是草稿
-			$post_data['isdraft'] = 1;
 
-
-			if ( empty( $post_data['postid'] ) )
+			if ( empty( $post_data['id'] ) )
 			{
+				// 未發佈
+				$post_data['ispublic'] = 0;
+				// 發佈時間為0
+				$post_data['posttime'] = 0;
+				// 是草稿
+				$post_data['isdraft'] = 1;
+
 				// 插入
 				$post_id = $this->querycache->execute( 'post', 'insert', array( $post_data ) );
 				if ( empty( $post_id ) ) throw new Exception( '系統錯誤', -3 );
@@ -223,12 +240,22 @@ class Admin_Post_Common_Module extends MY_Module
 			else
 			{
 				// 更新
-				$post_id = $post_data['postid'];
+				$post_id = $post_data['id'];
 
 				// 是否合法
-				if ( !$this->_valid_post( $post_id ) ) throw new Exception( '錯誤操作', -4 );
+				$post_raw_data = $this->_valid_post( $post_id );
+				if ( empty( $post_raw_data ) ) throw new Exception( '錯誤操作', -4 );
 
-				if ( !$this->querycache->execute( 'post', 'update', array( $post_data, $post_data['postid'] ) ) ) throw new Exception( '系統錯誤', -5 );
+				// 如果未发布
+				if ( $post_raw_data['ispublic'] == 0 )
+				{
+					// 發佈時間為0
+					$post_data['posttime'] = 0;
+					// 是草稿
+					$post_data['isdraft'] = 1;
+				}
+
+				if ( !$this->querycache->execute( 'post', 'update', array( $post_data, $post_id ) ) ) throw new Exception( '系統錯誤', -5 );
 			}
 
 			// 添加標籤
@@ -302,6 +329,7 @@ class Admin_Post_Common_Module extends MY_Module
 	/**
 	 * 檢測某文章是否合法
 	 * @param int $post_id
+	 * @return array
 	 */
 	private function _valid_post( $post_id )
 	{
@@ -310,6 +338,13 @@ class Admin_Post_Common_Module extends MY_Module
 
 		// 不是該文章的作者
 		if ( $post_data['authorid'] != $this->adminverify->id ) return FALSE;
+		// 獲取標籤
+		$post_tags = $this->querycache->get( 'tag', 'get_by_post_ids', $post_id );
+		$tags = array( );
+		foreach ( $post_tags as $single )
+			$tags[] = $single['tag'];
+		$post_data['tag'] = implode( ',', $tags );
+
 		return $post_data;
 	}
 
@@ -345,6 +380,137 @@ class Admin_Post_Common_Module extends MY_Module
 		$data['post_data'] = $post_data;
 
 		$this->load->view( 'list', $data );
+	}
+
+	/**
+	 * 修改某篇文章
+	 * @param int $post_id
+	 */
+	public function edit( $post_id )
+	{
+		// 檢查是否具有編輯權限
+		if ( $this->adminverify->deny_permission( adminverify::AUTHOR ) ) deny();
+		if ( $this->input->post( 'post_btn' ) && $this->form_validation->check_token() )
+		{
+			// 發佈文章
+			$this->_publish();
+		}
+		else
+		{
+			// 顯示表單
+			$this->_form( $post_id );
+		}
+	}
+
+	/**
+	 * 回收站列表
+	 */
+	public function trash( $page = 1 )
+	{
+		$data = array( );
+
+		// 每頁顯示條數
+		$per_page = config_item( 'per_page' );
+
+		// 當前人的文章總數
+		$total = $this->querycache->get( 'post', 'total_trash_by_authorid', $this->adminverify->id );
+		$data['total'] = $total;
+
+		// 分頁
+		$this->load->library( 'pagination' );
+		$pagination_config = array(
+			'base_url' => base_url( 'trash' ),
+			'total_rows' => $total,
+			'per_page' => $per_page,
+			'uri_segment' => 2,
+		);
+		$this->pagination->initialize( $pagination_config );
+		$pagination = $this->pagination->create_links();
+		$data['pagination'] = $pagination;
+
+		// 數據
+		$post_data = $this->querycache->get( 'post', 'get_trash_by_authorid', $this->adminverify->id, $per_page, ( $this->pagination->get_cur_page() - 1 ) * $per_page );
+		$data['post_data'] = $post_data;
+
+		$this->load->view( 'trash_list', $data );
+	}
+
+	/**
+	 * 將指定文章放入回收站
+	 * @param int $post_id 文章ID
+	 */
+	public function trash_add( $post_id )
+	{
+		$data = array( );
+		try
+		{
+			if ( empty( $post_id ) ) throw new Exception( '錯誤操作', 0 );
+
+			$post_data = $this->_valid_post( $post_id );
+			if ( empty( $post_data ) ) throw new Exception( '錯誤操作', -1 );
+
+			$this->querycache->execute( 'post', 'update_trash', array( $post_id ) );
+		}
+		catch ( Exception $e )
+		{
+			$error_msg = $e->getMessage();
+		}
+		redirect( base_url( 'trash' ) );
+	}
+
+	/**
+	 * 將指定文章從回收站撤銷
+	 * @param int $post_id 文章ID
+	 */
+	public function trash_revoke( $post_id )
+	{
+		$data = array( );
+		try
+		{
+			if ( empty( $post_id ) ) throw new Exception( '錯誤操作', 0 );
+
+			$post_data = $this->_valid_post( $post_id );
+			if ( empty( $post_data ) || !$post_data['istrash'] ) throw new Exception( '錯誤操作', -1 );
+
+			$this->querycache->execute( 'post', 'update_trash_revoke', array( $post_id ) );
+		}
+		catch ( Exception $e )
+		{
+			$error_msg = $e->getMessage();
+		}
+		redirect( base_url( 'trash' ) );
+	}
+
+	/**
+	 * 刪除指定文章數據
+	 * @param int $post_id
+	 */
+	public function delete( $post_id )
+	{
+		$data = array( );
+		try
+		{
+			if ( empty( $post_id ) ) throw new Exception( '錯誤操作', 0 );
+
+			//
+			$post_data = $this->_valid_post( $post_id );
+			if ( !$post_data['istrash'] ) throw new Exception( '錯誤操作', -1 );
+			// 刪除相關的附件
+			$post_attachment = $this->querycache->get( 'attachment', 'get_by_post_id', $post_id );
+			foreach( $post_attachment as $single )
+			{
+
+			}
+
+			// 刪除相關的評論
+
+			// 刪除文章
+
+		}
+		catch ( Exception $e )
+		{
+
+		}
 	}
 
 }

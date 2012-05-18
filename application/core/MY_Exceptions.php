@@ -13,11 +13,13 @@ class MY_Exceptions extends CI_Exceptions
 {
 
 	private $_url404;
+	private $_urlerr;
 
 	function __construct()
 	{
 		parent::__construct();
 		$this->_url404 = config_item('base_url') . '404';
+		$this->_urlerr = config_item('base_url') . 'error';
 	}
 
 	/**
@@ -38,7 +40,7 @@ class MY_Exceptions extends CI_Exceptions
 	 */
 	function show_error($heading, $message, $template = 'error_general', $status_code = 500)
 	{
-		$this->_redirect( config_item('base_url') );
+		$this->_redirect( $this->_urlerr );
 	}
 
 	/**

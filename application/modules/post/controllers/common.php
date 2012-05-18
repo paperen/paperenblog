@@ -476,7 +476,7 @@ class Post_Common_Module extends CI_Module
 			$postid_or_urltitle = urldecode( $postid_or_urltitle );
 			$post_data = $this->querycache->get( 'post', 'get_by_urltitle', $postid_or_urltitle );
 		}
-		if ( $post_data['ispublic'] ) return $post_data;
+		if ( isset( $post_data['ispublic'] ) ) return $post_data;
 		return FALSE;
 	}
 
@@ -690,15 +690,6 @@ class Post_Common_Module extends CI_Module
 		header( $this->rss2->headers() );
 		echo $this->rss2->render();
 		exit();
-	}
-
-	/**
-	 * 404頁面
-	 */
-	public function not_found()
-	{
-		$data = array( );
-		$this->load->view( '404', $data );
 	}
 
 }

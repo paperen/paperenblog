@@ -2,11 +2,17 @@
 <?php $this->load->module('admin/sidebar/common/index'); ?>
 <!-- main -->
 <div class="main span10">
+	<?php if( isset( $illegal_msg ) && $illegal_msg ) { ?>
+	<div class="alert alert-block alert-error">
+		<h4 class="alert-heading"><?php echo $illegal_msg; ?></h4>
+		<p><a href="javascript:window.history.go(-1);">返回</a></p>
+	</div>
+	<?php } else { ?>
 	<h3><i class="icon-edit"></i>發表新文章</h3>
 	<hr>
 	<div class="row-fluid">
 		<?php echo form_open('', array('class' => 'post-form form-inline form-horizontal', 'id' => 'post-form')); ?>
-		<?php echo form_hidden('postid', isset( $post_data['postid'] ) ? $post_data['postid'] : '', 'id="postid"'); ?>
+		<?php echo form_hidden('postid', isset( $post_data['id'] ) ? $post_data['id'] : '', 'id="postid"'); ?>
 		<div class="span8">
 		<?php if( isset( $error ) && $error ) { ?>
 		<div class="alert alert-block alert-error">
@@ -27,7 +33,7 @@
 			'class' => 'span11 input-autosave',
 			'placeholder' => '文章標題',
 		)); ?></p>
-		<p id="permalink" class="hide">固定鏈接 <?php echo post_permalink(''); ?>
+		<p id="permalink"<?php if ( !isset( $post_data['urltitle'] ) ){ ?> class="hide"<?php } ?>>固定鏈接 <?php echo post_permalink(''); ?>
 		<?php echo form_input(array(
 			'id' => 'urltitle',
 			'name' => 'urltitle',
@@ -47,7 +53,7 @@
 		<div class="span3 post-sidebar">
 			<div id="autosave-tip" class="alert alert-block hide">
 			</div>
-			<div class="box box-radius box-headtitle">
+<!--			<div class="box box-radius box-headtitle">
 				<h4 class="title">草稿</h4>
 				<p>
 				<?php echo form_button(array(
@@ -55,7 +61,7 @@
 					'class' => 'btn'
 				), '保存草稿'); ?>
 				</p>
-			</div>
+			</div>-->
 			<div class="box box-radius box-headtitle margin-top10">
 				<h4 class="title">標籤</h4>
 				<ul class="unstyled" id="tag_list"></ul>
@@ -94,43 +100,44 @@
 		<?php echo create_token(); ?>
 		<?php echo form_close(); ?>
 	</div>
+	<?php echo js( base_url('editor/kindeditor-min.js') ); ?>
+	<?php echo js( base_url('editor/lang/zh_CN.js') ); ?>
+	<?php echo js( base_url('editor/default-options.js') ); ?>
+	<?php echo js( 'jquery-ui-highlight.js' ); ?>
+	<?php echo js( 'admin/post.js' ); ?>
+	<?php echo js( 'admin/tag.js' ); ?>
+	<script>
+	$(function(){
+		$('#title').blur(function(){
+			if ( $(this).val() == '' ) return;
+			$('#urltitle').val( $(this).val() );
+			$('#permalink').slideDown(100);
+		});
+		$('#urltitle').bind({
+			click: function(){
+				$(this).attr('readonly', false);
+			},
+			blur: function(){
+				$(this).attr('readonly', true);
+			}
+		});
+		// editor
+		var editor;
+		KindEditor.ready(function(K) {
+			editor = K.create('textarea[name="content"]', DEFAULT_OPTIONS);
+			//
+			editor.edit.doc.onkeyup = function() {
+				editor.sync();
+				autosave_on( 5000 );
+			}
+		});
+		// auto save
+		autosave_init('#post-form', '#autosave-tip', '<?php echo base_url('save_draft'); ?>');
+		// tag
+		$('#tag').tag();
+	});
+	</script>
+	<?php } ?>
 </div>
-<?php echo js( base_url('editor/kindeditor-min.js') ); ?>
-<?php echo js( base_url('editor/lang/zh_CN.js') ); ?>
-<?php echo js( base_url('editor/default-options.js') ); ?>
-<?php echo js( 'jquery-ui-highlight.js' ); ?>
-<?php echo js( 'admin/post.js' ); ?>
-<?php echo js( 'admin/tag.js' ); ?>
-<script>
-$(function(){
-	$('#title').blur(function(){
-		if ( $(this).val() == '' ) return;
-		$('#urltitle').val( $(this).val() );
-		$('#permalink').slideDown(100);
-	});
-	$('#urltitle').bind({
-		click: function(){
-			$(this).attr('readonly', false);
-		},
-		blur: function(){
-			$(this).attr('readonly', true);
-		}
-	});
-	// editor
-	var editor;
-	KindEditor.ready(function(K) {
-		editor = K.create('textarea[name="content"]', DEFAULT_OPTIONS);
-		//
-		editor.edit.doc.onkeyup = function() {
-			editor.sync();
-			autosave_on( 5000 );
-		}
-	});
-	// auto save
-	autosave_init('#post-form', '#autosave-tip', '<?php echo base_url('save_draft'); ?>');
-	// tag
-	$('#tag').tag();
-});
-</script>
 <!-- main -->
 <?php $this->load->module('admin/footer/common/index'); ?>

@@ -51,7 +51,9 @@ $route['row'] = 'module/post/common/display_set/row';
 $route['page/(:num)'] = 'module/post/common/fragment/$1';
 
 // 404
-$route['404'] = 'module/post/common/not_found';
+$route['404'] = 'module/static/common/not_found';
+// error
+$route['error'] = 'module/static/common/error';
 
 // 頂
 $route['post/(:num)/ding'] = 'module/post/common/feedback/$1/ding';
@@ -105,6 +107,12 @@ $route['file_manager'] = 'module/admin/file/common/manager';
 $route['save_draft'] = 'module/admin/post/common/save';
 $route['my_post'] = 'module/admin/post/common/my';
 $route['my_post/(:num)'] = 'module/admin/post/common/my/$1';
+$route['edit/(:num)'] = 'module/admin/post/common/edit/$1';
+$route['trash'] = 'module/admin/post/common/trash';
+$route['trash/(:num)'] = 'module/admin/post/common/trash/$1';
+$route['trash_add/(:num)'] = 'module/admin/post/common/trash_add/$1';
+$route['trash_revoke/(:num)'] = 'module/admin/post/common/trash_revoke/$1';
+$route['delete/(:num)'] = 'module/admin/post/common/delete/$1';
 
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */

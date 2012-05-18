@@ -14,7 +14,14 @@ class Admin_Sidebar_Common_Module extends MY_Module
 
 	public function index()
 	{
-		$data = array();
+		$data = array( );
+
+		// 用戶文章總數
+		$data['post_total'] = $this->querycache->get( 'post', 'total_by_authorid', $this->adminverify->id );
+
+		// 回收站文章總數
+		$data['trash_total'] = $this->querycache->get( 'post', 'total_trash_by_authorid', $this->adminverify->id );
+
 		$this->load->view( 'index', $data );
 	}
 

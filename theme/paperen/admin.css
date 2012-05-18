@@ -197,3 +197,24 @@ a:hover {
 	margin-top: 3px;
 	margin-right: 5px;
 }
+.postlist-table .td-title {
+	border-right: 1px #D0D0D0 solid;
+}
+.postlist-table .title {
+	font-size: 16px;
+}
+.postlist-table td {
+	background: #F5F5F5;
+}
+.postlist-table .tr-publish td {
+	background: #FFF;
+}
+.postlist-table .btn-toolbar {
+	margin: 0;
+}
+.postlist-table tr.tr-active td {
+	background: #FFFFE6;
+}
+.postlist-table .alert-block {
+	margin: 0;
+}

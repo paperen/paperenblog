@@ -44,6 +44,28 @@ class Attachment_model extends CI_Model
 	}
 
 	/**
+	 * 根據文章ID獲取相關的附件數據
+	 * @param int $post_id 文章ID
+	 * @return array
+	 */
+	public function get_by_post_id( $post_id )
+	{
+		return $this->db->select(
+								'a.id,a.name,a.path,
+						 a.suffix,a.size,
+						 a.isimage,a.isthumbnail,
+						 a.addtime,
+						 u.name as uploader'
+						)
+						->from( "{$this->_tables['post_attachment']} as pa" )
+						->join( "{$this->_tables['attachment']} as a", 'a.id = pa.attachmentid' )
+						->join( "{$this->_tables['user']} as u", 'u.id = a.userid' )
+						->where( 'pa.postid', $post_id )
+						->get()
+						->result_array();
+	}
+
+	/**
 	 * 獲取指定文章IDS的代表圖片
 	 * @param array $post_ids 文章IDs
 	 * @return array

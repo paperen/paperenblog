@@ -9,6 +9,17 @@
 class MY_Security extends CI_Security
 {
 
+	protected $_never_allowed_str = array(
+			'document.cookie'	=> '',
+			'document.write'	=> '',
+			'.parentNode'		=> '',
+			'.innerHTML'		=> '',
+			'window.location'	=> '',
+			'-moz-binding'		=> '',
+			'<![CDATA['			=> '&lt;![CDATA[',
+			'<comment>'			=> '&lt;comment&gt;'
+	);
+
 	/*
 	 * Remove Evil HTML Attributes (like evenhandlers and style)
 	 *

@@ -9,7 +9,8 @@
 			<li>
 				<ul class="nav nav-tabs nav-stacked nav-sub">
 					<li><a href="<?php echo base_url('add_post'); ?>">發表新文章</a></li>
-					<li><a href="<?php echo base_url('my_post'); ?>">我的文章</a></li>
+					<li><a href="<?php echo base_url('my_post'); ?>">我的文章 <strong><?php echo $post_total; ?></strong></a></li>
+					<li><a href="<?php echo base_url('trash'); ?>">回收站 <strong><?php echo $trash_total; ?></strong></a></li>
 					<li><a href="<?php echo base_url('my_category'); ?>">文章類別</a></li>
 				</ul>
 			</li>

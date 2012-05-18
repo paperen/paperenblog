@@ -48,7 +48,7 @@ class Post_model extends CI_Model
 								'p.id,p.title,p.urltitle,
 						 p.categoryid,p.content,
 						 p.authorid,p.click,p.good,
-						 p.bad,p.posttime,p.ispublic,p.isdraft,
+						 p.bad,p.posttime,p.ispublic,p.isdraft,p.istrash,
 						 c.category,
 						 u.name as author,
 						 u.email as authoremail,
@@ -87,7 +87,7 @@ class Post_model extends CI_Model
 	}
 
 	/**
-	 * 根據作者ID獲取文章數據
+	 * 根據作者ID獲取文章數據（不包括回收站的）
 	 * @param int $author_id
 	 * @return array
 	 */
@@ -104,6 +104,35 @@ class Post_model extends CI_Model
 				->from( "{$this->_tables['post']} as p" )
 				->join( "{$this->_tables['category']} as c", 'c.id = p.categoryid' )
 				->join( "{$this->_tables['user']} as u", 'u.id = p.authorid' )
+				->where( 'p.istrash', FALSE )
+				->where( 'p.authorid', $author_id );
+		if ( $per_page ) $query->limit( $per_page, $offset );
+		return $query->order_by( 'p.id', 'desc' )
+						->get()
+						->result_array();
+	}
+
+	/**
+	 * 獲取指定作者放回收站的文章數據
+	 * @param int $author_id
+	 * @param int $per_page
+	 * @param int $offset
+	 * @return array
+	 */
+	public function get_trash_by_authorid( $author_id, $per_page = 0, $offset = 0 )
+	{
+		$query = $this->db->select(
+						'p.id,p.title,p.urltitle,
+						 p.categoryid,p.content,
+						 p.authorid,p.click,p.good,
+						 p.bad,p.posttime,p.ispublic,p.isdraft,
+						 c.category,
+						 u.name as author'
+				)
+				->from( "{$this->_tables['post']} as p" )
+				->join( "{$this->_tables['category']} as c", 'c.id = p.categoryid' )
+				->join( "{$this->_tables['user']} as u", 'u.id = p.authorid' )
+				->where( 'p.istrash', TRUE )
 				->where( 'p.authorid', $author_id );
 		if ( $per_page ) $query->limit( $per_page, $offset );
 		return $query->order_by( 'p.id', 'desc' )
@@ -356,6 +385,39 @@ class Post_model extends CI_Model
 				->update( $this->_tables['post'] );
 	}
 
+
+	/**
+	 * 標記指定文章為垃圾
+	 * @param int $post_id
+	 * @return int
+	 */
+	public function update_trash( $post_id )
+	{
+		$update_data = array(
+			'istrash' => TRUE,
+			'ispublic' => FALSE,
+		);
+		$this->db->where( 'id', $post_id )
+				->update( $this->_tables['post'], $update_data );
+		return $this->db->affected_rows();
+	}
+
+	/**
+	 * 撤銷指定文章
+	 * @param int $post_id
+	 * @return int
+	 */
+	public function update_trash_revoke( $post_id )
+	{
+		$update_data = array(
+			'istrash' => FALSE,
+			'ispublic' => TRUE,
+		);
+		$this->db->where( 'id', $post_id )
+				->update( $this->_tables['post'], $update_data );
+		return $this->db->affected_rows();
+	}
+
 	/**
 	 * 更新
 	 * @param array $data
@@ -462,13 +524,26 @@ class Post_model extends CI_Model
 	}
 
 	/**
-	 * 獲取指定作者所有文章總數
+	 * 獲取指定作者所有文章總數（不包括回收站的）
 	 * @param int $author_id
 	 * @return int
 	 */
 	public function total_by_authorid( $author_id )
 	{
 		return $this->db->where( 'authorid', $author_id )
+						->where( 'istrash', FALSE )
+						->count_all_results( $this->_tables['post'] );
+	}
+
+	/**
+	 * 獲取指定作者放入回收站的文章總數
+	 * @param int $author_id
+	 * @return int
+	 */
+	public function total_trash_by_authorid( $author_id )
+	{
+		return $this->db->where( 'authorid', $author_id )
+						->where( 'istrash', TRUE )
 						->count_all_results( $this->_tables['post'] );
 	}
 

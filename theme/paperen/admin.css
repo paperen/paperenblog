@@ -218,3 +218,6 @@ a:hover {
 .postlist-table .alert-block {
 	margin: 0;
 }
+ul.list_order {
+	margin-left: -15px;
+}

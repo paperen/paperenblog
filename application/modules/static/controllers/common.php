@@ -30,6 +30,33 @@ class Static_Common_Module extends CI_Module
 		$this->load->view( 'error', $data );
 	}
 
+	/**
+	 * 輸出kindeditor的配置
+	 */
+	public function kindeditor_config()
+	{
+		$config = array(
+			'width' => '100%',
+			'height' => '650px',
+			'items' => array(
+				'fullscreen', 'source', '|', 'preview',
+				'justifyleft', 'justifycenter', 'justifyright',
+				'justifyfull', 'insertorderedlist', 'insertunorderedlist', 'indent', 'outdent', 'subscript',
+				'superscript', 'clearhtml', '|',
+				'formatblock', 'fontname', 'fontsize', 'forecolor', 'hilitecolor', 'bold',
+				'italic', 'underline', 'strikethrough', 'removeformat', '|', 'image',
+				'table', 'hr', 'map', 'code', 'pagebreak', 'anchor', 'link', 'unlink'
+			),
+			'resizeType' => 1,
+			'uploadJson' => '/paperenblog/upload/',
+			'fileManagerJson' => './file_manager/',
+			'allowFileManager' => true,
+			'allowUpload' => true,
+			'newlineTag' => 'p',
+		);
+		echo '<script>var DEFAULT_OPTIONS = ' . stripslashes( json_encode( $config ) ) . ';</script>';
+	}
+
 }
 
 // end of common

@@ -102,7 +102,7 @@
 	</div>
 	<?php echo js( base_url('editor/kindeditor-min.js') ); ?>
 	<?php echo js( base_url('editor/lang/zh_CN.js') ); ?>
-	<?php echo js( base_url('editor/default-options.js') ); ?>
+	<?php $this->load->module('static/common/kindeditor_config'); ?>
 	<?php echo js( 'jquery-ui-highlight.js' ); ?>
 	<?php echo js( 'admin/post.js' ); ?>
 	<?php echo js( 'admin/tag.js' ); ?>

@@ -47,7 +47,7 @@ class Admin_File_Common_Module extends MY_Module
 			// 上傳成功
 			$upload_data = $this->upload->data();
 			$insert_data = array(
-				'name' => $upload_data['client_name'],
+				'name' => get_file_rawname( $upload_data['client_name'] ),
 				'path' => strtolower( $this->_upload_subpath . $upload_data['file_name'] ),
 				'suffix' => trim( $upload_data['file_ext'], '.' ),
 				'size' => $upload_data['file_size'],

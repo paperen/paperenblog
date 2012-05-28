@@ -497,20 +497,29 @@ class Admin_Post_Common_Module extends MY_Module
 			if ( !$post_data['istrash'] ) throw new Exception( '錯誤操作', -1 );
 			// 刪除相關的附件
 			$post_attachment = $this->querycache->get( 'attachment', 'get_by_post_id', $post_id );
-			foreach( $post_attachment as $single )
+			$attachment_ids = array();
+			foreach ( $post_attachment as $single )
 			{
-
+				$attachment_path = config_item( 'upload_path' ) . $single['path'];
+				@unlink( $attachment_path );
+				$attachment_ids[] = $single['id'];
 			}
+			$this->querycache->execute( 'attachment', 'delete_by_ids', array( $attachment_ids ) );
+			$this->querycache->execute( 'post', 'delete_attachment', array( $post_id ) );
 
 			// 刪除相關的評論
+			$this->querycache->execute( 'comment', 'delete_by_post_id', array( $post_id ) );
 
 			// 刪除文章
+			$this->querycache->execute( 'post', 'delete_by_id', array( $post_id ) );
 
+			$data['error'] = FALSE;
 		}
 		catch ( Exception $e )
 		{
-
+			$data['error'] = $e->getMessage();
 		}
+		$this->load->view( 'delete', $data );
 	}
 
 }

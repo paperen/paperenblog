@@ -53,16 +53,16 @@ class Comment_model extends CI_Model
 	public function get_by_id( $comment_id )
 	{
 		return $this->db->select(
-				'c.id,c.postid,c.userid,c.author,c.email,c.url,c.commenttime,c.content,c.pid,c.isneednotice,
+								'c.id,c.postid,c.userid,c.author,c.email,c.url,c.commenttime,c.content,c.pid,c.isneednotice,
 					u.name as username,u.email as useremail,u.url as userurl,
 					p.title,p.urltitle,p.authorid'
-				)
-				->from( "{$this->_tables['comment']} as c" )
-				->join( "{$this->_tables['post']} as p", 'p.id = c.postid' )
-				->join( "{$this->_tables['user']} as u", 'u.id = c.userid', 'left' )
-				->where( 'c.id', $comment_id )
-				->get()
-				->row_array();
+						)
+						->from( "{$this->_tables['comment']} as c" )
+						->join( "{$this->_tables['post']} as p", 'p.id = c.postid' )
+						->join( "{$this->_tables['user']} as u", 'u.id = c.userid', 'left' )
+						->where( 'c.id', $comment_id )
+						->get()
+						->row_array();
 	}
 
 	/**
@@ -125,8 +125,8 @@ class Comment_model extends CI_Model
 	public function total_by_postid( $post_id )
 	{
 		return $this->db->where( 'postid', $post_id )
-				->where( 'ispublic', TRUE )
-				->count_all_results( 'comment' );
+						->where( 'ispublic', TRUE )
+						->count_all_results( 'comment' );
 	}
 
 	/**
@@ -136,10 +136,10 @@ class Comment_model extends CI_Model
 	public function total_by_postids( $post_ids )
 	{
 		return $this->db->select( 'COUNT(`id`) as num, postid', FALSE )
-				->from( "{$this->_tables['comment']} as c" )
-				->group_by( 'postid' )
-				->get()
-				->result_array();
+						->from( "{$this->_tables['comment']} as c" )
+						->group_by( 'postid' )
+						->get()
+						->result_array();
 	}
 
 	/**
@@ -165,6 +165,18 @@ class Comment_model extends CI_Model
 
 		$this->db->insert( $this->_tables['comment'], $insert_data );
 		return $this->db->insert_id();
+	}
+
+	/**
+	 * 刪除指定文章ID的評論數據
+	 * @param int $post_id 文章ID
+	 * @return int 影響行數
+	 */
+	public function delete_by_post_id( $post_id )
+	{
+		$this->db->where( 'postid', $post_id )
+				->delete( $this->_tables['comment'] );
+		return $this->db->affected_rows();
 	}
 
 }

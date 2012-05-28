@@ -496,6 +496,18 @@ class Post_model extends CI_Model
 	}
 
 	/**
+	 * 根據文章ID刪除該文章數據
+	 * @param int $post_id 文章ID
+	 * @return int 影響行數
+	 */
+	public function delete_by_id( $post_id )
+	{
+		$this->db->where( 'id', $post_id )
+				->delete( $this->_tables['post'] );
+		return $this->db->affected_rows();
+	}
+
+	/**
 	 * 建立指定文章與指定文件的關係
 	 * @param array $file_ids
 	 * @param int $post_id

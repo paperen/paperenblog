@@ -124,6 +124,30 @@ class Attachment_model extends CI_Model
 		return $this->db->affected_rows();
 	}
 
+	/**
+	 * 根據附件ID刪除相應的附件數據
+	 * @param int $ids
+	 * @return int 影響行數
+	 */
+	public function delete_by_ids( $ids )
+	{
+		$this->db->where_in( 'id', $ids )
+				->delete( $this->_tables['attachment'] );
+		return $this->db->affected_rows();
+	}
+
+	/**
+	 * 解除文章與附件的關係
+	 * @param int $post_id
+	 * @return int 影響行數
+	 */
+	public function delete_by_post_id( $post_id )
+	{
+		$this->db->where( 'postid', $post_id )
+				->delete( $this->_tables['post_attachment'] );
+		return $this->db->affected_rows();
+	}
+
 }
 
 // end of Post_model

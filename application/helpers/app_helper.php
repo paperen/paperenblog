@@ -310,7 +310,7 @@ function favicon_ico( $name = '' )
  */
 function deny( $url = '' )
 {
-	$url = empty( $url ) ? base_url('deny') : $url;
+	$url = empty( $url ) ? base_url( 'deny' ) : $url;
 	redirect( $url );
 }
 
@@ -320,16 +320,17 @@ function deny( $url = '' )
  * @param int $index
  * @return int
  */
-function get_thumbimg_from_string( $string, $index = 1 ) {
+function get_thumbimg_from_string( $string, $index = 1 )
+{
 
 	// 匹配所有图片
-    preg_match_all('/\<img.*src=\"(.*)\".*\/\>/Ui', $string, $matches);
+	preg_match_all( '/\<img.*src=\"(.*)\".*\/\>/Ui', $string, $matches );
 	$img_arr = $matches[1];
 	if ( empty( $img_arr ) ) return;
 
 	// 过滤非本站图片
-	$self_img_arr = array();
-	foreach( $img_arr as $img_url )
+	$self_img_arr = array( );
+	foreach ( $img_arr as $img_url )
 	{
 		if ( strpos( $img_url, '/file/' ) === FALSE ) continue;
 		$self_img_arr[] = $img_url;
@@ -337,7 +338,7 @@ function get_thumbimg_from_string( $string, $index = 1 ) {
 	if ( empty( $self_img_arr ) ) return;
 
 	if ( $index > count( $self_img_arr ) || $index < 0 ) $index = 1;
-	$self_img = $self_img_arr[$index-1];
+	$self_img = $self_img_arr[$index - 1];
 	preg_match( '/.*\/file\/(\d+)/', $self_img, $matches );
 	return $matches[1];
 }
@@ -351,11 +352,21 @@ function get_thumbimg_from_string( $string, $index = 1 ) {
 function get_file_from_string( $string, $index = -1 )
 {
 	// 匹配所有图片
-    preg_match_all('/\<img.*src=\".*\/file\/(\d+)\/?\".*\/\>/Ui', $string, $matches);
+	preg_match_all( '/\<img.*src=\".*\/file\/(\d+)\/?\".*\/\>/Ui', $string, $matches );
 	if ( empty( $matches[1] ) ) return;
 	if ( $index < 0 ) return $matches[1];
 	if ( $index > count( $matches[1] ) ) return $matches[1][0];
 	return $matches[1][$index];
+}
+
+/**
+ * 獲取文件原始名（不含後綴）
+ * @param string $filename
+ * @return string
+ */
+function get_file_rawname( $filename )
+{
+	return substr( $filename, 0, strrpos( $filename, '.' ) );
 }
 
 // end of app_helper

@@ -13,7 +13,7 @@ class MY_Module extends CI_Module {
 	{
 		parent::__construct();
 		$this->load->library('adminverify');
-
+		
 		// 非法用戶
 		if ( !$this->adminverify->valid() ) redirect( base_url('login') );
 	}

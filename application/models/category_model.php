@@ -113,7 +113,7 @@ class Category_model extends CI_Model
 				->join( "{$this->_tables['user']} as u", 'u.id=c.userid', 'left' )
 				->where( 'c.userid', $author_id );
 		if ( $per_page ) $query->limit( $per_page, $offset );
-		return $query->order_by( 'c.id', 'asc' )
+		return $query->order_by( 'c.pid', 'asc' )
 						->get()
 						->result_array();
 	}
@@ -200,6 +200,35 @@ class Category_model extends CI_Model
 		);
 		$this->db->where( 'pid', $cur_pid )
 				->update( $this->_tables['category'], $update_data );
+		return $this->db->affected_rows();
+	}
+
+	/**
+	 * 更新指定的类别pid数据
+	 * @param array $data
+	 * @param int $id
+	 * @return int 影响行数
+	 */
+	public function update_pid( $data, $id )
+	{
+		$update_data = array(
+			'pid' => $data['pid'],
+			'pidlevel' => isset( $data['pidlevel'] ) ? $data['pidlevel'] : '0-',
+		);
+		$this->db->where( 'id', $id )
+				->update( $this->_tables['category'], $update_data );
+		return $this->db->affected_rows();
+	}
+
+	/**
+	 * 删除指定的类别
+	 * @param int $id
+	 * @return int
+	 */
+	public function delete( $id )
+	{
+		$this->db->where( 'id', $id )
+				->delete( $this->_tables['category'] );
 		return $this->db->affected_rows();
 	}
 

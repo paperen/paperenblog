@@ -257,11 +257,26 @@ class Admin_Category_Common_Module extends MY_Module
 			// 將子類提升到父類級別
 			// 獲取所有兒子
 			$category_son_data = $this->querycache->get( 'category', 'get_by_pid', $category_id );
+			foreach ( $category_son_data as $single )
+			{
+				$tmp_arr = explode( '-', trim( $single['pidlevel'], '-' ) );
+				foreach ( $tmp_arr as $k => $v )
+				{
+					if ( $v == $category_id ) array_splice( $tmp_arr, $k, 1 );
+				}
+				$new_pidlevel = implode( '-', $tmp_arr ). '-';
+				$new_pid = array_pop( $tmp_arr );
+				$new_category = array(
+					'pid' => $new_pid,
+					'pidlevel' => $new_pidlevel,
+				);
+				$this->querycache->execute('category', 'update_pid', array( $new_category, $single['id'] ) );
+			}
 
+			// 删除类别
+			$this->querycache->execute('category', 'delete', array( $category_id ) );
 
-			// 直系
-			$this->querycache->execute( 'category', 'update_pid_to_pid', array( $category_id, $pid ) );
-			// 子系
+			redirect( base_url('my_category') );
 		}
 		catch ( Exception $e )
 		{

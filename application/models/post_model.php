@@ -385,7 +385,6 @@ class Post_model extends CI_Model
 				->update( $this->_tables['post'] );
 	}
 
-
 	/**
 	 * 標記指定文章為垃圾
 	 * @param int $post_id
@@ -454,6 +453,22 @@ class Post_model extends CI_Model
 			'isdraft' => FALSE,
 		);
 		$this->db->where( 'id', $post_id )
+				->update( $this->_tables['post'], $update_data );
+		return $this->db->affected_rows();
+	}
+
+	/**
+	 * 更新指定的類別文章變為另一個類別
+	 * @param int $cur_category
+	 * @param int $to_category
+	 * @return int 影響行數
+	 */
+	public function update_category_to_category( $cur_category, $to_category )
+	{
+		$update_data = array(
+			'categoryid' => $to_category,
+		);
+		$this->db->where( 'categoryid', $cur_category )
 				->update( $this->_tables['post'], $update_data );
 		return $this->db->affected_rows();
 	}

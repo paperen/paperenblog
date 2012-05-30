@@ -3,7 +3,7 @@
 <!-- main -->
 <div class="main span10">
 	<div class="btn-group pull-right">
-		<a href="<?php echo base_url('add_category'); ?>" class="btn btn-success"><i class="icon-plus icon-white"></i> 添加新類別</a>
+		<a href="<?php echo base_url('my_category/add'); ?>" class="btn btn-success"><i class="icon-plus icon-white"></i> 添加新類別</a>
 	</div>
 	<h3><i class="icon-edit"></i>我的類別 <strong>共<?php echo $total; ?></strong></h3>
 	<hr>
@@ -15,8 +15,8 @@
 				<i class="icon-folder-open"></i>&nbsp;
 				<?php } ?>
 				<?php echo $category['category']; ?>
-				<a href="<?php echo base_url("edit_category/{$category['id']}"); ?>">修改</a> /
-				<a href="#">刪除</a>
+				<a href="<?php echo base_url("my_category/edit/{$category['id']}"); ?>">修改</a>
+				<a href="javascript:void(0);" class="btn-delete" rel="<?php echo $category['id']; ?>">刪除</a>
 			</li>
 			<?php } ?>
 		</ul>
@@ -46,4 +46,32 @@ function list_order( id ) {
 }
 </script>
 <!-- main -->
+<div id="confirm-delete" class="modal hide fade in">
+<div class="modal-header">
+	<a class="close" data-dismiss="modal">&times</a>
+	<h3>親~請再次確定刪除這個類別</h3>
+</div>
+<div class="modal-body">
+	<p>執行此動作將產生以下結果</p>
+	<ul>
+		<li>該類別文章會歸為父級類別，若該類別唔上級則歸為[默認類別]</li>
+		<li>該類別的子類會繼承到父級</li>
+	</ul>
+</div>
+<div class="modal-footer">
+	<a href="#" class="btn" data-dismiss="modal">取消</a>
+	<a href="#" class="btn btn-primary" id="confirm-delete-url">確定</a>
+</div>
+</div>
+<?php echo js('bootstrap/bootstrap-modal.js'); ?>
+<script>
+$(function(){
+	var delete_url = '<?php echo base_url('my_category/delete'); ?>/';
+	// 徹底刪除
+	$('.btn-delete').click(function(){
+		$('#confirm-delete-url').attr('href', delete_url + $(this).attr('rel') );
+		$('#confirm-delete').modal('show');
+	});
+});
+</script>
 <?php $this->load->module('admin/footer/common/index'); ?>

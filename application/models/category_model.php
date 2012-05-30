@@ -28,8 +28,9 @@ class Category_model extends CI_Model
 	 */
 	public function get_by_name( $category )
 	{
-		return $this->db->select( 'c.id,c.category,c.pid,c.ispublic' )
+		return $this->db->select( 'c.id,c.category,c.pidlevel,c.pid,c.ispublic,c.userid,u.name,c.isdefault' )
 						->from( "{$this->_tables['category']} as c" )
+						->join( "{$this->_tables['user']} as u", 'u.id=c.userid', 'left' )
 						->where( 'c.category', $category )
 						->get()
 						->row_array();
@@ -42,9 +43,40 @@ class Category_model extends CI_Model
 	 */
 	public function get_by_id( $id )
 	{
-		return $this->db->select( 'c.id,c.category,c.pid,c.ispublic' )
+		return $this->db->select( 'c.id,c.category,c.pidlevel,c.pid,c.ispublic,c.userid,u.name,c.isdefault' )
 						->from( "{$this->_tables['category']} as c" )
+						->join( "{$this->_tables['user']} as u", 'u.id=c.userid', 'left' )
 						->where( 'c.id', $id )
+						->get()
+						->row_array();
+	}
+
+	/**
+	 * 根據ID獲取所有子類別數據
+	 * @param int $parent_id]
+	 * @return array
+	 */
+	public function get_by_pid( $parent_id )
+	{
+		$like = '-' . trim( $parent_id, '-' ) . '-';
+		return $this->db->select( 'c.id,c.category,c.pidlevel,c.pid,c.ispublic,c.userid,u.name,c.isdefault' )
+						->from( "{$this->_tables['category']} as c" )
+						->join( "{$this->_tables['user']} as u", 'u.id=c.userid', 'left' )
+						->like( 'pidlevel', $like )
+						->get()
+						->result_array();
+	}
+
+	/**
+	 * 獲取默認類別數據
+	 * @return array
+	 */
+	public function get_default()
+	{
+		return $this->db->select( 'c.id,c.category,c.pidlevel,c.pid,c.ispublic,c.userid,c.isdefault' )
+						->from( "{$this->_tables['category']} as c" )
+						->where( 'c.isdefault', TRUE )
+						->limit( 1 )
 						->get()
 						->row_array();
 	}
@@ -135,6 +167,40 @@ class Category_model extends CI_Model
 		);
 		$this->db->insert( $this->_tables['category'], $insert_data );
 		return $this->db->insert_id();
+	}
+
+	/**
+	 * 更新指定類別數據
+	 * @param array $data
+	 * @param int $id
+	 * @return int 影響行數
+	 */
+	public function update( $data, $id )
+	{
+		$update_data = array(
+			'category' => $data['category'],
+			'pid' => isset( $data['pid'] ) ? $data['pid'] : 0,
+			'pidlevel' => isset( $data['pidlevel'] ) ? $data['pidlevel'] : '0-',
+		);
+		$this->db->where( 'id', $id )
+				->update( $this->_tables['category'], $update_data );
+		return $this->db->affected_rows();
+	}
+
+	/**
+	 * 根據pid更新pid……
+	 * @param int $cur_pid
+	 * @param int $to_pid
+	 * @return 影響行數
+	 */
+	public function update_pid_to_pid( $cur_pid, $to_pid )
+	{
+		$update_data = array(
+			'pid' => $to_pid,
+		);
+		$this->db->where( 'pid', $cur_pid )
+				->update( $this->_tables['category'], $update_data );
+		return $this->db->affected_rows();
 	}
 
 }

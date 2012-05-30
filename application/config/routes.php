@@ -115,8 +115,10 @@ $route['trash_revoke/(:num)'] = 'module/admin/post/common/trash_revoke/$1';
 $route['delete/(:num)'] = 'module/admin/post/common/delete/$1';
 $route['my_category'] = 'module/admin/category/common/my';
 $route['my_category/(:num)'] = 'module/admin/category/common/my/$1';
-$route['add_category'] = 'module/admin/category/common/add';
-$route['edit_category/(:num)'] = 'module/admin/category/common/edit/$1';
+$route['my_category/add'] = 'module/admin/category/common/add';
+$route['my_category/edit/(:num)'] = 'module/admin/category/common/edit/$1';
+$route['my_category/edit_submit'] = 'module/admin/category/common/edit';
+$route['my_category/delete/(:num)'] = 'module/admin/category/common/delete/$1';
 
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */

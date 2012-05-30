@@ -4,14 +4,19 @@
 <div class="main span10">
 	<?php if( isset( $success ) && $success ) { ?>
 		<div class="alert alert-block alert-success">
-			<h4 class="alert-heading">添加 <?php echo $category_data['category']; ?> 類別成功</h4>
+			<h4 class="alert-heading">操作成功</h4>
 			<p><a href="<?php echo base_url('my_category'); ?>" class="btn btn-small">返回文章類別</a></p>
 			<script>setTimeout('window.location.href="<?php echo base_url('my_category'); ?>";', 3000);</script>
 		</div>
 	<?php } else { ?>
+		<?php if( isset( $isedit ) && $isedit ) { ?>
+		<h3><i class="icon-edit"></i>修改<?php echo $category_data['category']; ?>類別</h3>
+		<?php } else { ?>
 		<h3><i class="icon-plus"></i>添加新類別</h3>
+		<?php } ?>
 		<hr>
-		<?php echo form_open('', array('class' => 'category-form box box-radius', 'id' => 'category-form')); ?>
+		<?php echo form_open(isset( $form_action ) ? $form_action : '', array('class' => 'category-form box box-radius', 'id' => 'category-form')); ?>
+		<?php echo form_hidden('id', isset( $category_data['id'] ) ? $category_data['id'] : '' ); ?>
 		<?php if( isset( $err ) && $err ) { ?>
 		<div class="alert alert-block alert-error">
 			<h4 class="alert-heading">操作失敗</h4>
@@ -40,7 +45,7 @@
 			<?php echo form_submit(array(
 				'id' => 'submit_btn',
 				'name' => 'submit_btn',
-				'value' => '添加',
+				'value' => isset( $isedit ) ? '修改' : '添加',
 				'class' => 'btn btn-large btn-success'
 			)); ?>
 		</p>

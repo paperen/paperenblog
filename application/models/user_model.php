@@ -36,6 +36,49 @@ class User_model extends CI_Model
 						->row_array();
 	}
 
+	/**
+	 * 所有用戶數據
+	 * @param int $per_page
+	 * @param int $offset
+	 * @return array
+	 */
+	public function get_all( $per_page = 0, $offset = 0 )
+	{
+		return $this->db->select(
+								'u.id,u.name,u.email,u.url,u.lastlogin,u.lastip,u.identity,u.role'
+						)
+						->from( "{$this->_tables['user']} as u" )
+						->order_by( 'u.id', 'desc' )
+						->get()
+						->result_array();
+	}
+
+	/**
+	 * 更新最近登陸時間與IP
+	 * @param array $data
+	 * @param int $userid
+	 * @return int
+	 */
+	public function update_lastlogin( $data, $userid )
+	{
+		$update_data = array(
+			'lastlogin' => $data['lastlogin'],
+			'lastip' => $data['lastip'],
+		);
+		$this->db->where( 'id', $userid )
+				->update( $this->_tables['user'], $update_data );
+		return $this->db->affected_rows();
+	}
+
+	/**
+	 * 用戶總數
+	 * @return int
+	 */
+	public function total()
+	{
+		return $this->db->count_all_results( $this->_tables['user'] );
+	}
+
 }
 
 // end of Tag_model

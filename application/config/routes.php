@@ -119,6 +119,12 @@ $route['my_category/add'] = 'module/admin/category/common/add';
 $route['my_category/edit/(:num)'] = 'module/admin/category/common/edit/$1';
 $route['my_category/edit_submit'] = 'module/admin/category/common/edit';
 $route['my_category/delete/(:num)'] = 'module/admin/category/common/delete/$1';
+$route['link'] = 'module/admin/link/common/';
+$route['link/add'] = 'module/admin/link/common/add';
+$route['link/edit/(:num)'] = 'module/admin/link/common/edit/$1';
+$route['link/delete/(:num)'] = 'module/admin/link/common/delete/$1';
+$route['user'] = 'module/admin/user/common/';
+$route['user/add'] = 'module/admin/user/common/add';
 
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */

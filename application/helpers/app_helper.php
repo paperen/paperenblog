@@ -188,11 +188,13 @@ function tag_url( $tag )
 /**
  * 獲取gravatar路徑
  * @param string $email 郵箱
+ * @param int $size 尺寸
  * @return string
  */
-function gravatar_url( $email )
+function gravatar_url( $email, $size = '' )
 {
-	return 'http://www.gravatar.com/avatar/' . md5( strtolower( trim( $email ) ) );
+	$size = ( $size ) ? "?s={$size}" : '';
+	return 'http://www.gravatar.com/avatar/' . md5( strtolower( trim( $email ) ) ) . $size;
 }
 
 /**
@@ -367,6 +369,35 @@ function get_file_from_string( $string, $index = -1 )
 function get_file_rawname( $filename )
 {
 	return substr( $filename, 0, strrpos( $filename, '.' ) );
+}
+
+/**
+ * 根據十進制權限值獲取身份
+ * @param int $level
+ * @return string
+ */
+function get_role( $level )
+{
+	$role_arr = array(
+		'讀者',
+		'作者',
+		'管理員'
+	);
+	$CI = & get_instance();
+	$CI->load->library( 'level' );
+	$role_val = $CI->level->GetLevel( $level );
+	$role = '';
+	foreach( $role_val as $k => $v ) $role .= $role_arr[$v] . ',';
+	return trim( $role, ',' );
+}
+/**
+ * ip to long
+ * @param string $ip
+ * @return int
+ */
+function mip2long( $ip )
+{
+	return bindec( decbin( ip2long( $ip ) ) );
 }
 
 // end of app_helper

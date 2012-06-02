@@ -36,8 +36,8 @@
 			<li class="header"><a href="javascript:void(0);"><i class="icon-user"></i>用戶管理</a></li>
 			<li>
 				<ul class="nav nav-tabs nav-stacked nav-sub">
-					<li><a href="<?php echo base_url('add_user'); ?>">添加用戶</a></li>
-					<li><a href="<?php echo base_url('show_user'); ?>">用戶列表</a></li>
+					<li><a href="<?php echo base_url('user/add'); ?>">添加用戶</a></li>
+					<li><a href="<?php echo base_url('user'); ?>">用戶列表</a></li>
 				</ul>
 			</li>
 		</ul>

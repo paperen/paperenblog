@@ -17,7 +17,7 @@ class Admin_User_Common_Module extends MY_Module
 	 */
 	public function panel()
 	{
-		$data = array();
+		$data = array( );
 		$this->load->view( 'panel', $data );
 	}
 
@@ -36,6 +36,30 @@ class Admin_User_Common_Module extends MY_Module
 	{
 		$this->adminverify->unset_userdata();
 		redirect( 'login' );
+	}
+
+	/**
+	 * 博客用戶列表
+	 */
+	public function index()
+	{
+		$data = array( );
+
+		$data['total'] = $this->querycache->execute('user', 'total', array());
+
+		$user_data = $this->querycache->get('user', 'get_all');
+		$data['user_data'] = $user_data;
+
+		$this->load->view( 'list', $data );
+	}
+
+	/**
+	 * 添加用戶表單
+	 */
+	public function add()
+	{
+		$data = array();
+		$this->load->view( 'form', $data );
 	}
 
 }

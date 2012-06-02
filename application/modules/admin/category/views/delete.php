@@ -10,7 +10,8 @@
 	<?php } else { ?>
 	<div class="alert alert-block alert-success"">
 		<h3 class="alert-heading">刪除成功</h3>
-		<a href="<?php echo base_url('trash'); ?>" class="btn btn-small">返回 回收站</a>
+		<a href="<?php echo base_url('trash'); ?>" class="btn btn-small">返回我的文章類別</a>
+		<script>setTimeout("window.location.href='<?php echo base_url('my_category'); ?>';", 2500);</script>
 	</div>
 	<?php } ?>
 </div>

@@ -275,12 +275,10 @@ class Admin_Category_Common_Module extends MY_Module
 
 			// 删除类别
 			$this->querycache->execute('category', 'delete', array( $category_id ) );
-
-			redirect( base_url('my_category') );
 		}
 		catch ( Exception $e )
 		{
-
+			$data['error'] = $e->getMessage();
 		}
 		$this->load->view( 'delete', $data );
 	}

@@ -71,6 +71,14 @@ class Admin_Login_Common_Module extends CI_Module
 						'role' => $user_data['role'],
 					)
 			);
+
+			// 更新登陸IP與登陸時間
+			$data = array(
+				'lastlogin' => time(),
+				'lastip' => mip2long( $this->input->ip_address() ),
+			);
+			$this->querycache->execute( 'user', 'update_lastlogin', array( $data, $user_data['id'] ) );
+
 			redirect( base_url( 'manage' ) );
 		}
 		catch ( Exception $e )

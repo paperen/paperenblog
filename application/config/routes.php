@@ -95,6 +95,10 @@ $route['tag/(:any)/page/(:num)'] = 'module/post/common/archive_by_tag/$1/$2';
 // RSS
 $route['rss'] = 'module/post/common/rss';
 
+// weibo授权
+$route['weibo_auth'] = 'module/third_party/common/weibo_auth';
+$route['weibo_callback'] = 'module/third_party/common/weibo_callback';
+
 // admin
 $route['deny'] = 'module/admin/login/common/deny';
 $route['logout'] = 'module/admin/user/common/logout';

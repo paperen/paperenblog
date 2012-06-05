@@ -32,4 +32,9 @@ $config['ICP'] = 'http://www.miibeian.gov.cn/';
 // 微博
 $config['weibo'] = 'http://www.weibo.com/paperen';
 
+// 微博授权
+$config['weibo_akey'] = 'xxxxx';
+$config['weibo_skey'] = 'xxxxx';
+$config['weibo_callback'] = 'http://iamlze.cn/weibo_callback';
+
 // end of app

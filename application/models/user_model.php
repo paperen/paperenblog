@@ -70,6 +70,16 @@ class User_model extends CI_Model
 		return $this->db->affected_rows();
 	}
 
+	public function update_token( $token, $userid )
+	{
+		$update_data = array(
+			'token' => $token,
+		);
+		$this->db->where( 'id', $userid )
+				->update( $this->_tables['user'], $update_data );
+		return $this->db->affected_rows();
+	}
+	
 	/**
 	 * 用戶總數
 	 * @return int

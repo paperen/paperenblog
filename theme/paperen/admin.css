@@ -221,3 +221,7 @@ a:hover {
 ul.list_order {
 	margin-left: -15px;
 }
+.weibo_frame {
+	width: 600px;
+	height: 400px;
+}

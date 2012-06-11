@@ -69,6 +69,7 @@ class Admin_Login_Common_Module extends CI_Module
 						'lastip' => $user_data['lastip'],
 						'identity' => $user_data['identity'],
 						'role' => $user_data['role'],
+						'token' => $user_data['token'],
 					)
 			);
 

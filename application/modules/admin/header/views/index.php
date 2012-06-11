@@ -6,6 +6,7 @@
 <?php echo css('bootstrap.css'); ?>
 <?php echo css('admin.css'); ?>
 <?php echo js('jquery-1.7.1.min.js'); ?>
+<?php echo js('admin/common.js'); ?>
 </head>
 
 <body>

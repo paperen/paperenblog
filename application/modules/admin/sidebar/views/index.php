@@ -46,6 +46,7 @@
 			<li>
 				<ul class="nav nav-tabs nav-stacked nav-sub">
 					<li><a href="#">基本設置</a></li>
+					<li><a href="<?php echo base_url('weibo_auth'); ?>" id="sync_weibo">同步微博</a></li>
 				</ul>
 			</li>
 		</ul>

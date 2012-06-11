@@ -19,11 +19,13 @@ class Third_party_Common_Module extends CI_Module
 	{
 		session_start();
 
-		$this->load->helper('saetv2');
+		$this->load->helper( 'saetv2' );
 
 		$o = new SaeTOAuthV2( config_item( 'weibo_akey' ), config_item( 'weibo_skey' ) );
 		$code_url = $o->getAuthorizeURL( config_item( 'weibo_callback' ) );
-		echo "<a href=\"{$code_url}\">go</a>";
+		$data['url'] = $code_url;
+
+		$this->load->view( 'weibo_auth', $data );
 	}
 
 	/**
@@ -33,29 +35,33 @@ class Third_party_Common_Module extends CI_Module
 	{
 		session_start();
 
-		$this->load->helper('saetv2');
+		$this->load->helper( 'saetv2' );
 
 		$o = new SaeTOAuthV2( config_item( 'weibo_akey' ), config_item( 'weibo_skey' ) );
-		if ( isset( $_REQUEST['code'] ) ) {
-			$keys = array();
+		if ( isset( $_REQUEST['code'] ) )
+		{
+			$keys = array( );
 			$keys['code'] = $_REQUEST['code'];
 			$keys['redirect_uri'] = config_item( 'weibo_callback' );
-			try {
-				$token = $o->getAccessToken( 'code', $keys ) ;
-			} catch (OAuthException $e) {
+			try
+			{
+				$token = $o->getAccessToken( 'code', $keys );
+			}
+			catch ( OAuthException $e )
+			{
+
 			}
 		}
-		
+
 		if ( isset( $token ) && $token )
 		{
 			$_SESSION['token'] = $token;
-			$c = new SaeTClientV2( config_item( 'weibo_akey' ), config_item( 'weibo_skey' ) , $_SESSION['token']['access_token'] );
-			$ms  = $c->home_timeline();
-			print_r( $ms );
+			$c = new SaeTClientV2( config_item( 'weibo_akey' ), config_item( 'weibo_skey' ), $_SESSION['token']['access_token'] );
+			$ms = $c->home_timeline();
 		}
 		else
 		{
-			exit('failed');
+			exit( 'failed' );
 		}
 	}
 

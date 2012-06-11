@@ -83,6 +83,12 @@ class Adminverify
 		return isset( $this->_user_data[$name] ) ? $this->_user_data[$name] : '';
 	}
 
+	function __set( $name, $value )
+	{
+		if ( !isset( $this->_user_data[$name] ) ) $this->_user_data[$name] = $value;
+		$this->set_userdata( $this->_user_data );
+	}
+
 	/**
 	 * 檢查是否有權限操作
 	 * @param int $upper_level 最低權限要求

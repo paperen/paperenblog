@@ -83,8 +83,8 @@ class Third_party_Common_Module extends MY_Module
 		{
 			$post = $this->input->post( 'post' );
 			$image = ( isset( $_FILES['image'] ) && $_FILES['image']['name'] ) ? $_FILES['image'] : $this->input->post( 'image_url' );
-			$lat = rand( 0, 90 );
-			$long = rand( 0, 180 );
+			$lat = 22.5;
+			$long = 114;
 
 			$c = $this->_SaeTClientV2();
 			if ( $image )

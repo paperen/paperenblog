@@ -17,7 +17,8 @@ class Third_party_Common_Module extends MY_Module
 	 */
 	public function weibo_auth()
 	{
-		if ( empty( $this->adminverify->token ) )
+		$token = $this->adminverify->token;
+		if ( empty( $token ) )
 		{
 			$this->load->helper( 'saetv2' );
 
@@ -59,12 +60,38 @@ class Third_party_Common_Module extends MY_Module
 
 			if ( isset( $token ) && $token )
 			{
-				$this->adminverify->token = $token;
-				$this->_update_weibo_token( $token );
+				$this->adminverify->token = $token['access_token'];
+				$this->_update_weibo_token( $token['access_token'] );
 			}
 		}
 		$data['success'] = TRUE;
-		$this->load->view('weibo_callback', $data);
+		$this->load->view( 'weibo_callback', $data );
+	}
+
+	/**
+	 * 发送微博
+	 */
+	public function weibo_post()
+	{
+		if ( $this->input->post( 'submit_btn' ) && $this->form_validation->check_token() )
+		{
+			$post = $this->input->post( 'post' );
+			$image = ( isset( $_FILES['image'] ) && $_FILES['image']['name'] ) ? $_FILES['image'] : $this->input->post( 'image_url' );
+			$lat = rand( 0, 90 );
+			$long = rand( 0, 180 );
+
+			$this->load->helper( 'saetv2' );
+			$c = new SaeTClientV2( config_item( 'weibo_akey' ), config_item( 'weibo_skey' ), $this->adminverify->token );
+			if ( $image )
+			{
+				$c->upload( $post, $image, $lat, $long );
+			}
+			else
+			{
+				$c->update( $post, $lat, $long );
+			}
+		}
+		redirect( base_url( 'weibo_auth' ) );
 	}
 
 	/**
@@ -72,9 +99,9 @@ class Third_party_Common_Module extends MY_Module
 	 */
 	public function _update_weibo_token( $token )
 	{
-		$this->querycache->execute('user', 'update_token', array( $token, $this->adminverify->id ) );
+		$this->querycache->execute( 'user', 'update_token', array( $token, $this->adminverify->id ) );
 	}
-	
+
 }
 
 // end of common

@@ -4,11 +4,11 @@
 <div class="main span10">
 	<?php if( isset( $err ) && $err ) { ?>
 	<div class="alert alert-error">
-		<h3>连接微博失败</h3>
+		<h3>杩炴帴寰崥澶辫触</h3>
 	</div>
 	<?php } else { ?>
 	<div class="alert alert-success">
-		<h3>连接微博成功</h3>
+		<h3>杩炴帴寰崥鎴愬姛</h3>
 	</div>
 	<?php } ?>
 </div>

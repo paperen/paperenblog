@@ -2,12 +2,14 @@
 <?php $this->load->module('admin/sidebar/common/index'); ?>
 <!-- main -->
 <div class="main span10">
-	<?php if( isset( $already_sync ) && $already_sync ) { ?>
-	<div class="alert alert-success">
-		<h3>已经连接微博</h3>
+	<?php if( isset( $err ) && $err ) { ?>
+	<div class="alert alert-error">
+		<h3>连接微博失败</h3>
 	</div>
 	<?php } else { ?>
-	<iframe frameborder="0" scrolling="no" name="weibo_frame" src="<?php echo $url; ?>" class="weibo_frame"></iframe>
+	<div class="alert alert-success">
+		<h3>连接微博成功</h3>
+	</div>
 	<?php } ?>
 </div>
 <!-- main -->

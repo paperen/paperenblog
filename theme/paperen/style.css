@@ -43,7 +43,6 @@ pre {
 /* main */
 .main {
 	background: #FFF;
-	border-right: 1px #EEE solid;
 	padding-top: 15px;
 	-webkit-box-shadow: 1px 0 3px rgba(0,0,0,0.04);
 	-moz-box-shadow: 1px 0 3px rgba(0,0,0,0.04);

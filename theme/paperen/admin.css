@@ -221,3 +221,7 @@ a:hover {
 ul.list_order {
 	margin-left: -15px;
 }
+.sync_weibo {
+	width: 600px;
+	height: 400px;
+}

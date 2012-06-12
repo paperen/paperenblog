@@ -84,6 +84,12 @@
 				<?php echo form_hidden('thumbimg', isset( $post_data['thumbimg'] ) ? $post_data['thumbimg'] : '', 'id="thumbimg"'); ?>
 			</div>-->
 			<hr>
+			<?php if( $token ) { ?> 
+			<label class="checkbox"><?php echo form_checkbox( array('name' => 'syncweibo', 'id' => 'syncweibo', 'value' => 1) ); ?>同步微博</label>
+			<?php } else { ?>
+			您尚未连接微博，<a href="<?php echo base_url('weibo_auth'); ?>">去绑定</a>
+			<?php } ?>
+			<hr>
 			<div>
 			<?php echo form_button(array(
 				'id' => 'preview_btn',

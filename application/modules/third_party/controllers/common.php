@@ -12,6 +12,12 @@
 class Third_party_Common_Module extends MY_Module
 {
 
+	private function _SaeTClientV2()
+	{
+		$this->load->helper( 'saetv2' );
+		return new SaeTClientV2( config_item( 'weibo_akey' ), config_item( 'weibo_skey' ), $this->adminverify->token );
+	}
+
 	/**
 	 * 微博授权
 	 */
@@ -24,7 +30,7 @@ class Third_party_Common_Module extends MY_Module
 
 			$o = new SaeTOAuthV2( config_item( 'weibo_akey' ), config_item( 'weibo_skey' ) );
 			$code_url = $o->getAuthorizeURL( config_item( 'weibo_callback' ) );
-			$data['url'] = $code_url;
+			redirect( $code_url );
 		}
 		else
 		{
@@ -80,8 +86,7 @@ class Third_party_Common_Module extends MY_Module
 			$lat = rand( 0, 90 );
 			$long = rand( 0, 180 );
 
-			$this->load->helper( 'saetv2' );
-			$c = new SaeTClientV2( config_item( 'weibo_akey' ), config_item( 'weibo_skey' ), $this->adminverify->token );
+			$c = $this->_SaeTClientV2();
 			if ( $image )
 			{
 				$c->upload( $post, $image, $lat, $long );
@@ -94,6 +99,27 @@ class Third_party_Common_Module extends MY_Module
 		redirect( base_url( 'weibo_auth' ) );
 	}
 
+	public function weibo_api_update( $text, $image_or_url, $lat = NULL, $long = NULL )
+	{
+		try
+		{
+			$c = $this->_SaeTClientV2();
+			if ( $image_or_url )
+			{
+				$c->upload( $text, $image_or_url, $lat, $long );
+			}
+			else
+			{
+				$c->update( $text, $lat, $long );
+			}
+			return TRUE;
+		}
+		catch( Exception $e )
+		{
+			return FALSE;
+		}
+	}
+	
 	/**
 	 * 更新微博授权令牌
 	 */

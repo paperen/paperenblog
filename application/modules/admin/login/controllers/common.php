@@ -58,7 +58,6 @@ class Admin_Login_Common_Module extends CI_Module
 			if ( empty( $user_data ) ) throw new Exception( '沒有此用戶，估計是外星人吧', -1 );
 
 			if ( $this->get_password_hash( $form_data['password'] ) != $user_data['password'] ) throw new Exception( '親，密碼錯誤鳥，別說你忘記密碼了…', -2 );
-
 			$this->adminverify->set_userdata(
 					array(
 						'id' => $user_data['id'],

@@ -42,6 +42,9 @@ class Admin_Post_Common_Module extends MY_Module
 		// 獲取分類數據
 		$data['category_data'] = $this->_category_all();
 
+		// 微博令牌
+		$data['token'] = $this->adminverify->token;
+		
 		try
 		{
 			if ( $post_id )
@@ -95,6 +98,7 @@ class Admin_Post_Common_Module extends MY_Module
 			{
 				// 插入
 				$post_id = $this->querycache->execute( 'post', 'insert', array( $post_data ) );
+				$is_insert = TRUE;
 				if ( empty( $post_id ) ) throw new Exception( '系統錯誤', -3 );
 			}
 			else
@@ -118,6 +122,25 @@ class Admin_Post_Common_Module extends MY_Module
 			// 標記為不是草稿
 			$this->querycache->execute( 'post', 'update_undraft', array( $post_id ) );
 
+			// 同步微博
+			if ( $post_data['syncweibo'] && $this->adminverify->token )
+			{
+				$post_attachment = $this->querycache->get('attachment', 'get_by_post_id', $post_id);
+				$post_images = array();
+				foreach( $post_attachment as $k => $single )
+				{
+					if ( $single['isimage'] ) $post_images[] = $single;
+				}
+				$image_data = empty( $post_images ) ? NULL : array_shift( $post_images );
+				$this->load->module('third_party/common/weibo_api_update',
+					array(
+						gbk_substr( $post_data['content'], 150 ),
+						( $image_data ) ? file_url( $image_data['id'] ) : NULL,
+						NULL,
+						NULL,
+					)
+				);
+			}
 			$data['success'] = array(
 				'title' => "{$post_data['title']} 已成功發佈",
 				'post_url' => post_permalink( $post_data['urltitle'] ),
@@ -132,6 +155,7 @@ class Admin_Post_Common_Module extends MY_Module
 		}
 
 		// 獲取所有文章分類
+		$data['token'] = $this->adminverify->token;
 		$data['category_data'] = $this->_category_all();
 		$this->load->view( 'form', $data );
 	}
@@ -206,6 +230,7 @@ class Admin_Post_Common_Module extends MY_Module
 			'posttime' => time(),
 			'savetime' => time(),
 			'isdraft' => 0,
+			'syncweibo' => $this->input->post( 'syncweibo' ),
 		);
 	}
 

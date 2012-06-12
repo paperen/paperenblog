@@ -28,7 +28,7 @@ class User_model extends CI_Model
 	public function get_by_name( $name )
 	{
 		return $this->db->select(
-								'u.id,u.name,u.password,u.email,u.url,u.lastlogin,u.lastip,u.identity,u.role'
+								'u.id,u.name,u.password,u.email,u.url,u.lastlogin,u.lastip,u.identity,u.role,u.token'
 						)
 						->from( "{$this->_tables['user']} as u" )
 						->where( 'u.name', $name )
@@ -45,7 +45,7 @@ class User_model extends CI_Model
 	public function get_all( $per_page = 0, $offset = 0 )
 	{
 		return $this->db->select(
-								'u.id,u.name,u.email,u.url,u.lastlogin,u.lastip,u.identity,u.role'
+								'u.id,u.name,u.email,u.url,u.lastlogin,u.lastip,u.identity,u.role,u.token'
 						)
 						->from( "{$this->_tables['user']} as u" )
 						->order_by( 'u.id', 'desc' )

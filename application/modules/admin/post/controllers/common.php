@@ -226,7 +226,7 @@ class Admin_Post_Common_Module extends MY_Module
 			'tag' => $this->input->post( 'tag' ),
 			'thumbimg' => intval( $this->input->post( 'thumbimg' ) ),
 			'authorid' => $this->adminverify->id,
-			'ispublic' => 1,
+			'ispublic' => $this->input->post( 'ispublic' ),
 			'posttime' => time(),
 			'savetime' => time(),
 			'isdraft' => 0,

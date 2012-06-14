@@ -84,11 +84,14 @@
 				<?php echo form_hidden('thumbimg', isset( $post_data['thumbimg'] ) ? $post_data['thumbimg'] : '', 'id="thumbimg"'); ?>
 			</div>-->
 			<hr>
+			<p>
 			<?php if( $token ) { ?> 
 			<label class="checkbox"><?php echo form_checkbox( array('name' => 'syncweibo', 'id' => 'syncweibo', 'value' => 1) ); ?>同步微博</label>
 			<?php } else { ?>
 			您尚未连接微博，<a href="<?php echo base_url('weibo_auth'); ?>">去绑定</a>
 			<?php } ?>
+			</p>
+			<p><label class="checkbox"><?php echo form_checkbox( array('name' => 'ispublic', 'id' => 'ispublic', 'value' => 1, 'checked' => isset( $post_data['ispublic'] ) && $post_data['ispublic'] ? 'true' : '' ) ); ?>是否公开</label></p>
 			<hr>
 			<div>
 			<?php echo form_button(array(
@@ -98,7 +101,7 @@
 			<?php echo form_submit(array(
 				'id' => 'post_btn',
 				'name' => 'post_btn',
-				'value' => '正式發佈',
+				'value' => '确定',
 				'class' => 'btn btn-large btn-success'
 			)); ?>
 			</div>

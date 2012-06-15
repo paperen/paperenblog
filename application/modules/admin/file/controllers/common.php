@@ -240,6 +240,39 @@ class Admin_File_Common_Module extends MY_Module
 		echo json_encode( $result );
 	}
 
+	/**
+	 * 我的附件
+	 */
+	public function my( $page = 1 )
+	{
+		$data = array( );
+
+		// 每頁顯示條數
+		$per_page = config_item( 'per_page' );
+
+		// 當前人的附件總數
+		$total = $this->querycache->get( 'attachment', 'total_by_userid', $this->adminverify->id );
+		$data['total'] = $total;
+
+		// 分頁
+		$this->load->library( 'pagination' );
+		$pagination_config = array(
+			'base_url' => base_url( 'my_file' ),
+			'total_rows' => $total,
+			'per_page' => $per_page,
+			'uri_segment' => 2,
+		);
+		$this->pagination->initialize( $pagination_config );
+		$pagination = $this->pagination->create_links();
+		$data['pagination'] = $pagination;
+
+		// 數據
+		$attachment_data = $this->querycache->get( 'attachment', 'get_by_authorid', $this->adminverify->id, $per_page, ( $this->pagination->get_cur_page() - 1 ) * $per_page );
+		$data['attachment_data'] = $attachment_data;
+
+		$this->load->view( 'list', $data );
+	}
+
 }
 
 // end of common

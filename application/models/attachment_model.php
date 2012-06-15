@@ -20,6 +20,7 @@ class Attachment_model extends CI_Model
 		'attachment' => 'attachment',
 		'user' => 'user',
 		'post_attachment' => 'post_attachment',
+		'post' => 'post',
 	);
 
 	/**
@@ -146,6 +147,39 @@ class Attachment_model extends CI_Model
 		$this->db->where( 'postid', $post_id )
 				->delete( $this->_tables['post_attachment'] );
 		return $this->db->affected_rows();
+	}
+
+	/**
+	 * 某个用户上传的附件总数
+	 * @param int $user_id
+	 * @return int 总数
+	 */
+	public function total_by_userid( $user_id )
+	{
+		return $this->db->where( 'userid', $user_id )
+						->count_all_results( $this->_tables['attachment'] );
+	}
+
+	/**
+	 * 获取某个用户上传的附件
+	 * @param int $user_id
+	 * @return array
+	 */
+	public function get_by_authorid( $user_id, $per_page = 0, $offset = 0 )
+	{
+		$query = $this->db->select(
+						'a.id,a.name,a.path,a.suffix,a.size,a.addtime,a.isthumbnail,a.isimage,
+						 u.name as uploader,
+						 pt.postid,
+						 p.urltitle'
+				)
+				->from( "{$this->_tables['attachment']} as a" )
+				->join( "{$this->_tables['post_attachment']} as pt", 'pt.attachmentid = a.id' )
+				->join( "{$this->_tables['user']} as u", 'u.id = a.userid' )
+				->join( "{$this->_tables['post']} as p", 'p.id = pt.postid' )
+				->where( 'a.userid', $user_id );
+		$query->limit( $per_page, $offset );
+		return $query->get()->result_array();
 	}
 
 }

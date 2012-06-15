@@ -75,6 +75,7 @@ class Adminverify
 	 * lastip
 	 * identity
 	 * role
+	 * token
 	 * </code>
 	 * @return mixed
 	 */

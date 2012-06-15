@@ -19,7 +19,7 @@
 			<li class="header"><a href="javascript:void(0);"><i class="icon-inbox"></i>附件管理</a></li>
 			<li>
 				<ul class="nav nav-tabs nav-stacked nav-sub">
-					<li><a href="<?php echo base_url('my_category'); ?>">我傳的附件</a></li>
+					<li><a href="<?php echo base_url('my_file'); ?>">我傳的附件</a></li>
 				</ul>
 			</li>
 		</ul>

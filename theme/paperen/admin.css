@@ -225,3 +225,17 @@ ul.list_order {
 	width: 650px;
 	height: 500px;
 }
+.user-form .role label {
+	display: inline;
+	vertical-align: bottom;
+}
+.user-form .social-zone {
+	background: #F0F0F0;
+	padding: 7px;
+}
+.user-form .social-zone #social_add_btn {
+	margin-top: 5px;
+}
+.user-form .social-zone .single {
+	margin-top: 5px;
+}

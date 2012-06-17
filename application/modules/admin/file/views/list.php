@@ -2,9 +2,12 @@
 <?php $this->load->module('admin/sidebar/common/index'); ?>
 <!-- main -->
 <div class="main span10">
-	<h3><i class="icon-picture"></i>我的附件 <strong>共<?php echo $total; ?></strong>篇</h3>
+	<h3><i class="icon-picture"></i>我的附件
+		<strong><?php echo $total; ?></strong>篇
+		<strong><?php echo $total_size; ?></strong>kb
+	</h3>
 	<hr>
-	<table class="table table-condensed table-wordpress filelist-table">
+	<table class="table table-condensed table-wordpress postlist-table">
 		<thead>
 			<tr>
 				<th>&nbsp;</th>
@@ -13,26 +16,32 @@
 				<th>是否图片</th>
 				<th>是否文章特色图</th>
 				<th>上传时间</th>
-				<th>操作</th>
 			</tr>
 		</thead>
 		<tbody>
+			<?php foreach( $attachment_data as $single ) { ?>
 			<tr>
-				<td>&nbsp;</td>
-				<td>关联文章</td>
-				<td>大小</td>
-				<td>是否图片</td>
-				<td>是否文章特色图</td>
-				<td>上传时间</td>
-				<td>操作</td>
+				<td width="120">
+					<?php if( $single['isimage'] ) { ?>
+					<div class="span12"><a href="<?php echo file_url( $single['id'] ); ?>" class="thumbnail" target="_blank"><img src="<?php echo file_url( $single['id'] ); ?>" alt="<?php echo $single['name']; ?>" title="<?php echo $single['name']; ?>"></a></div>
+					<?php } else { ?>
+					<a href="<?php echo file_url( $single['id'] ); ?>" target="_blank"><i class="icon-file"></i> <?php echo $single['name']; ?></a>
+					<?php } ?>
+				</td>
+				<td><a href="<?php echo post_permalink($single['urltitle']); ?>"><?php echo $single['title']; ?></a></td>
+				<td><?php echo $single['size']; ?>kb</td>
+				<td><?php echo ( $single['isimage'] ) ? '是' : '否'; ?></td>
+				<td><?php echo ( $single['isthumbnail'] ) ? '是' : '否'; ?></td>
+				<td><?php echo date('Y-m-d H:i', $single['addtime']); ?></td>
 			</tr>
+			<?php } ?>
 		</tbody>
 	</table>
 	<?php echo $pagination; ?>
 </div>
 <script>
 $(function(){
-	$('.filelist-table td').hover(
+	$('.postlist-table td').hover(
 		function() {
 			$(this).parent().addClass('tr-active');
 		},

@@ -16,6 +16,15 @@ class Level
 	public $EDITOR = 1;//编辑
 	public $USER = 0;//普通用户
 
+	public function GetAllRole()
+	{
+		return array(
+			$this->USER => '普通用户',
+			$this->EDITOR => '编辑',
+			$this->ADMIN => '管理员',
+		);
+	}
+
 	public function __construct()
 	{
 		$obj = & get_instance();

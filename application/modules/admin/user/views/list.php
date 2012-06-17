@@ -3,7 +3,7 @@
 <!-- main -->
 <div class="main span10">
 	<div class="btn-group pull-right">
-		<a href="<?php echo base_url('user/add'); ?>" class="btn btn-success"><i class="icon-plus icon-white"></i> 添加新作者</a>
+		<a href="<?php echo base_url('user/add'); ?>" class="btn btn-success"><i class="icon-plus icon-white"></i> 添加新用戶</a>
 	</div>
 	<h3><i class="icon-edit"></i>用戶共有 <strong><?php echo $total; ?></strong> 個</h3>
 	<hr>
@@ -23,7 +23,7 @@
 			<?php foreach( $user_data as $single ) { ?>
 			<tr>
 				<td><div class="thumbnail span8"><img src="<?php echo gravatar_url( $single['email'], 70 ); ?>" alt="<?php echo $single['name']; ?>"></div></td>
-				<td><?php echo $single['name']; ?> [<?php echo $single['email']; ?>]</td>
+				<td><?php echo $single['name']; ?><br>[<?php echo $single['email']; ?>]</td>
 				<td><?php echo get_role( $single['role'] ); ?></td>
 				<td>
 					<?php if( $single['url'] ) { ?>
@@ -32,8 +32,8 @@
 					木有
 					<?php } ?>
 				</td>
-				<td><?php echo date('Y/m/d H:i:s', $single['lastlogin']); ?></td>
-				<td><?php echo long2ip( $single['lastip'] ); ?></td>
+				<td><?php echo $single['lastlogin'] ? date('Y/m/d H:i:s', $single['lastlogin']) : ''; ?></td>
+				<td><?php echo $single['lastip'] ? long2ip( $single['lastip'] ) : ''; ?></td>
 				<td>
 					<div class="btn-group">
 						<a href="<?php echo base_url("user/edit/{$single['id']}"); ?>" class="btn">修改</a>

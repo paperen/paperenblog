@@ -12,8 +12,9 @@ class MY_Module extends CI_Module {
 	function __construct()
 	{
 		parent::__construct();
+		$this->load->library('level');
 		$this->load->library('adminverify');
-		
+
 		// 非法用戶
 		if ( !$this->adminverify->valid() ) redirect( base_url('login') );
 	}

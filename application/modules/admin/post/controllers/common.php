@@ -134,7 +134,7 @@ class Admin_Post_Common_Module extends MY_Module
 				$image_data = empty( $post_images ) ? NULL : array_shift( $post_images );
 				$this->load->module('third_party/common/weibo_api_update',
 					array(
-						gbk_substr( $post_data['content'], 150 ),
+						gbk_substr( $post_data['content'], 120 ) . ' ' . post_permalink( $post_data['urltitle'] ),
 						( $image_data ) ? file_url( $image_data['id'] ) : NULL,
 						NULL,
 						NULL,

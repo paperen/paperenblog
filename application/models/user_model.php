@@ -28,7 +28,7 @@ class User_model extends CI_Model
 	public function get_by_name( $name )
 	{
 		return $this->db->select(
-								'u.id,u.name,u.password,u.email,u.url,u.lastlogin,u.lastip,u.identity,u.role,u.token'
+								'u.id,u.name,u.password,u.email,u.url,u.lastlogin,u.lastip,u.role,u.token'
 						)
 						->from( "{$this->_tables['user']} as u" )
 						->where( 'u.name', $name )
@@ -45,7 +45,7 @@ class User_model extends CI_Model
 	public function get_all( $per_page = 0, $offset = 0 )
 	{
 		return $this->db->select(
-								'u.id,u.name,u.email,u.url,u.lastlogin,u.lastip,u.identity,u.role,u.token'
+								'u.id,u.name,u.email,u.url,u.lastlogin,u.lastip,u.role,u.token'
 						)
 						->from( "{$this->_tables['user']} as u" )
 						->order_by( 'u.id', 'desc' )
@@ -78,6 +78,23 @@ class User_model extends CI_Model
 		$this->db->where( 'id', $userid )
 				->update( $this->_tables['user'], $update_data );
 		return $this->db->affected_rows();
+	}
+	
+	public function insert( $data )
+	{
+		$insert_data = array(
+			'name' => $data['name'],
+			'url' => $data['url'],
+			'email' => $data['email'],
+			'password' => md5( $data['password'] ),
+			'lastlogin' => isset( $data['lastlogin'] ) ? $data['lastlogin'] : '',
+			'lastip' => isset( $data['lastip'] ) ? $data['lastip'] : '',
+			'role' => $data['role'],
+			'token' => isset( $data['token'] ) ? $data['token'] : '',
+			'data' => isset( $data['data'] ) ? $data['data'] : '',
+		);
+		$this->db->insert( $this->_tables['user'], $insert_data );
+		return $this->db->insert_id();
 	}
 	
 	/**

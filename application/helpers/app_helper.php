@@ -387,7 +387,14 @@ function get_role( $level )
 	$CI->load->library( 'level' );
 	$role_val = $CI->level->GetLevel( $level );
 	$role = '';
-	foreach( $role_val as $k => $v ) $role .= $role_arr[$v] . ',';
+	if ( is_array( $role_val ) )
+	{
+		foreach( $role_val as $k => $v ) $role .= $role_arr[$v] . ',';
+	}
+	else
+	{
+		$role .= $role_arr[$role_val];
+	}
 	return trim( $role, ',' );
 }
 /**

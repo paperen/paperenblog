@@ -58,10 +58,126 @@ class Admin_User_Common_Module extends MY_Module
 	 */
 	public function add()
 	{
-		$data = array();
-		$this->load->view( 'form', $data );
+		if ( $this->input->post( 'submit_btn' ) )
+		{
+			$this->_add();
+		}
+		else
+		{
+			$this->_form();
+		}
 	}
 
+	/**
+	 * 表单
+	 */
+	private function _form()
+	{
+		$data = array();
+		$all_roles = $this->level->GetAllRole();
+		$data['all_roles'] = $all_roles;
+		$this->load->view( 'form', $data );
+	}
+	
+	/**
+	 * 添加动作
+	 */
+	private function _add()
+	{
+		$data = array();
+		try
+		{
+			if( !$this->form_validation->check_token() ) throw new Exception( '非法操作', 0 );
+			
+			$user_data = $this->_form_data();
+			$data['user_data'] = $user_data;
+			
+			if ( !$this->_validation() ) throw new Exception( validation_errors(), -1 );
+			
+			$format_social = array();
+			if ( $user_data['socialname'] )
+			{
+				foreach( $user_data['socialname'] as $k => $v )
+				{
+					if ( empty( $v ) || !isset( $user_data['socialurl'][$k] ) || empty( $user_data['socialurl'][$k] ) ) continue;
+					$format_social[$v] = $this->form_validation->prep_url( $user_data['socialurl'][$k] );
+				}
+			}
+			$extra_data = array(
+				'job' => $user_data['job'],
+				'socialname' => $format_social,
+				'content' => $user_data['content'],
+			);
+			$user_data['role'] = $this->level->SetLevel( $user_data['role'] );
+			$user_data['data'] = serialize( $extra_data );
+			
+			if ( $user_data['notice'] )
+			{
+				// 發郵件通知
+				$this->_send_invite( $user_data );
+			}
+			
+			$user_id = $this->querycache->execute('user', 'insert', array( $user_data ) );
+			if ( empty( $user_id ) ) throw new Exception('系統出錯，請重試', -1);
+			$data['success'] = TRUE;
+		}
+		catch( Exception $e )
+		{
+			$all_roles = $this->level->GetAllRole();
+			$data['all_roles'] = $all_roles;
+			$data['err'] = $e->getMessage();
+		}
+		$this->load->view('form', $data);
+	}
+
+	/**
+	 * 發送邀請
+	 */
+	private function _send_invite( $user_data )
+	{
+		$data['user_data'] = $user_data;
+		$email_content = $this->load->view('invite', $data, TRUE);
+	
+		$this->load->library( 'email' );
+		$this->email->from( config_item( 'blog_email' ), config_item( 'sitename' ) );
+		$this->email->to( $user_data['email'] );
+		$this->email->subject( "邀請您加入" . config_item( 'sitename' ) );
+		$this->email->message( $email_content );
+		$this->email->send();
+	}
+	
+	/**
+	 * 表單驗證
+	 */
+	private function _validation()
+	{
+		$this->form_validation->set_rules('name', '用戶名', 'required|is_unique[user.name]');
+		$this->form_validation->set_rules('email', '郵箱', 'required|valid_email|is_unique[user.email]');
+		$this->form_validation->set_rules('password', '密碼', 'required|min_length[6]|matches[password2]');
+		$this->form_validation->set_rules('job', '職業', 'required');
+		$this->form_validation->set_rules('content', '個人介紹', 'required');
+		return $this->form_validation->run();
+	}
+	
+	/**
+	 * 收集表单数据
+	 */
+	private function _form_data()
+	{
+		return array(
+			'name' => $this->input->post('name'),
+			'email' => $this->input->post('email'),
+			'url' => $this->form_validation->prep_url( $this->input->post('url') ),
+			'password' => $this->input->post('password'),
+			'job' => $this->input->post('job'),
+			'role' => $this->input->post('role'),
+			'socialname' => $this->input->post('socialname'),
+			'socialurl' => $this->input->post('socialurl'),
+			'content' => $this->input->post('content'),
+			'notice' => $this->input->post('notice'),
+		);
+	}
+	
 }
 
 // end of common

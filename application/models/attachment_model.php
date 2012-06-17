@@ -161,6 +161,20 @@ class Attachment_model extends CI_Model
 	}
 
 	/**
+	 * 获取某个用户上传文件的总大小
+	 * @param int $user_id
+	 * @return float
+	 */
+	public function total_size_by_userid( $user_id )
+	{
+		return $this->db->select_sum( 'size' )
+						->where( 'userid', $user_id )
+						->from( $this->_tables['attachment'] )
+						->get()
+						->row_array();
+	}
+
+	/**
 	 * 获取某个用户上传的附件
 	 * @param int $user_id
 	 * @return array
@@ -171,7 +185,7 @@ class Attachment_model extends CI_Model
 						'a.id,a.name,a.path,a.suffix,a.size,a.addtime,a.isthumbnail,a.isimage,
 						 u.name as uploader,
 						 pt.postid,
-						 p.urltitle'
+						 p.urltitle,p.title'
 				)
 				->from( "{$this->_tables['attachment']} as a" )
 				->join( "{$this->_tables['post_attachment']} as pt", 'pt.attachmentid = a.id' )

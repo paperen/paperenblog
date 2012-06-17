@@ -57,6 +57,24 @@ class Static_Common_Module extends CI_Module
 		echo '<script>var DEFAULT_OPTIONS = ' . stripslashes( json_encode( $config ) ) . ';</script>';
 	}
 
+	public function kindeditor_mini_config()
+	{
+		$config = array(
+			'width' => '100%',
+			'height' => '350px',
+			'items' => array(
+				'clearhtml',
+				'formatblock', 'fontname', 'fontsize', 'forecolor', 'hilitecolor', 'bold',
+				'italic', 'underline', 'strikethrough', 'removeformat', 'code',
+			),
+			'resizeType' => 0,
+			'allowFileManager' => false,
+			'allowUpload' => false,
+			'newlineTag' => 'p',
+		);
+		echo '<script>var DEFAULT_OPTIONS = ' . stripslashes( json_encode( $config ) ) . ';</script>';
+	}
+
 }
 
 // end of common

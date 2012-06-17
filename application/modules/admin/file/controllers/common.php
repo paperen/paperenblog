@@ -254,6 +254,10 @@ class Admin_File_Common_Module extends MY_Module
 		$total = $this->querycache->get( 'attachment', 'total_by_userid', $this->adminverify->id );
 		$data['total'] = $total;
 
+		// 总共多少kb
+		$total_size = $this->querycache->get( 'attachment', 'total_size_by_userid', $this->adminverify->id );
+		$data['total_size'] = $total_size['size'];
+
 		// 分頁
 		$this->load->library( 'pagination' );
 		$pagination_config = array(

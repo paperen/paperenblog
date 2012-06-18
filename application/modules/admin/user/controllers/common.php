@@ -117,8 +117,8 @@ class Admin_User_Common_Module extends MY_Module
 				$this->_send_invite( $user_data );
 			}
 			
-			$user_id = $this->querycache->execute('user', 'insert', array( $user_data ) );
-			if ( empty( $user_id ) ) throw new Exception('系統出錯，請重試', -1);
+			//$user_id = $this->querycache->execute('user', 'insert', array( $user_data ) );
+			//if ( empty( $user_id ) ) throw new Exception('系統出錯，請重試', -1);
 			$data['success'] = TRUE;
 		}
 		catch( Exception $e )

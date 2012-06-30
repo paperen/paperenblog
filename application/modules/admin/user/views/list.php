@@ -16,6 +16,8 @@
 				<th>個人站點</th>
 				<th>最近登陸時間</th>
 				<th>最近登陸IP</th>
+				<th>职业</th>
+				<th>出没领域</th>
 				<th>操作</th>
 			</tr>
 		</thead>
@@ -34,12 +36,29 @@
 				</td>
 				<td><?php echo $single['lastlogin'] ? date('Y/m/d H:i:s', $single['lastlogin']) : ''; ?></td>
 				<td><?php echo $single['lastip'] ? long2ip( $single['lastip'] ) : ''; ?></td>
+				<td><?php echo ( $single['data']['job'] ) ?$single['data']['job'] : ''; ?></td>
+				<td>
+				<?php if( $single['data']['socialname'] ) { ?>
+				<ul class="unstyled">
+				<?php foreach( $single['data']['socialname'] as $s => $s_url ) { ?>
+				<li><a href="<?php echo $s_url; ?>"><?php echo $s; ?></a></li>
+				<?php } ?>
+				</ul>
+				<?php } ?>
+				</td>
 				<td>
 					<div class="btn-group">
 						<a href="<?php echo base_url("user/edit/{$single['id']}"); ?>" class="btn">修改</a>
 					</div>
 				</td>
 			</tr>
+			<?php if( $single['data']['content'] ) { ?>
+			<tr>
+			<td>&nbsp;</td>
+			<td colspan="7"><?php echo $single['data']['content']; ?></td>
+			<td>&nbsp;</td>
+			</tr>
+			<?php } ?>
 			<?php } ?>
 		</tbody>
 	</table>

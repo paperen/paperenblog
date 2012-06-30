@@ -130,6 +130,7 @@ $route['link/edit/(:num)'] = 'module/admin/link/common/edit/$1';
 $route['link/delete/(:num)'] = 'module/admin/link/common/delete/$1';
 $route['user'] = 'module/admin/user/common/';
 $route['user/add'] = 'module/admin/user/common/add';
+$route['user/edit/(:num)'] = 'module/admin/user/common/edit/$1';
 $route['my_file'] = 'module/admin/file/common/my';
 $route['my_file/(:num)'] = 'module/admin/file/common/my/$1';
 

@@ -48,6 +48,11 @@ class Admin_User_Common_Module extends MY_Module
 		$data['total'] = $this->querycache->execute('user', 'total', array());
 
 		$user_data = $this->querycache->get('user', 'get_all');
+		// unserialize
+		foreach( $user_data as $k => $user )
+		{
+			if ( $user['data'] ) $user_data[$k]['data'] = unserialize( $user['data'] );
+		}
 		$data['user_data'] = $user_data;
 
 		$this->load->view( 'list', $data );

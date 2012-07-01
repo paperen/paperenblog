@@ -180,6 +180,18 @@
 <?php echo js( base_url('editor/lang/zh_CN.js') ); ?>
 <?php $this->load->module('static/common/kindeditor_mini_config'); ?>
 <script>
+	// editor
+	var editor;
+	KindEditor.ready(function(K) {
+		editor = K.create('textarea[name="content"]', DEFAULT_OPTIONS);
+		//
+		editor.edit.doc.onkeyup = function() {
+			editor.sync();
+			autosave_on( 5000 );
+		}
+	});
+</script>
+<script>
 	var social_num = 1;
 	$(document).ready(function(){
 		$('#social_add_btn').click(function(){

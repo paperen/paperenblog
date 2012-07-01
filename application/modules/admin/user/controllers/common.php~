@@ -126,7 +126,7 @@ class Admin_User_Common_Module extends MY_Module
 			}
 			
 			$user_id = $this->querycache->execute('user', 'insert', array( $user_data ) );
-			if ( empty( $user_id ) ) throw new Exception('系統出錯，請重試', -2);
+			if ( empty( $user_id ) ) throw new Exception('系統出錯，請重試', -1);
 			$data['success'] = TRUE;
 		}
 		catch( Exception $e )

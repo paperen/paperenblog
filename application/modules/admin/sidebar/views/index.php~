@@ -27,8 +27,8 @@
 			<li class="header"><a href="javascript:void(0);"><i class="icon-heart"></i>友鏈管理</a></li>
 			<li>
 				<ul class="nav nav-tabs nav-stacked nav-sub">
-					<li><a href="<?php echo base_url('link/add'); ?>">添加友鏈</a></li>
-					<li><a href="<?php echo base_url('link'); ?>">友鏈列表</a></li>
+					<li><a href="<?php echo base_url('add_link'); ?>">添加友鏈</a></li>
+					<li><a href="<?php echo base_url('show_link'); ?>">友鏈列表</a></li>
 				</ul>
 			</li>
 		</ul>

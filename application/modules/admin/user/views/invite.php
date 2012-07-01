@@ -93,7 +93,7 @@ a {
 		</ul>
 		<p>個人信息與密碼的修改可以在登錄後在个人设置进行操作，建議最好自己更換一下密碼</p>
 	</div>
-	<div class="footer">本郵件為系統于 2012-06-07 15:34:34 發出</div>
+	<div class="footer">本郵件為系統于 <?php echo date('Y-m-d H:i:s'); ?> 發出</div>
 </div>
 
 </body>

@@ -12,16 +12,16 @@ class Level
 
 	private $mLevelNums;//当前角色个数
 	public $NONE = -1;//没有权限
-	public $ADMIN = 2;//管理员
-	public $EDITOR = 1;//编辑
-	public $USER = 0;//普通用户
+	public static $ADMIN = 2;//管理员
+	public static $EDITOR = 1;//编辑
+	public static $USER = 0;//普通用户
 
 	public function GetAllRole()
 	{
 		return array(
-			$this->USER => '普通用户',
-			$this->EDITOR => '编辑',
-			$this->ADMIN => '管理员',
+			self::$USER => '普通用户',
+			self::$EDITOR => '编辑',
+			self::$ADMIN => '管理员',
 		);
 	}
 

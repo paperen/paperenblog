@@ -133,6 +133,7 @@ $route['user/add'] = 'module/admin/user/common/add';
 $route['user/edit/(:num)'] = 'module/admin/user/common/edit/$1';
 $route['my_file'] = 'module/admin/file/common/my';
 $route['my_file/(:num)'] = 'module/admin/file/common/my/$1';
+$route['setting'] = 'module/admin/setting/common/';
 
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */

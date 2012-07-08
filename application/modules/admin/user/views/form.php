@@ -203,6 +203,10 @@
 			}
 		});
 	});
+	var editor;
+	KindEditor.ready(function(K){
+		editor = K.create('textarea[name="content"]', DEFAULT_OPTIONS);
+	});
 </script>
 </div>
 <!-- main -->

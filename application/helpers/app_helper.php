@@ -194,7 +194,7 @@ function tag_url( $tag )
 function gravatar_url( $email, $size = '' )
 {
 	$size = ( $size ) ? "?s={$size}" : '';
-	return 'http://www.gravatar.com/avatar/' . md5( strtolower( trim( $email ) ) ) . $size;
+	return 'http://en.gravatar.com/avatar/' . md5( strtolower( trim( $email ) ) ) . $size;
 }
 
 /**
@@ -406,5 +406,4 @@ function mip2long( $ip )
 {
 	return bindec( decbin( ip2long( $ip ) ) );
 }
-
 // end of app_helper

@@ -40,12 +40,30 @@ class Admin_Link_Common_Module extends MY_Module
 		}
 	}
 	
+	public function edit( $link_id )
+	{
+		if ( $this->input->post( 'submit_btn' ) )
+		{
+			$this->_add();
+		}
+		else
+		{
+			$this->_form( $link_id );
+		}
+	}
+	
 	/**
 	 * 添加友链表单
 	 */
-	private function _form()
+	private function _form( $link_id = '' )
 	{
 		$data = array();
+		if ( $link_id )
+		{
+			$data['isedit'] = TRUE;
+			$link_data = $this->querycache->get('link', 'get_by_id', $link_id);
+			$data['link_data'] = $link_data; 
+		}
 		$this->load->view('form', $data);
 	}
 	

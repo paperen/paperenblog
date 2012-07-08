@@ -40,12 +40,29 @@ class Admin_Link_Common_Module extends MY_Module
 		}
 	}
 	
+	public function edit( $link_id )
+	{
+		if ( $this->input->post( 'submit_btn' ) )
+		{
+			$this->_add();
+		}
+		else
+		{
+			$this->_form( $link_id );
+		}
+	}
+	
 	/**
 	 * 添加友链表单
 	 */
-	private function _form()
+	private function _form( $link_id = '' )
 	{
 		$data = array();
+		if ( $link_id )
+		{
+			$link_data = $this->querycache->get('link', 'get_by_id', $link_id);
+			$data['link_data'] = $link_data; 
+		}
 		$this->load->view('form', $data);
 	}
 	
@@ -63,7 +80,7 @@ class Admin_Link_Common_Module extends MY_Module
 			if( !$this->_validation() ) throw new Exception( validation_errors(), -1 );
 			
 			$link_id = $this->querycache->execute('link', 'insert', array( $link_data ) );
-			if ( empty( $user_id ) ) throw new Exception('系統出錯，請重試', -2);
+			if ( empty( $link_id ) ) throw new Exception('系統出錯，請重試', -2);
 			$data['success'] = TRUE;
 		}
 		catch( Exception $e )

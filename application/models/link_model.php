@@ -18,8 +18,21 @@ class Link_model extends CI_Model
 	 */
 	private $_tables = array(
 		'link' => 'link',
+		'user' => 'user',
 		'attachment' => 'attachment',
 	);
+
+	/**
+	 * 
+	 */
+	public function get_by_id( $id )
+	{
+		return $this->db->select( 'l.id,l.name,l.url,l.image,l.meta,l.email,l.order' )
+				->from( "{$this->_tables['link']} as l" )
+				->where('l.id', $id)
+				->get()
+				->row_array();
+	}
 
 	/**
 	 * 获取所有友链
@@ -29,15 +42,38 @@ class Link_model extends CI_Model
 	 */
 	public function get_all( $per_page = 5, $offset = 0 )
 	{
-		$query = $this->db->select( '
-			l.id,l.name,url,image,meta,
-			a.name as imagename,a.path,a.suffix,a.size
-			' )
+		$query = $this->db->select( 'l.id,l.name,l.url,l.image,l.meta,l.email,l.order' )
 				->from( "{$this->_tables['link']} as l" )
-				->join( "{$this->_tables['attachment']} as a", 'a.id = l.image', 'left' )
-				->order_by( 'l.`order`', 'asc' );
+				->order_by( 'l.`order`', 'desc' );
 		if ( $per_page ) $query->limit( $per_page, $offset );
 		return $query->get()->result_array();
+	}
+	
+	/**
+	 * 链接總數
+	 * @return int
+	 */
+	public function total()
+	{
+		return $this->db->count_all_results( $this->_tables['link'] );
+	}
+	
+	/**
+	 * 插入链接
+	 * @param array $data
+	 * @return int 链接ID
+	 */
+	public function insert( $data )
+	{
+		$insert_data = array(
+			'name' => $data['name'],
+			'email' => $data['email'],
+			'url' => $data['url'],
+			'order' => $data['order'],
+			'meta' => $data['meta'],
+		);
+		$this->db->insert( $this->_tables['link'], $insert_data );
+		return $this->db->insert_id();
 	}
 
 }

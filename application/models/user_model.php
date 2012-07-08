@@ -37,6 +37,23 @@ class User_model extends CI_Model
 	}
 
 	/**
+	 * 根据用户ID获取用户数据
+	 * @param int $user_id 用户ID
+	 * @return array
+	 */
+	public function get_by_id( $user_id )
+	{
+		return $this->db->select(
+								'u.id,u.name,u.password,u.email,u.url,u.lastlogin,u.lastip,u.role,u.token,u.data'
+						)
+						->from( "{$this->_tables['user']} as u" )
+						->where( 'u.id', $user_id )
+						->get()
+						->row_array();
+
+	}
+
+	/**
 	 * 所有用戶數據
 	 * @param int $per_page
 	 * @param int $offset
@@ -96,6 +113,28 @@ class User_model extends CI_Model
 		$this->db->insert( $this->_tables['user'], $insert_data );
 		return $this->db->insert_id();
 	}
+	
+	/**
+	 * 更新指定用户ID的用户数据
+	 * @param array $data
+	 * @param int $user_id
+	 * @return int 影响行数
+	 */
+	public function update( $data, $user_id )
+	{
+		$update_data = array(
+			'name' => $data['name'],
+			'url' => $data['url'],
+			'email' => $data['email'],
+			'role' => $data['role'],
+			'token' => isset( $data['token'] ) ? $data['token'] : '',
+			'data' => isset( $data['data'] ) ? $data['data'] : '',
+		);
+		if( $data['password'] ) $update_data['password'] = md5( $data['password'] );
+		$this->db->where('id', $user_id)
+				->update( $this->_tables['user'], $update_data );
+		return $this->db->affected_rows();
+	}	
 	
 	/**
 	 * 用戶總數

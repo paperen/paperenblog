@@ -94,12 +94,20 @@ class Adminverify
 	 * 檢查是否有權限操作
 	 * @param int $upper_level 最低權限要求
 	 */
-	public function deny_permission( $need_level )
+	public function deny_permission()
 	{
+		$need_role = func_get_args();
 		$no_permission = FALSE;
-		$user_level = $this->_CI->level->GetLevel( $this->role );
-		$no_permission = ( $user_level < 0 ) ? TRUE : !in_array( $need_level, $user_level );
-		return $no_permission;
+		
+		$role_val = array();
+		foreach( $need_role as $v )
+		{
+			$role_val[] = $this->_CI->level->SetLevel( $v );
+		}
+		$role_max = ( count( $role_val ) > 1 ) ? array_sum( $role_val ) : $role_val[0];
+		if ( in_array( $this->role, $role_val ) ) return FALSE;
+		if ( $this->role >= $role_max ) return FALSE;
+		return TRUE;
 	}
 
 }

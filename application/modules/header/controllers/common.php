@@ -34,6 +34,10 @@ class Header_Common_Module extends CI_Module
 				'text' => '标签',
 				'url' => base_url( 'tag' ),
 			),
+			'author' => array(
+				'text' => '作者',
+				'url' => base_url('author'),
+			),
 			'about' => array(
 				'text' => '关于',
 				'url' => base_url( 'about' ),

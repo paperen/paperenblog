@@ -73,7 +73,8 @@ $route['file/(:num)'] = 'module/file/common/get/$1';
 $route['about'] = 'module/about/common/index';
 
 // 作者
-$route['author/(:any)'] = 'module/about/common/author/$1';
+$route['author'] = 'module/author/common/';
+$route['author/(:any)'] = 'module/author/common/get_by_name/$1';
 
 // 归档
 $route['archive'] = 'module/post/common/archive';

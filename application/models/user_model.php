@@ -53,6 +53,18 @@ class User_model extends CI_Model
 
 	}
 
+    public function get_all_author( $per_page = 0, $offset = 0 )
+    {
+        return $this->db->select(
+								'u.id,u.name,u.email,u.url,u.lastlogin,u.lastip,u.role,u.data'
+						)
+						->from( "{$this->_tables['user']} as u" )
+						->where( 'u.role', 2 )
+                        ->or_where( 'u.role', 3 )
+						->get()
+						->result_array();
+    }
+
 	/**
 	 * 所有用戶數據
 	 * @param int $per_page

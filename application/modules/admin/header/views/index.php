@@ -15,13 +15,13 @@
 <div class="header navbar navbar-fixed-top">
 	<div class="navbar-inner">
 		<div class="container-fluid">
-			<a class="brand" href="#"><?php echo config_item('sitename'); ?> 管理</a>
+			<a class="brand" href="<?php echo base_url('manage'); ?>"><?php echo config_item('sitename'); ?> 管理</a>
 			<ul class="nav pull-right">
 				<li>
 					<a href="<?php echo base_url(); ?>" target="_blank"><i class="icon-home"></i>站点</a>
 				</li>
 				<li>
-					<a href="<?php echo base_url('user_setting'); ?>"><i class="icon-cog"></i>个人设置</a>
+					<a href="<?php echo base_url('user/setting'); ?>"><i class="icon-cog"></i>个人设置</a>
 				</li>
 				<li><a href="<?php echo base_url('logout'); ?>"><i class="icon-off"></i>注销</a></li>
 			</ul>

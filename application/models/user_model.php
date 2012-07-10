@@ -96,7 +96,7 @@ class User_model extends CI_Model
 				->update( $this->_tables['user'], $update_data );
 		return $this->db->affected_rows();
 	}
-	
+
 	public function insert( $data )
 	{
 		$insert_data = array(
@@ -113,7 +113,7 @@ class User_model extends CI_Model
 		$this->db->insert( $this->_tables['user'], $insert_data );
 		return $this->db->insert_id();
 	}
-	
+
 	/**
 	 * 更新指定用户ID的用户数据
 	 * @param array $data
@@ -123,19 +123,19 @@ class User_model extends CI_Model
 	public function update( $data, $user_id )
 	{
 		$update_data = array(
-			'name' => $data['name'],
 			'url' => $data['url'],
 			'email' => $data['email'],
 			'role' => $data['role'],
 			'token' => isset( $data['token'] ) ? $data['token'] : '',
 			'data' => isset( $data['data'] ) ? $data['data'] : '',
 		);
+		if ( isset( $data['name'] ) ) $update_data['name'] = $data['name'];
 		if( $data['password'] ) $update_data['password'] = md5( $data['password'] );
 		$this->db->where('id', $user_id)
 				->update( $this->_tables['user'], $update_data );
 		return $this->db->affected_rows();
-	}	
-	
+	}
+
 	/**
 	 * 用戶總數
 	 * @return int

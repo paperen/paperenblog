@@ -131,9 +131,10 @@ $route['link/delete/(:num)'] = 'module/admin/link/common/delete/$1';
 $route['user'] = 'module/admin/user/common/';
 $route['user/add'] = 'module/admin/user/common/add';
 $route['user/edit/(:num)'] = 'module/admin/user/common/edit/$1';
+$route['user/setting'] = 'module/admin/user/common/setting';
 $route['my_file'] = 'module/admin/file/common/my';
 $route['my_file/(:num)'] = 'module/admin/file/common/my/$1';
-$route['setting'] = 'module/admin/setting/common/';
+$route['config'] = 'module/admin/config/common/';
 
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */

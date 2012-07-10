@@ -45,7 +45,8 @@
 			<li class="header"><a href="javascript:void(0);"><i class="icon-cog"></i>設置</a></li>
 			<li>
 				<ul class="nav nav-tabs nav-stacked nav-sub">
-					<li><a href="<?php echo base_url('setting'); ?>">基本設置</a></li>
+					<li><a href="<?php echo base_url('user/setting'); ?>">个人設置</a></li>
+					<li><a href="<?php echo base_url('config'); ?>">站点配置</a></li>
 					<li><a href="<?php echo base_url('weibo_auth'); ?>" id="sync_weibo">同步微博</a></li>
 				</ul>
 			</li>

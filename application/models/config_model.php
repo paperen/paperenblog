@@ -26,12 +26,25 @@ class Config_model extends CI_Model
 							->get()
 							->result_array();
 	}
-	
+
 	public function update( $key, $value )
 	{
 		$this->db->where('key', $key)
 					->update( $this->_tables['config'], array( 'value' => $value ) );
 		return $this->db->affected_rows();
+	}
+
+	/**
+	 * 根据键值获取相应数据
+	 * @param string $key 键值
+	 * @return array
+	 */
+	public function get_by_key( $key )
+	{
+		return $this->db->where('key', $key)
+						->from( $this->_tables['config'] )
+						->get()
+						->row_array();
 	}
 
 }

@@ -26,5 +26,4 @@ class Link_Common_Module extends CI_Module
 	}
 
 }
-
 // end of common

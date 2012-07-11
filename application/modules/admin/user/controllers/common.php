@@ -48,7 +48,6 @@ class Admin_User_Common_Module extends MY_Module
 			'password' => $this->input->post( 'password' ),
 			'password_cur' => $this->input->post( 'password_cur' ),
 			'job' => $this->input->post( 'job' ),
-			'role' => $this->input->post( 'role' ),
 			'socialname' => $this->input->post( 'socialname' ),
 			'socialurl' => $this->input->post( 'socialurl' ),
 			'content' => $this->input->post( 'content' ),
@@ -104,7 +103,6 @@ class Admin_User_Common_Module extends MY_Module
 				'socialname' => $format_social,
 				'content' => $user_data['content'],
 			);
-			$user_data['role'] = $this->level->SetLevel( $user_data['role'] );
 			$user_data['data'] = serialize( $extra_data );
 
 			$affected = $this->querycache->execute( 'user', 'update', array( $user_data, $user_id ) );

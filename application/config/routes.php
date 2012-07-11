@@ -87,6 +87,8 @@ $route['archive/(:num)/(:num)'] = 'module/post/common/archive_by_month/$1/$2';
 $route['archive/(:num)/(:num)/page/(:num)'] = 'module/post/common/archive_by_month/$1/$2/$3';
 $route['archive/(:num)/(:num)/(:num)'] = 'module/post/common/archive_by_day/$1/$2/$3';
 $route['archive/(:num)/(:num)/(:num)/page/(:num)'] = 'module/post/common/archive_by_day/$1/$2/$3/$4';
+$route['archive/author/(:any)'] = 'module/post/common/archive_by_author/$1';
+$route['archive/author/(:any)/page/(:num)'] = 'module/post/common/archive_by_author/$1/$2';
 
 // 標籤
 $route['tag'] = 'module/tag/common/index';

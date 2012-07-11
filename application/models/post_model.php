@@ -574,6 +574,22 @@ class Post_model extends CI_Model
 						->count_all_results( $this->_tables['post'] );
 	}
 
+	/**
+	 * 根據作者ID獲取其文章總數
+	 * @param mixed $author_ids
+	 * @return array
+	 */
+	public function total_by_authorids( $author_ids )
+	{
+		return $this->db->select('COUNT(*) as total,authorid', TRUE)
+						->from( $this->_tables['post'] )
+						->where_in('authorid', $author_ids)
+						->where( 'istrash', FALSE )
+						->group_by( 'authorid' )
+						->get()
+						->result_array();
+	}
+
 }
 
 // end of Post_model

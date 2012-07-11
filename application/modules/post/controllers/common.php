@@ -663,6 +663,14 @@ class Post_Common_Module extends CI_Module
 	}
 
 	/**
+	 * 獲取指定作者的文章
+	 */
+	public function archive_by_author( $author, $page = 1 )
+	{
+		echo $author;
+	}
+
+	/**
 	 * RSS
 	 */
 	public function rss()

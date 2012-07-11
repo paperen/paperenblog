@@ -234,6 +234,16 @@ function archive_url( $year = '', $month = '', $day = '' )
  * @param int $category_name 類別名稱
  * @return string
  */
+function archive_author_url( $author )
+{
+	return base_url( "archive/author/{$author}" );
+}
+
+/**
+ * 生成歸檔路徑(按文章類別)
+ * @param int $category_name 類別名稱
+ * @return string
+ */
 function archive_category_url( $category_name = '' )
 {
 	if ( $category_name == NULL )

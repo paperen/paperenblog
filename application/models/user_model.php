@@ -53,14 +53,20 @@ class User_model extends CI_Model
 
 	}
 
+	/**
+	 * 獲取所有作者數據
+	 * @param int $per_page
+	 * @param int $offset
+	 * @return array
+	 */
     public function get_all_author( $per_page = 0, $offset = 0 )
     {
         return $this->db->select(
 								'u.id,u.name,u.email,u.url,u.lastlogin,u.lastip,u.role,u.data'
 						)
 						->from( "{$this->_tables['user']} as u" )
-						->where( 'u.role', 2 )
-                        ->or_where( 'u.role', 3 )
+						->where( 'u.role >=', 2 )
+                        ->where( 'u.role !=', 4 )
 						->get()
 						->result_array();
     }
@@ -137,10 +143,10 @@ class User_model extends CI_Model
 		$update_data = array(
 			'url' => $data['url'],
 			'email' => $data['email'],
-			'role' => $data['role'],
 			'token' => isset( $data['token'] ) ? $data['token'] : '',
 			'data' => isset( $data['data'] ) ? $data['data'] : '',
 		);
+		if ( isset( $data['role'] ) ) $update_data['role'] = $data['role'];
 		if ( isset( $data['name'] ) ) $update_data['name'] = $data['name'];
 		if( $data['password'] ) $update_data['password'] = md5( $data['password'] );
 		$this->db->where('id', $user_id)

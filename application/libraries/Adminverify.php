@@ -98,7 +98,7 @@ class Adminverify
 	{
 		$need_role = func_get_args();
 		$no_permission = FALSE;
-		
+
 		$role_val = array();
 		foreach( $need_role as $v )
 		{

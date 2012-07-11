@@ -12,6 +12,10 @@
 class User_model extends CI_Model
 {
 
+    const EDITOR = 2;
+    const ADMIN = 4;
+    const USER = 1;
+
 	/**
 	 * 表映射
 	 * @var array
@@ -34,7 +38,25 @@ class User_model extends CI_Model
 						->where( 'u.name', $name )
 						->get()
 						->row_array();
-	}
+    }
+
+    /**
+	 * 根據作者名獲取作者數據
+	 * @param string $name 用戶名
+	 * @return array
+	 */
+	public function get_author_by_name( $name )
+	{
+		return $this->db->select(
+								'u.id,u.name,u.password,u.email,u.url,u.lastlogin,u.lastip,u.role,u.token,u.data'
+						)
+						->from( "{$this->_tables['user']} as u" )
+						->where( 'u.name', $name )
+                        ->where( 'u.role >=', self::EDITOR )
+                        ->where( 'u.role !=', self::ADMIN )
+						->get()
+						->row_array();
+    }
 
 	/**
 	 * 根据用户ID获取用户数据
@@ -65,8 +87,8 @@ class User_model extends CI_Model
 								'u.id,u.name,u.email,u.url,u.lastlogin,u.lastip,u.role,u.data'
 						)
 						->from( "{$this->_tables['user']} as u" )
-						->where( 'u.role >=', 2 )
-                        ->where( 'u.role !=', 4 )
+						->where( 'u.role >=', self::EDITOR )
+                        ->where( 'u.role !=', self::ADMIN )
 						->get()
 						->result_array();
     }

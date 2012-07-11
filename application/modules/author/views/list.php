@@ -11,11 +11,13 @@
 					<div class="span2 about-attr">
 						<a href="<?php echo author_url( $single['name'] );?>" class="thumbnail"><img src="<?php echo gravatar_url( $single['email'] );?>" alt="<?php echo $single['name']; ?>"></a>
 						<ul class="vote">
-							<li>文章 <strong><a href="<?php echo archive_author_url( $single['name'] ); ?>"><?php echo $single['postnum']; ?></a></strong></li>
+							<li>文章数 <strong><a href="<?php echo archive_author_url( $single['name'] ); ?>"><?php echo $single['postnum']; ?></a></strong></li>
 						</ul>
 					</div>
 					<div class="span9 about-entry">
+                        <div class="alert alert-info">
 						<h2><?php echo $single['name']; ?> <i class="icon-user"></i></h2>
+                        </div>
 						<?php if( $single['data']['job'] ) { ?>
 						<div class="span5">
 							<h3>職業</h3>
@@ -45,6 +47,7 @@
 						</div>
 						<?php } ?>
 					</div>
+                    <div class="c"></div>
 				</div>
 				<?php } ?>
 			</div>

@@ -275,7 +275,14 @@ pre {
 .archive .single {
 	margin-top: 10px;
 }
-
+/* author */
+.author {
+    margin-top: 15px;
+}
+.author-con {
+    padding-bottom: 15px;
+    margin-bottom: 25px;
+}
 /* comment */
 .comment {
 	clear: both;
@@ -508,9 +515,12 @@ pre {
 	width: 16px;
 	height: 14px;
 }
-.alert-empty {
-	margin-right: 15px;
+
+/* thumbnail */
+.thumbnail {
+    background: #FFF;
 }
+
 /* p-modal */
 .p-modal.fade.in {
 	top: 70%;

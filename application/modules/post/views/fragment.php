@@ -14,6 +14,17 @@
 <?php } else if( isset( $by_time ) && $by_time ) { ?>
 	<h3><?php echo $by_time; ?> 所有文章 <a href="<?php echo archive_url(); ?>" class="btn btn-primary btn-small pull-right margin-right15"><i class="icon-white icon-time"></i> 文章年份歸檔</a></h3>
 	<hr>
+<?php } else if( isset( $by_author ) && $by_author ) { ?>
+    <div class="author-archive alert alert-info">
+        <div class="span1 thumbnail">
+            <img src="<?php echo gravatar_url( $author_data['email'] );?>" alt="<?php echo $author_data['name']; ?>">
+        </div>
+        <div class="span6">
+            <h3>Hi，我是<?php echo $author_data['name']; ?> 以下是我发表的文章 <p>共<strong><?php echo $total; ?></strong>篇<p></h3>
+        </div>
+        <div class="c"></div>
+    </div>
+	<hr>
 <?php } ?>
 
 <?php if( isset( $posts_data ) && $posts_data ) { ?>
@@ -63,8 +74,8 @@ if( isset( $display ) && $display == 'row' ) {
 	$('.post-content .post-image').slimbox();
 	</script>
 <?php } else { ?>
-	<div class="alert alert-block alert-info alert-empty">
-		<h3 class="alert-heading">親~这里沒有任何文章喔~</h3>
+	<div class="alert alert-block alert-error alert-empty">
+		<h3 class="alert-heading">親，沒有任何文章喔</h3>
 	</div>
 <?php } ?>
 </div>

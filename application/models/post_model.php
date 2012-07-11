@@ -257,6 +257,18 @@ class Post_model extends CI_Model
 						->result_array();
 	}
 
+    /**
+	 * 獲取指定作者的文章總數
+	 * @param int $author_id 作者ID
+	 * @return int
+	 */
+    public function total_by_authorid( $author_id )
+    {
+        return $this->db->where( 'ispublic', TRUE )
+						->where( 'authorid', $author_id )
+						->count_all_results( $this->_tables['post'] );
+    }
+
 	/**
 	 * 獲取指定類別的文章總數
 	 * @param int $category_id 類別ID
@@ -548,19 +560,7 @@ class Post_model extends CI_Model
 		}
 		$this->db->insert_batch( $this->_tables['post_attachment'], $insert_data );
 		return $this->db->affected_rows();
-	}
-
-	/**
-	 * 獲取指定作者所有文章總數（不包括回收站的）
-	 * @param int $author_id
-	 * @return int
-	 */
-	public function total_by_authorid( $author_id )
-	{
-		return $this->db->where( 'authorid', $author_id )
-						->where( 'istrash', FALSE )
-						->count_all_results( $this->_tables['post'] );
-	}
+    }
 
 	/**
 	 * 獲取指定作者放入回收站的文章總數

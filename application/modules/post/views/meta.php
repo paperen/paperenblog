@@ -1,9 +1,9 @@
 <?php if( isset( $post ) && $post ) { ?>
 <div class="post-attr<?php echo $extra_class; ?>">
 	<?php if( isset( $post['thumbnail'] ) && $post['thumbnail'] ) { ?>
-	<a href="<?php echo post_permalink( $post['urltitle'] ); ?>" class="thumbnail" rel="bookmark"><img src="<?php echo file_url( $post['thumbnail'] ); ?>" alt="<?php echo $post['title']; ?>"></a>
+	<a href="<?php echo post_permalink( $post['urltitle'] ); ?>" class="thumbnail" rel="bookmark"><img src="<?php echo file_url( $post['thumbnail'] ); ?>" alt="<?php echo $post['title']; ?>" /></a>
 	<?php } else { ?>
-	<a href="<?php echo post_permalink( $post['urltitle'] ); ?>" class="thumbnail" rel="bookmark"><img src="<?php echo bxjg_random(); ?>" alt="<?php echo $post['title']; ?>"></a>	<?php } ?>
+	<a href="<?php echo post_permalink( $post['urltitle'] ); ?>" class="thumbnail" rel="bookmark"><img src="<?php echo bxjg_random(); ?>" alt="<?php echo $post['title']; ?>" /></a>	<?php } ?>
 	<div class="post-date">
 		<ul class="col2">
 			<li class="weekday"><?php echo get_weekday_from_unixtime( $post['posttime'] ); ?></li>

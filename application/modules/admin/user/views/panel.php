@@ -8,13 +8,18 @@
 	<!-- alert -->
 	<div class="alert alert-block alert-info">
 		<h4 class="alert-heading">系統提示</h4>
-		<p>上次登錄的IP為 200.200.200.117，本次登錄的IP為 200.200.200.117</p>
-		<p>上次登錄日期為 2012-05-06 16:34</p>
-		<p>您已經有大約 <strong>15</strong> 天沒發表文章了，<a href="#">去寫一篇</a></p>
+		<p>上次登錄的IP為 <?php echo $lastip; ?>，本次登錄的IP為 <?php echo $currentip; ?></p>
+		<p>上次登錄日期為 <?php echo date('Y-m-d H:i', $lastlogin); ?></p>
+		<?php if( !deny_permission( Level::$EDITOR ) ) { ?>
+		<?php if( $lastposttime ) { ?>
+		<p>您已經有大約 <strong><?php echo $lastposttime; ?></strong> 天沒發表文章了，<a href="<?php echo base_url('add_post'); ?>">去寫一篇</a></p>
+		<?php } ?>
+		<?php } ?>
 	</div>
 	<!-- alert -->
+	<?php if( !deny_permission( Level::$EDITOR ) && $draft_post ) { ?>
 	<div class="draft">
-		<h4 class="title">未處理文章草稿(3)</h4>
+		<h4 class="title">未處理文章草稿(<?php echo count( $draft_post ); ?>)</h4>
 		<table class="table table-condensed table-wordpress">
 			<thead>
 				<tr>
@@ -24,14 +29,19 @@
 				</tr>
 			</thead>
 			<tbody>
+				<?php foreach( $draft_post as $single ) { ?>
 				<tr>
-					<td>2012-05-09 23:12</td>
-					<td>激情四射的年代</td>
-					<td><a href="#">完善</a> / <a href="#">刪掉</a></td>
+					<td><?php echo date('Y-m-d H:i', $single['savetime']); ?></td>
+					<td><?php echo $single['title']; ?></td>
+					<td><a href="<?php echo base_url("edit/{$single['id']}"); ?>">完善</a> / <a href="<?php echo base_url("trash_add/{$single['id']}"); ?>">刪掉</a></td>
 				</tr>
+				<?php } ?>
 			</tbody>
 		</table>
 	</div>
+	<?php } ?>
+
+	<!--
 	<div class="comment">
 		<h4 class="title">未審批的評論</h4>
 		<table class="table table-condensed table-wordpress">
@@ -55,27 +65,7 @@
 			</tbody>
 		</table>
 	</div>
-	<div class="recent-post">
-		<h4 class="title">最近發文</h4>
-		<table class="table table-condensed table-wordpress">
-			<thead>
-				<tr>
-					<th>標題</th>
-					<th>發文時間</th>
-					<th>作者</th>
-					<th>查看</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td><a href="#">激情四射的年代</a></td>
-					<td>2012-5-9 23:45</td>
-					<td>fatboy</td>
-					<td><a href="#">查看</a></td>
-				</tr>
-			</tbody>
-		</table>
-	</div>
+	-->
 
 </div>
 <!-- main -->

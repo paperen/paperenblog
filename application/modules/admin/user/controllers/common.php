@@ -18,6 +18,27 @@ class Admin_User_Common_Module extends MY_Module
 	public function panel()
 	{
 		$data = array( );
+
+		// 用戶ID
+		$user_id = intval( $this->adminverify->id );
+
+		// 上次登陸IP與本次登陸IP
+		$data['lastip'] = long2ip( $this->adminverify->lastip );
+		$data['currentip'] = $this->input->ip_address();
+		$data['lastlogin'] = $this->adminverify->lastlogin;
+
+		// 距上次發表的文章天數
+		$latest_post_arr = $this->querycache->get( 'post', 'get_by_authorid', $user_id, 1 );
+		$latest_post = array_shift( $latest_post_arr );
+		$data['lastposttime'] = (int)( (time() -  $latest_post['posttime'])/86400 );
+
+		// 文章草稿
+		$draft_post = $this->querycache->get( 'post', 'get_draft_by_authorid', $user_id );
+		$data['draft_post'] = $draft_post;
+
+		// 未回覆評論
+		// @todo
+
 		$this->load->view( 'panel', $data );
 	}
 

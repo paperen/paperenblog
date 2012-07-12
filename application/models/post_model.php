@@ -115,6 +115,35 @@ class Post_model extends CI_Model
 	}
 
 	/**
+	 * 根據作者ID獲取草稿文章數據（不包括回收站的）
+	 * @param int $author_id
+	 * @param int $per_page
+	 * @param int $offset
+	 * @return array
+	 */
+	public function get_draft_by_authorid( $author_id, $per_page = 0, $offset = 0 )
+	{
+		$query = $this->db->select(
+						'p.id,p.title,p.urltitle,
+						 p.categoryid,p.content,
+						 p.authorid,p.click,p.good,
+						 p.bad,p.posttime,p.ispublic,p.isdraft,p.savetime,
+						 c.category,
+						 u.name as author'
+				)
+				->from( "{$this->_tables['post']} as p" )
+				->join( "{$this->_tables['category']} as c", 'c.id = p.categoryid' )
+				->join( "{$this->_tables['user']} as u", 'u.id = p.authorid' )
+				->where( 'p.ispublic', FALSE )
+				->where( 'p.isdraft', TRUE )
+				->where( 'p.authorid', $author_id );
+		if ( $per_page ) $query->limit( $per_page, $offset );
+		return $query->order_by( 'p.savetime', 'desc' )
+						->get()
+						->result_array();
+	}
+
+	/**
 	 * 獲取指定作者放回收站的文章數據
 	 * @param int $author_id
 	 * @param int $per_page

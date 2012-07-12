@@ -119,7 +119,7 @@ class Third_party_Common_Module extends MY_Module
 			return FALSE;
 		}
 	}
-	
+
 	/**
 	 * 更新微博授权令牌
 	 */

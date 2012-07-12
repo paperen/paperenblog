@@ -9,7 +9,7 @@
 		<?php } else { ?>
 		<div class="row-fluid">
 			<div class="span2">
-				<div class="thumbnail"><img src="<?php echo gravatar_url( $author_data['email'], '150' );?>" alt="<?php echo $author_data['name']; ?>"></div>
+				<div class="thumbnail"><img src="<?php echo gravatar_url( $author_data['email'], '150' );?>" alt="<?php echo $author_data['name']; ?>" /></div>
 				<ul class="vote">
 					<li>文章数 <strong><a href="<?php echo archive_author_url( $author_data['name'] ); ?>"><?php echo $author_data['postnum']; ?></a></strong></li>
 				</ul>

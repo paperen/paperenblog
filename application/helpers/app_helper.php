@@ -18,7 +18,7 @@
 function css( $css )
 {
 	$css = strpos( $css, 'http://' ) !== FALSE ? $css : base_url( 'theme' ) . '/' . trim( config_item( 'theme' ), '/' ) . '/' . $css;
-	return "<link href=\"{$css}\" rel=\"stylesheet\">";
+	return "<link href=\"{$css}\" rel=\"stylesheet\" />";
 }
 
 /**

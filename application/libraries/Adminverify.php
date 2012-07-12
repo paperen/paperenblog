@@ -86,7 +86,7 @@ class Adminverify
 
 	function __set( $name, $value )
 	{
-		if ( !isset( $this->_user_data[$name] ) ) $this->_user_data[$name] = $value;
+		$this->_user_data[$name] = $value;
 		$this->set_userdata( $this->_user_data );
 	}
 

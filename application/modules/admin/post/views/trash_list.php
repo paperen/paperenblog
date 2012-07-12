@@ -9,7 +9,7 @@
 			<tr>
 				<th width="20%">標題</th>
 				<th>類別</th>
-				<th width="60%">片段</th>
+				<th width="55%">片段</th>
 				<th>操作</th>
 			</tr>
 		</thead>

@@ -75,7 +75,9 @@ class Post_model extends CI_Model
 						 p.authorid,p.click,p.good,
 						 p.bad,p.posttime,p.ispublic,p.isdraft,
 						 c.category,
-						 u.name as author'
+						 u.name as author,
+						 u.email as authoremail,
+						 u.url as authorurl'
 						)
 						->from( "{$this->_tables['post']} as p" )
 						->join( "{$this->_tables['category']} as c", 'c.id = p.categoryid' )
@@ -104,10 +106,10 @@ class Post_model extends CI_Model
 				->from( "{$this->_tables['post']} as p" )
 				->join( "{$this->_tables['category']} as c", 'c.id = p.categoryid' )
 				->join( "{$this->_tables['user']} as u", 'u.id = p.authorid' )
-				->where( 'p.istrash', FALSE )
+				->where( 'p.ispublic', TRUE )
 				->where( 'p.authorid', $author_id );
 		if ( $per_page ) $query->limit( $per_page, $offset );
-		return $query->order_by( 'p.id', 'desc' )
+		return $query->order_by( 'p.posttime', 'desc' )
 						->get()
 						->result_array();
 	}
@@ -223,7 +225,7 @@ class Post_model extends CI_Model
 				->where( 'p.ispublic', TRUE )
 				->where( 'c.id', $category_id );
 		if ( $per_page ) $query->limit( $per_page, $offset );
-		return $query->order_by( 'p.id', 'desc' )
+		return $query->order_by( 'p.posttime', 'desc' )
 						->get()
 						->result_array();
 	}
@@ -252,7 +254,7 @@ class Post_model extends CI_Model
 				->where( 'p.ispublic', TRUE )
 				->where( 'pt.tagid', $tag_id );
 		if ( $per_page ) $query->limit( $per_page, $offset );
-		return $query->order_by( 'p.id', 'desc' )
+		return $query->order_by( 'p.posttime', 'desc' )
 						->get()
 						->result_array();
 	}

@@ -37,6 +37,18 @@ class MY_Loader extends CI_Loader {
 	var $_ci_module_method = '';	// 当前 Module 执行的方法
 
 	/**
+	 * Constructor
+	 *
+	 * Sets the path to the view files and gets the initial output buffering level
+	 */
+	public function __construct()
+	{
+		parent::__construct();
+
+		log_message('debug', "MY_Loader Class Initialized");
+	}
+	
+	/**
 	 * Initialize the Loader
 	 *
 	 * This method is called once in CI_Controller.
@@ -463,6 +475,9 @@ class MY_Loader extends CI_Loader {
 		$this->_ci_is_inside_module = true;
 		$this->_ci_module_path = $class_path;
 		$this->_ci_module_class = $class_name;
+
+		$this->_ci_classes = array();
+		$this->_ci_loaded_files = array();
 		$this->_ci_models = array();
 	}
 

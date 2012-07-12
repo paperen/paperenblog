@@ -283,6 +283,15 @@ pre {
     padding-bottom: 15px;
     margin-bottom: 25px;
 }
+.author-tip {
+	margin-bottom: 15px;
+	padding-bottom: 15px;
+	border-bottom: 1px #EEE solid;
+}
+.author-tip .tip-txt {
+	font-size: 18px;
+	font-weight: bold;
+}
 /* comment */
 .comment {
 	clear: both;

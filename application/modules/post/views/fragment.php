@@ -16,13 +16,17 @@
 	<hr>
 <?php } else if( isset( $by_author ) && $by_author ) { ?>
     <div class="author-archive alert alert-info">
-        <div class="span1 thumbnail">
-            <img src="<?php echo gravatar_url( $author_data['email'] );?>" alt="<?php echo $author_data['name']; ?>">
-        </div>
-        <div class="span6">
-            <h3>Hi，我是<?php echo $author_data['name']; ?> 以下是我发表的文章 <p>共<strong><?php echo $total; ?></strong>篇<p></h3>
-        </div>
-        <div class="c"></div>
+		<div class="row-fluid">
+			<div class="span1 thumbnail">
+			<img src="<?php echo gravatar_url( $author_data['email'] );?>" alt="<?php echo $author_data['name']; ?>">
+			</div>
+			<div class="span7">
+			<a href="<?php echo author_url( $author_data['name'] ); ?>" class="btn pull-right">作者詳細</a>
+			<h3>Hi，我是<?php echo $author_data['name']; ?> 以下是我发表的文章 <p>共<strong><?php echo $total; ?></strong>篇<p>
+			</h3>
+			</div>
+			<div class="c"></div>
+		</div>
     </div>
 	<hr>
 <?php } ?>

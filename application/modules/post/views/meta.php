@@ -39,8 +39,8 @@
 	</ul>
 	<?php if( isset( $display_op ) && $display_op ) { ?>
 	<div class="post-op">
-		<a href="#" class="btn btn-small btn-ding btn-success" rel="tooltip" data-original-title="覺得寫得不錯？果斷頂一個吧~" data-original-action="ding"><i class="icon-paperen icon-ding"></i>頂</a>
-		<a href="#" class="btn btn-small btn-cai" rel="tooltip" data-original-title="覺得寫得很差？應該踩" data-original-action="cai"><i class="icon-paperen icon-cai"></i>踩</a>
+		<a href="javascript:void(0);" class="btn btn-small btn-ding btn-success" rel="tooltip" data-original-title="覺得寫得不錯？果斷頂一個吧~" data-original-action="ding"><i class="icon-paperen icon-ding"></i>頂</a>
+		<a href="javascript:void(0);" class="btn btn-small btn-cai" rel="tooltip" data-original-title="覺得寫得很差？應該踩" data-original-action="cai"><i class="icon-paperen icon-cai"></i>踩</a>
 	</div>
 <?php echo js('bootstrap/bootstrap-modal.js'); ?>
 <?php echo js('bootstrap/bootstrap-transition.js'); ?>

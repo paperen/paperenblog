@@ -681,10 +681,10 @@ class Post_Common_Module extends CI_Module
             // 分頁
             $per_page = config_item( 'per_page' );
             $pagination_config = array(
-                'base_url' => author_url( $author ) . '/page',
+                'base_url' => archive_author_url( $author ) . '/page',
                 'total_rows' => $total,
                 'per_page' => $per_page,
-                'uri_segment' => 6,
+                'uri_segment' => 5,
             );
             $this->pagination->initialize( $pagination_config );
             $data['pagination'] = $this->pagination->create_pages();
@@ -706,6 +706,37 @@ class Post_Common_Module extends CI_Module
             $err_msg = $e->getMessage();
         }
         $this->load->view( 'fragment', $data );
+	}
+
+	/**
+	 * 獲取指定作者的文章（與archive_by_author不同）
+	 * @param int $author_id
+	 * @param int $per_page
+	 */
+	public function author_post( $author_id, $per_page = 4 )
+	{
+		$data = array();
+        try
+        {
+			$author_id = intval( $author_id );
+            $author_data = $this->querycache->get( 'user', 'get_author_by_id', $author_id );
+            if ( empty( $author_data ) ) throw new Exception( '错误操作', 0 );
+            $data['author_data'] = $author_data;
+
+            $this->_post_data = $this->querycache->get( 'post', 'get_by_authorid', $author_data['id'], $per_page );
+
+            $this->_prepare();
+            $data['posts_data'] = $this->_post_data;
+
+            // 顯示方式
+            $data['display'] = $this->_display_get();
+        }
+        catch( Exception $e )
+        {
+            $err_code = $e->getCode();
+            $err_msg = $e->getMessage();
+        }
+        $this->load->view( 'author_post', $data );
 	}
 
 	/**

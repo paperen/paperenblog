@@ -189,7 +189,7 @@ class Admin_User_Common_Module extends MY_Module
 	 */
 	public function add()
 	{
-		if ( $this->adminverify->deny_permission( Level::$ADMIN ) ) deny();
+		if ( deny_permission( Level::$ADMIN ) ) deny();
 		if ( $this->input->post( 'submit_btn' ) )
 		{
 			$this->_add();
@@ -325,7 +325,7 @@ class Admin_User_Common_Module extends MY_Module
 	 */
 	public function edit( $user_id )
 	{
-		if ( $this->adminverify->deny_permission( Level::$ADMIN ) ) deny();
+		if ( deny_permission( Level::$ADMIN ) ) deny();
 		if ( $this->input->post( 'submit_btn' ) )
 		{
 			$this->_edit();
@@ -423,7 +423,8 @@ class Admin_User_Common_Module extends MY_Module
 				$user_data['content'] = $extra_data['content'];
 			}
 			// 用户权限
-			$user_data['role'] = $this->level->GetLevel( $user_data['role'] );
+			$user_role = $this->level->GetLevel( $user_data['role'] );
+			$user_data['role'] = is_array( $user_role ) ? $user_role : array( $user_role );
 			$data['user_data'] = $user_data;
 		}
 		catch ( Exception $e )

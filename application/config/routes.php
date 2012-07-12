@@ -74,7 +74,7 @@ $route['about'] = 'module/about/common/index';
 
 // 作者
 $route['author'] = 'module/author/common/';
-$route['author/(:any)'] = 'module/author/common/get_by_name/$1';
+$route['author/(:any)'] = 'module/author/common/view/$1';
 
 // 归档
 $route['archive'] = 'module/post/common/archive';
@@ -137,6 +137,8 @@ $route['user/edit/(:num)'] = 'module/admin/user/common/edit/$1';
 $route['user/setting'] = 'module/admin/user/common/setting';
 $route['my_file'] = 'module/admin/file/common/my';
 $route['my_file/(:num)'] = 'module/admin/file/common/my/$1';
+$route['all_file'] = 'module/admin/file/common/all';
+$route['all_file/(:num)'] = 'module/admin/file/common/all/$1';
 $route['config'] = 'module/admin/config/common/';
 
 /* End of file routes.php */

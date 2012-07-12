@@ -59,6 +59,24 @@ class User_model extends CI_Model
     }
 
 	/**
+	 * 根據作者ID獲取作者數據
+	 * @param string $id 用戶ID
+	 * @return array
+	 */
+	public function get_author_by_id( $id )
+	{
+		return $this->db->select(
+								'u.id,u.name,u.password,u.email,u.url,u.lastlogin,u.lastip,u.role,u.token,u.data'
+						)
+						->from( "{$this->_tables['user']} as u" )
+						->where( 'u.id', $id )
+                        ->where( 'u.role >=', self::EDITOR )
+                        ->where( 'u.role !=', self::ADMIN )
+						->get()
+						->row_array();
+    }
+
+	/**
 	 * 根据用户ID获取用户数据
 	 * @param int $user_id 用户ID
 	 * @return array

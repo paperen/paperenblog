@@ -68,16 +68,21 @@ class Comment_Common_Module extends CI_Module
 	public function index( $post_id )
 	{
 		$data = array( );
+		$post_id = intval( $post_id );
 		try
 		{
 			$total = $this->querycache->get( 'comment', 'total_by_postid', $post_id );
 			$data['total'] = $total;
 
+			$post_data = $this->querycache->get( 'post', 'get_by_id', $post_id );
+			if ( empty( $post_data ) ) throw new Exception( '錯誤操作', 0 );
+			$data['post_data'] = $post_data;
+
 			$data['post_id'] = $post_id;
 		}
 		catch ( Exception $e )
 		{
-			//@todo
+			$data['err'] = $e->getMessage();
 		}
 		$this->load->view( 'comment', $data );
 	}

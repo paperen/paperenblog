@@ -399,7 +399,8 @@ function get_role( $level )
 	$role = '';
 	if ( is_array( $role_val ) )
 	{
-		foreach( $role_val as $k => $v ) $role .= $role_arr[$v] . ',';
+		foreach ( $role_val as $k => $v )
+			$role .= $role_arr[$v] . ',';
 	}
 	else
 	{
@@ -407,6 +408,7 @@ function get_role( $level )
 	}
 	return trim( $role, ',' );
 }
+
 /**
  * ip to long
  * @param string $ip
@@ -416,4 +418,17 @@ function mip2long( $ip )
 {
 	return bindec( decbin( ip2long( $ip ) ) );
 }
+
+/**
+ *
+ * @param int $permission
+ * @return bool
+ */
+function deny_permission( $permission )
+{
+	$CI = & get_instance();
+	$CI->load->library( 'adminverify' );
+	return $CI->adminverify->deny_permission( $permission );
+}
+
 // end of app_helper

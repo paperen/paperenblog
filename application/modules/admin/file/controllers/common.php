@@ -277,6 +277,16 @@ class Admin_File_Common_Module extends MY_Module
 		$this->load->view( 'list', $data );
 	}
 
+	/**
+	 * 全部文件列表
+	 * @param int $page 页数
+	 * @todo
+	 */
+	public function all( $page = 1 )
+	{
+		if ( deny_permission( Level::$ADMIN ) ) deny();
+	}
+
 }
 
 // end of common

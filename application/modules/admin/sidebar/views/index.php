@@ -4,6 +4,7 @@
 		<ul class="nav nav-tabs nav-stacked">
 			<li class="header"><a href="<?php echo base_url('manage'); ?>"><i class="icon-home"></i>管理面板</a></li>
 		</ul>
+		<?php if( !deny_permission( Level::$EDITOR ) ) { ?>
 		<ul class="nav nav-tabs nav-stacked">
 			<li class="header"><a href="javascript:void(0);"><i class="icon-file"></i>文章管理</a></li>
 			<li>
@@ -15,14 +16,19 @@
 				</ul>
 			</li>
 		</ul>
+		<?php } ?>
 		<ul class="nav nav-tabs nav-stacked">
 			<li class="header"><a href="javascript:void(0);"><i class="icon-inbox"></i>附件管理</a></li>
 			<li>
 				<ul class="nav nav-tabs nav-stacked nav-sub">
 					<li><a href="<?php echo base_url('my_file'); ?>">我傳的附件</a></li>
+					<?php if( !deny_permission( Level::$ADMIN ) ) { ?>
+					<li><a href="<?php echo base_url('all_file'); ?>">所有附件</a></li>
+					<?php } ?>
 				</ul>
 			</li>
 		</ul>
+		<?php if( !deny_permission( Level::$ADMIN ) ) { ?>
 		<ul class="nav nav-tabs nav-stacked">
 			<li class="header"><a href="javascript:void(0);"><i class="icon-heart"></i>友鏈管理</a></li>
 			<li>
@@ -41,12 +47,15 @@
 				</ul>
 			</li>
 		</ul>
+		<?php } ?>
 		<ul class="nav nav-tabs nav-stacked">
 			<li class="header"><a href="javascript:void(0);"><i class="icon-cog"></i>設置</a></li>
 			<li>
 				<ul class="nav nav-tabs nav-stacked nav-sub">
 					<li><a href="<?php echo base_url('user/setting'); ?>">个人設置</a></li>
+					<?php if( !deny_permission( Level::$ADMIN ) ) { ?>
 					<li><a href="<?php echo base_url('config'); ?>">站点配置</a></li>
+					<?php } ?>
 					<li><a href="<?php echo base_url('weibo_auth'); ?>" id="sync_weibo">同步微博</a></li>
 				</ul>
 			</li>

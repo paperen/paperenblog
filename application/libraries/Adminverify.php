@@ -98,15 +98,26 @@ class Adminverify
 	{
 		$need_role = func_get_args();
 		$no_permission = FALSE;
-
 		$role_val = array();
 		foreach( $need_role as $v )
 		{
 			$role_val[] = $this->_CI->level->SetLevel( $v );
 		}
-		$role_max = ( count( $role_val ) > 1 ) ? array_sum( $role_val ) : $role_val[0];
-		if ( in_array( $this->role, $role_val ) ) return FALSE;
-		if ( $this->role >= $role_max ) return FALSE;
+
+		$user_role = $this->_CI->level->GetLevel( $this->role );
+		if ( is_array( $user_role ) )
+		{
+			foreach( $user_role as $v )
+			{
+				$user_val[] = $this->_CI->level->SetLevel( $v );
+			}
+		}
+		else
+		{
+			$user_val[] = $this->_CI->level->SetLevel( $user_role );
+		}
+
+		if( array_intersect( $user_val, $role_val ) ) return FALSE;
 		return TRUE;
 	}
 

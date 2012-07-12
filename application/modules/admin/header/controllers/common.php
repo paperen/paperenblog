@@ -15,6 +15,7 @@ class Admin_Header_Common_Module extends MY_Module
 	public function index()
 	{
 		$data = array();
+		$data['username'] = $this->adminverify->name;
 		$this->load->view( 'index', $data );
 	}
 

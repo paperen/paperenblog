@@ -12,6 +12,17 @@
 class Admin_User_Common_Module extends MY_Module
 {
 
+    private function _test_mail( $email )
+    {
+        $this->load->library( 'email' );
+		$this->email->from( config_item( 'blog_email' ), config_item( 'sitename' ) );
+		$this->email->to( $email );
+		$this->email->subject( "邀請您加入" . config_item( 'sitename' ) );
+		$this->email->message( '发送邮件测试' );
+		$this->email->send();
+        echo $this->email->print_debugger();
+    }
+
 	/**
 	 * 用戶面板
 	 */

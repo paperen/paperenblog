@@ -83,7 +83,7 @@ a {
 <body>
 
 <div class="con">
-	<a href="<?php echo base_url(); ?>" class="logo"><img src="<?php echo base_url('theme') . config_item('theme') . '/image/logo.gif'; ?>" alt="logo" title="<?php echo config_item('sitename'); ?>"></a>
+	<a href="<?php echo base_url(); ?>" class="logo"><img src="<?php echo base_url('theme') . '/' . config_item('theme') . '/image/logo.gif'; ?>" alt="logo" title="<?php echo config_item('sitename'); ?>"></a>
 	<div class="alert alert-info">
 		<h3 class="alert-heading">Hi,<?php echo $user_data['name']; ?> 我們邀請您成為我們博客的一名blogger</h3>
 		<ul>

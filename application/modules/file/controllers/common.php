@@ -11,8 +11,12 @@
  */
 class File_Common_Module extends CI_Module
 {
+
+	private $_expired = 2592000;
+
 	/**
 	 * 獲取指定ID的附件數據
+	 * @todo 这样封装真是个失败的决定…
 	 * @param int $attachment_id 附件ID
 	 */
 	public function get( $attachment_id )
@@ -30,7 +34,9 @@ class File_Common_Module extends CI_Module
 			// 文件路徑
 			$file_path = config_item( 'upload_path' ) . $attachment_data['path'];
 			if ( !file_exists( $file_path ) ) throw new Exception( '附件路徑錯誤', -2 );
-
+			$expired_time = time() + $this->_expired;
+			$this->output->set_header('Expires: '.gmdate('D, d M Y H:i:s', $expired_time).' GMT');
+			$this->output->set_header("Cache-Control: max-age={$this->_expired}");
 			$this->output->set_content_type( $attachment_data['suffix'] )->set_output( file_get_contents( $file_path ) );
 		}
 		catch ( Exception $e )

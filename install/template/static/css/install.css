@@ -1,0 +1,12 @@
+body {
+	background: #FCFCFC;
+}
+.install-logo {
+	display: inline-block;
+	width: 32px;
+	height: 32px;
+	background: url('../images/install-logo.png') no-repeat;
+}
+.install-wrap {
+	margin-top: 80px;
+}

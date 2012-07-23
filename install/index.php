@@ -55,17 +55,23 @@ if ( $data['now_step'] == 'welcome' )
 if ( $data['now_step'] == 'system_info' )
 {
 	$data['info'] = array(
-		'os' => PHP_OS . ' + ' . $_SERVER['SERVER_SOFTWARE'],
-		'host' => $_SERVER['SERVER_NAME'],
-		'allow_url_fopen' => @ini_get( 'allow_url_fopen' ) ? '<span class="pass">[√]</span>' : '<span class="nopass">[×]</span>',
-		'post_max_size' => @ini_get( 'post_max_size' ),
-		'file_uploads' => @ini_get( 'file_uploads' ) ? '<span class="pass">[√]</span>' : '<span class="nopass">[×]</span>',
-		'max_execution_time' => ini_get( 'max_execution_time' ),
-		'safe_mode' => (ini_get( 'safe_mode' ) == '1') ? '<span class="nopass">[×]</span>' : '<span class="pass">[√]</span>',
-		'curl' => function_exists( 'curl_init' ) ? '<span class="pass">[√]</span>' : '<span class="nopass">[×]</span>',
-		'rewrite' => in_array( 'mod_rewrite', apache_get_modules() ) ? '<span class="pass">[√]</span>' : '<span class="nopass">[×]</span>',
-		'dir_able' => get_dir_able(),
+		'系統與PHP版本' => PHP_OS . ' + ' . $_SERVER['SERVER_SOFTWARE'],
+		'安裝目錄' => $_SERVER['SERVER_NAME'],
 	);
+	$data['writeable'] = get_dir_able();
+	$data['required'] = array(
+		'支持rewrite模块' => in_array( 'mod_rewrite', apache_get_modules() ),
+	);
+	$allow_install = true;
+	foreach( $data['writeable'] as $dir => $bool )
+	{
+		if ( !$bool ) $allow_install = false;
+	}
+	foreach( $data['required'] as $bool )
+	{
+		if ( !$bool ) $allow_install = false;
+	}
+	$data['allow_install'] = $allow_install;
 	get_tpl();
 	exit;
 }
@@ -88,7 +94,6 @@ if ( $data['now_step'] == 'create_database' )
 	mysql_query( 'set names ' . DBCHARSET );
 	mysql_query( "use {$database['db_name']}" );
 	$data['sql'] = file_get_contents( 'data_base.sql' );
-	$data['sql2'] = file_get_contents( 'trigger_procedure.sql' );
 	get_tpl();
 	exit;
 }

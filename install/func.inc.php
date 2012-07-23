@@ -109,9 +109,7 @@ function get_dir_able()
     $result = array();
     foreach ($dirs as $dir)
     {
-        $r_temp = is_readable($dir) ? 'read:√' : 'read:×';
-        $w_temp = is_writable($dir) ? 'write:√' : 'write:×';
-        $result[$dir] = array($r_temp, $w_temp);
+        $result[$dir] = is_writable($dir);
     }
     return $result;
 }

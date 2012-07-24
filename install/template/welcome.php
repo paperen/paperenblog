@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title></title>
+<title>安裝paperenblog</title>
 <link media="all" rel="stylesheet" href="template/static/css/bootstrap.css" type="text/css" />
 <link media="all" rel="stylesheet" href="template/static/css/install.css" type="text/css" />
 </head>

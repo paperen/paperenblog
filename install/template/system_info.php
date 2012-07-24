@@ -61,7 +61,9 @@
 		</div>
 		<hr>
 		<?php if( $data['allow_install'] ) { ?>
-		<a href="<?php echo next_step(); ?>" class="btn btn-success btn-large pull-right">下一步</a>
+		<a href="<?php echo next_step(); ?>" class="btn btn-success btn-large pull-right">繼續</a>
+		<?php } else { ?>
+		<button class="btn btn-danger disabled">安裝條件不滿足</button>
 		<?php } ?>
 	</div>
 </div>

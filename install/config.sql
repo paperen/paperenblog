@@ -1,0 +1,15 @@
+INSERT INTO `config` (`id`, `key`, `name`, `value`) VALUES
+(1, 'sitename', '站点名称', 'paperenblog'),
+(2, 'description', '站点描述', ''),
+(3, 'theme', '主题', 'paperen'),
+(4, 'per_page', '每页显示数据条数', '18'),
+(5, 'upload_path', '上传路径', './upload/'),
+(6, 'comment_ispublic', '评论是否需要审批', '1'),
+(7, 'comment_isneednotice', '评论回复是否邮件提醒', '1'),
+(8, 'blog_email', '站点Email', ''),
+(9, 'ICP', '备案号认证URL', ''),
+(10, 'weibo', '站点微博', ''),
+(11, 'weibo_akey', '微博应用码', 'xxxxx'),
+(12, 'weibo_skey', '微博应用密码', 'xxxxx'),
+(13, 'weibo_callback', '微博回调地址', ''),
+(14, 'about', '关于站点', '');

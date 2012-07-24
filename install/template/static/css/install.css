@@ -13,9 +13,38 @@ body {
 	height: 32px;
 	background: url('../images/install-system.png') no-repeat;
 }
+.install-db {
+	display: inline-block;
+	width: 32px;
+	height: 32px;
+	background: url('../images/install-db.png') no-repeat;
+}
+.install-cog {
+	display: inline-block;
+	width: 32px;
+	height: 32px;
+	background: url('../images/install-cog.png') no-repeat;
+}
+.install-success {
+	display: inline-block;
+	width: 32px;
+	height: 32px;
+	background: url('../images/install-success.png') no-repeat;
+}
 .install-wrap {
 	margin-top: 80px;
 }
 .table .alert {
 	margin-bottom: 0;
+}
+.c {
+	clear: both;
+}
+.form-actions {
+	border: none;
+	padding: 0;
+	margin: 0;
+}
+.form-actions .btn {
+	margin-left: 8px;
 }

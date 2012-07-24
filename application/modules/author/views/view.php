@@ -15,7 +15,7 @@
 				</ul>
 			</div>
 			<div class="span10 about-entry">
-				<h2>Paperen <i class="icon-user"></i></h2>
+				<h2><?php echo $author_data['name']; ?> <i class="icon-user"></i></h2>
 				<div class="span3">
 					<h3>職業</h3>
 					<ul>

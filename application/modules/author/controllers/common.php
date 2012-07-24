@@ -54,6 +54,7 @@ class Author_Common_Module extends CI_Module
 		$data = array( );
 		try
 		{
+			$author_name = urldecode( $author_name );
 			$author_data = $this->querycache->get( 'user', 'get_author_by_name', $author_name );
 			if ( empty( $author_data ) ) throw new Exception( '兄臺，此地木有此人，你認錯了' );
 

@@ -109,7 +109,33 @@ class Post_model extends CI_Model
 				->where( 'p.ispublic', TRUE )
 				->where( 'p.authorid', $author_id );
 		if ( $per_page ) $query->limit( $per_page, $offset );
-		return $query->order_by( 'p.posttime', 'desc' )
+		return $query->order_by( 'p.id', 'desc' )
+						->get()
+						->result_array();
+	}
+
+	/**
+	 * 根據作者ID獲取文章數據（不包括回收站的）
+	 * @param int $author_id
+	 * @return array
+	 */
+	public function get_all_by_authorid( $author_id, $per_page = 0, $offset = 0 )
+	{
+		$query = $this->db->select(
+						'p.id,p.title,p.urltitle,
+						 p.categoryid,p.content,
+						 p.authorid,p.click,p.good,
+						 p.bad,p.posttime,p.ispublic,p.isdraft,
+						 c.category,
+						 u.name as author'
+				)
+				->from( "{$this->_tables['post']} as p" )
+				->join( "{$this->_tables['category']} as c", 'c.id = p.categoryid' )
+				->join( "{$this->_tables['user']} as u", 'u.id = p.authorid' )
+				->where( 'istrash', FALSE )
+				->where( 'p.authorid', $author_id );
+		if ( $per_page ) $query->limit( $per_page, $offset );
+		return $query->order_by( 'p.id', 'desc' )
 						->get()
 						->result_array();
 	}
@@ -194,7 +220,7 @@ class Post_model extends CI_Model
 				->join( "{$this->_tables['user']} as u", 'u.id = p.authorid' )
 				->where( 'p.ispublic', TRUE );
 		if ( $per_page ) $query->limit( $per_page, $offset );
-		return $query->order_by( 'p.posttime', 'desc' )
+		return $query->order_by( 'p.id', 'desc' )
 						->get()
 						->result_array();
 	}
@@ -254,7 +280,7 @@ class Post_model extends CI_Model
 				->where( 'p.ispublic', TRUE )
 				->where( 'c.id', $category_id );
 		if ( $per_page ) $query->limit( $per_page, $offset );
-		return $query->order_by( 'p.posttime', 'desc' )
+		return $query->order_by( 'p.id', 'desc' )
 						->get()
 						->result_array();
 	}
@@ -283,7 +309,7 @@ class Post_model extends CI_Model
 				->where( 'p.ispublic', TRUE )
 				->where( 'pt.tagid', $tag_id );
 		if ( $per_page ) $query->limit( $per_page, $offset );
-		return $query->order_by( 'p.posttime', 'desc' )
+		return $query->order_by( 'p.id', 'desc' )
 						->get()
 						->result_array();
 	}
@@ -296,6 +322,18 @@ class Post_model extends CI_Model
     public function total_by_authorid( $author_id )
     {
         return $this->db->where( 'ispublic', TRUE )
+						->where( 'authorid', $author_id )
+						->count_all_results( $this->_tables['post'] );
+    }
+
+	/**
+	 * 獲取指定作者的文章總數
+	 * @param int $author_id 作者ID
+	 * @return int
+	 */
+    public function total_all_by_authorid( $author_id )
+    {
+        return $this->db->where( 'istrash', FALSE )
 						->where( 'authorid', $author_id )
 						->count_all_results( $this->_tables['post'] );
     }

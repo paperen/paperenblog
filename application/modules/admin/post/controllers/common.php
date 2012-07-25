@@ -44,7 +44,7 @@ class Admin_Post_Common_Module extends MY_Module
 
 		// 微博令牌
 		$data['token'] = $this->adminverify->token;
-		
+
 		try
 		{
 			if ( $post_id )
@@ -385,7 +385,7 @@ class Admin_Post_Common_Module extends MY_Module
 		$per_page = config_item( 'per_page' );
 
 		// 當前人的文章總數
-		$total = $this->querycache->get( 'post', 'total_by_authorid', $this->adminverify->id );
+		$total = $this->querycache->get( 'post', 'total_all_by_authorid', $this->adminverify->id );
 		$data['total'] = $total;
 
 		// 分頁
@@ -401,7 +401,7 @@ class Admin_Post_Common_Module extends MY_Module
 		$data['pagination'] = $pagination;
 
 		// 數據
-		$post_data = $this->querycache->get( 'post', 'get_by_authorid', $this->adminverify->id, $per_page, ( $this->pagination->get_cur_page() - 1 ) * $per_page );
+		$post_data = $this->querycache->get( 'post', 'get_all_by_authorid', $this->adminverify->id, $per_page, ( $this->pagination->get_cur_page() - 1 ) * $per_page );
 		$data['post_data'] = $post_data;
 
 		$this->load->view( 'list', $data );

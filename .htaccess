@@ -1,3 +1,11 @@
 RewriteEngine on
-RewriteCond $1 !^(index\.php|js|theme|upload/thumbnail|upload/author|html|editor)
+RewriteCond $1 !^(index\.php|js|theme|upload/thumbnail|upload/author|html|editor|install)
 RewriteRule ^(.*)$ /paperenblog/index.php/$1 [L]
+
+<IfModule mod_expires.c>
+ExpiresActive on
+<FilesMatch "\.(gif|jpg|jpeg|png|ico|js|css)$">
+FileETag None
+ExpiresDefault "access plus 1 months"
+</FilesMatch>
+</IfModule>

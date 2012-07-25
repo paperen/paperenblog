@@ -272,7 +272,7 @@ function write_app_config()
 	init_db();
 
 	// 插入config表
-	$sql = stripslashes( file_get_contents( 'config.sql' ) );
+	$sql = addslashes( file_get_contents( 'config.sql' ) );
 	mysql_query( $sql );
 
 	$content = "<?php ";

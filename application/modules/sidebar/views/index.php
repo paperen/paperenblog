@@ -6,10 +6,10 @@
 	<div class="c"></div>
     </div>
 	<!-- cmd -->
-    <div class="cmd">
+    <!--<div class="cmd">
 	<h3>Cmd <a href="#" id="what-is-cmd" rel="popover" data-content="作為一種脫離鼠標的操作方式，簡而言之就是命令行方式進行操作" data-original-title="CMD">What?</a></h3>
 	<input type="text" class="span11" value="該功能暫未完成，請熱切期待中" disabled="true">
-    </div>
+    </div>-->
     <script>
 	$('#what-is-cmd').popover({
 	    placement : 'bottom'

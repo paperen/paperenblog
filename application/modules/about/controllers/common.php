@@ -15,7 +15,8 @@ class About_Common_Module extends CI_Module
 	public function index()
 	{
 		$data = array( );
-        $data['about'] = stripslashes( $this->querycache->get('config', 'get_by_key', 'about') );
+		$about_data = $this->querycache->get('config', 'get_by_key', 'about');
+        $data['about'] = stripslashes( $about_data['value'] );
 		$this->load->view( 'index', $data );
 	}
 

@@ -4,7 +4,7 @@
 	<div class="about">
 		<h2><i class="icon-bookmark"></i>关于<?php echo config_item('sitename'); ?></h2>
         <hr>
-        <div class="about-con"><?php echo $about['value']; ?></div>
+        <div class="about-con"><?php echo $about; ?></div>
 	</div>
 
 </div>

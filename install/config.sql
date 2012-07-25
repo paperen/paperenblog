@@ -1,4 +1,4 @@
-INSERT INTO config (id, key, name, value) VALUES
+INSERT INTO config (`id`, `key`, `name`, `value`) VALUES
 ('', 'sitename', '站点名称', 'paperenblog'),
 ('', 'description', '站点描述', ''),
 ('', 'theme', '主题', 'paperen'),

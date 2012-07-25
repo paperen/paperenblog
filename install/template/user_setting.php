@@ -39,7 +39,7 @@
 					<input type="password" class="input-large" id="password" name="password">
 				</div>
 				<div class="control-group">
-					<label class="control-label" for="password2">密碼</label>
+					<label class="control-label" for="password2">再次输入密碼</label>
 					<input type="password" class="input-large" id="password2" name="password2">
 				</div>
 				<hr>

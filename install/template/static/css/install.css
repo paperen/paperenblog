@@ -31,6 +31,12 @@ body {
 	height: 32px;
 	background: url('../images/install-success.png') no-repeat;
 }
+.install-git {
+	display: inline-block;
+	width: 32px;
+	height: 32px;
+	background: url('../images/install-git.png') no-repeat;
+}
 .install-wrap {
 	margin-top: 80px;
 }

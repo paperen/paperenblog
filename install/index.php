@@ -49,6 +49,7 @@ if ( $data['now_step'] == 'welcome' )
 		'輕量',
 		'仍不夠完美',
 	);
+	$data['git'] = 'https://github.com/paperen/paperenblog';
 	get_tpl();
 	exit;
 }

@@ -20,6 +20,10 @@
 				<?php } ?>
 			</ul>
 		</div>
+		<div class="alert alert-success alert-block">
+			<h1 class="alert-heading"><span class="install-git"></span>Git地址</h3>
+			<a href="<?php echo $data['git']; ?>" target="_blank">paperenblog</a>
+		</div>
 		<hr>
 		<a href="<?php echo next_step(); ?>" class="btn btn-success btn-large pull-right">進行安裝</a>
 	</div>

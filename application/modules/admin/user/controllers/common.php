@@ -14,8 +14,9 @@ class Admin_User_Common_Module extends MY_Module
 
     private function _test_mail( $email )
     {
-        $this->load->library( 'email' );
-		$this->email->from( config_item( 'blog_email' ), config_item( 'sitename' ) );
+		$email_config = email_config();
+        $this->load->library( 'email', $email_config );
+		$this->email->from( $email_config['smtp_user'], config_item( 'sitename' ) );
 		$this->email->to( $email );
 		$this->email->subject( "邀請您加入" . config_item( 'sitename' ) );
 		$this->email->message( '发送邮件测试' );
@@ -199,7 +200,6 @@ class Admin_User_Common_Module extends MY_Module
 	 */
 	public function index()
 	{
-
 		$data = array( );
 
 		$data['total'] = $this->querycache->execute( 'user', 'total', array( ) );
@@ -300,11 +300,13 @@ class Admin_User_Common_Module extends MY_Module
 	 */
 	private function _send_invite( $user_data )
 	{
+		$email_config = email_config();
+
 		$data['user_data'] = $user_data;
 		$email_content = $this->load->view( 'invite', $data, TRUE );
 
-		$this->load->library( 'email' );
-		$this->email->from( config_item( 'blog_email' ), config_item( 'sitename' ) );
+		$this->load->library( 'email', $email_config );
+		$this->email->from( $email_config['smtp_user'], config_item( 'sitename' ) );
 		$this->email->to( $user_data['email'] );
 		$this->email->subject( "邀請您加入" . config_item( 'sitename' ) );
 		$this->email->message( $email_content );

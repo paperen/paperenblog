@@ -12,6 +12,14 @@
 class Admin_Config_Common_Module extends MY_Module
 {
 
+	private $_config_weibo_prefix = 'weibo';
+	private $_config_email_prefix = 'email';
+
+	private $_email_type = array(
+		'mail',
+		'smtp',
+	);
+
 	public function index()
 	{
 		if ( $this->input->post( 'submit_btn' ) )
@@ -33,7 +41,7 @@ class Admin_Config_Common_Module extends MY_Module
 
 			foreach ( $_POST as $k => $v )
 			{
-				$this->querycache->execute( 'config', 'update', array( $k, $v ) );
+				$this->querycache->execute( 'config', 'update', array( $k, addslashes( $v ) ) );
 			}
 			// 更新配置缓存数据
 			$this->_update_cache();
@@ -61,7 +69,20 @@ class Admin_Config_Common_Module extends MY_Module
 		$config_data = '<?php ';
 		foreach ( $config as $single )
 		{
-			$config_data .= "\$config['{$single['key']}'] = '{$single['value']}';";
+			if ( strpos( $single['key'], $this->_config_weibo_prefix ) !== false )
+			{
+				//weibo config
+				$config_data .= "\$config['{$this->_config_weibo_prefix}']['{$single['key']}'] = '{$single['value']}';";
+			}
+			else if ( strpos( $single['key'], $this->_config_email_prefix ) !== false )
+			{
+				// email config
+				$config_data .= "\$config['{$this->_config_email_prefix}']['{$single['key']}'] = '{$single['value']}';";
+			}
+			else
+			{
+				$config_data .= "\$config['{$single['key']}'] = '{$single['value']}';";
+			}
 		}
 		$config_data .= ' ?>';
 
@@ -74,10 +95,36 @@ class Admin_Config_Common_Module extends MY_Module
 	private function _form()
 	{
 		$data = array( );
-		$data['config'] = $this->querycache->get( 'config', 'all' );
+		$all_config = $this->querycache->get( 'config', 'all' );
+
+		// config_weibo
+		$config_weibo = array( );
+		foreach ( $all_config as $k => $single )
+		{
+			if ( strpos( $single['key'], $this->_config_weibo_prefix ) !== false ) $config_weibo[] = $all_config[$k];
+		}
+		$data['config_weibo'] = $config_weibo;
+
+		// config_email
+		$config_email = array( );
+		foreach ( $all_config as $k => $single )
+		{
+			if ( strpos( $single['key'], $this->_config_email_prefix ) !== false ) $config_email[] = $all_config[$k];
+		}
+		$data['config_email'] = $config_email;
+
+		// config_basic
+		$config_basic = array( );
+		foreach ( $all_config as $k => $single )
+		{
+			if ( strpos( $single['key'], $this->_config_email_prefix ) === false && strpos( $single['key'], $this->_config_weibo_prefix ) === false ) $config_basic[] = $all_config[$k];
+		}
+		$data['config_basic'] = $config_basic;
+
+		$data['email_type'] = $this->_email_type;
 
 		// 获取关于数据
-		$data['about'] = $this->querycache->get('config', 'get_by_key', 'about');
+		$data['about'] = $this->querycache->get( 'config', 'get_by_key', 'about' );
 		$this->load->view( 'form', $data );
 	}
 

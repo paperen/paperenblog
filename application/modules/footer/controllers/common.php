@@ -15,6 +15,8 @@ class Footer_Common_Module extends CI_Module
 	public function index()
 	{
 		$data = array( );
+		$weibo_config = config_item( 'weibo' );
+		$data['weibo'] = $weibo_config['account'];
 		$this->load->view( 'index', $data );
 
 		// 调试数据

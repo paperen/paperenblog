@@ -431,4 +431,21 @@ function deny_permission( $permission )
 	return $CI->adminverify->deny_permission( $permission );
 }
 
+function email_config()
+{
+	$email_config = config_item( 'email' );
+	return array(
+		'useragent' => $email_config['email_useragent'],
+		'protocol' => $email_config['email_protocol'],
+		'charset' => 'utf-8',
+		'validate' => TRUE,
+		'wordwrap' => TRUE,
+		'mailtype' => 'html',
+		'smtp_host' => $email_config['email_smtp_host'],
+		'smtp_user' => $email_config['email_smtp_user'],
+		'smtp_pass' => $email_config['email_smtp_pass'],
+		'smtp_port' => $email_config['email_smtp_port'],
+	);
+}
+
 // end of app_helper

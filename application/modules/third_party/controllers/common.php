@@ -12,10 +12,18 @@
 class Third_party_Common_Module extends MY_Module
 {
 
+	private $_config;
+
+	function __construct()
+	{
+		parent::__construct();
+		$this->_config = config_item( 'weibo' );
+	}
+
 	private function _SaeTClientV2()
 	{
 		$this->load->helper( 'saetv2' );
-		return new SaeTClientV2( config_item( 'weibo_akey' ), config_item( 'weibo_skey' ), $this->adminverify->token );
+		return new SaeTClientV2( $this->_config['weibo_akey'], $this->_config['weibo_skey'], $this->adminverify->token );
 	}
 
 	/**
@@ -28,8 +36,8 @@ class Third_party_Common_Module extends MY_Module
 		{
 			$this->load->helper( 'saetv2' );
 
-			$o = new SaeTOAuthV2( config_item( 'weibo_akey' ), config_item( 'weibo_skey' ) );
-			$code_url = $o->getAuthorizeURL( config_item( 'weibo_callback' ) );
+			$o = new SaeTOAuthV2( $this->_config['weibo_akey'], $this->_config['weibo_skey'] );
+			$code_url = $o->getAuthorizeURL( $this->_config['weibo_callback'] );
 			redirect( $code_url );
 		}
 		else
@@ -48,12 +56,12 @@ class Third_party_Common_Module extends MY_Module
 		{
 			$this->load->helper( 'saetv2' );
 
-			$o = new SaeTOAuthV2( config_item( 'weibo_akey' ), config_item( 'weibo_skey' ) );
+			$o = new SaeTOAuthV2( $this->_config['weibo_akey'], $this->_config['weibo_skey'] );
 			if ( isset( $_REQUEST['code'] ) )
 			{
 				$keys = array( );
 				$keys['code'] = $_REQUEST['code'];
-				$keys['redirect_uri'] = config_item( 'weibo_callback' );
+				$keys['redirect_uri'] = $this->_config['weibo_callback'];
 				try
 				{
 					$token = $o->getAccessToken( 'code', $keys );

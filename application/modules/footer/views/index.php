@@ -14,7 +14,7 @@
                     <h4>Follow Me</h4>
                     <ul class="unstyled third-party-app">
                         <li>
-                        <a href="<?php echo config_item('weibo'); ?>"><i class="icon-paperen icon-weibo-16x16" rel="nofollow"></i>paperen的微博</a>
+                        <a href="<?php echo $weibo; ?>"><i class="icon-paperen icon-weibo-16x16" rel="nofollow"></i>paperen的微博</a>
                         </li>
                     </ul>
                 </div>

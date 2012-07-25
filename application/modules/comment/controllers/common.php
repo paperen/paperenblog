@@ -273,8 +273,10 @@ class Comment_Common_Module extends CI_Module
 	 */
 	private function _email_notice( $to_email, $comment_data, $post_data )
 	{
-		$this->load->library( 'email' );
-		$this->email->from( config_item( 'blog_email' ), config_item( 'sitename' ) );
+		$email_config = email_config();
+
+		$this->load->library( 'email', $email_config );
+		$this->email->from( $email_config['smtp_user'], config_item( 'sitename' ) );
 		$this->email->to( $to_email );
 		$this->email->subject( "{$comment_data['author']} 回覆了您的評論" );
 		$this->email->message( "<p>" . $comment_data['content'] . "</p><p>{$comment_data['author']} 在" . date( 'Y-m-d H:i' ) . ' 回覆道</p><p><a href="' . comment_url( $post_data['urltitle'], $comment_data['pid'] ) . '">查看</a></p>' );

@@ -12,6 +12,7 @@
 			<tr>
 				<th>&nbsp;</th>
 				<th>关联文章</th>
+				<th>上传人</th>
 				<th>大小</th>
 				<th>是否图片</th>
 				<th>是否文章特色图</th>
@@ -19,21 +20,28 @@
 			</tr>
 		</thead>
 		<tbody>
-			<?php foreach( $attachment_data as $single ) { ?>
-			<tr>
-				<td width="120">
-					<?php if( $single['isimage'] ) { ?>
-					<div class="span12"><a href="<?php echo file_url( $single['id'] ); ?>" class="thumbnail" target="_blank"><img src="<?php echo file_url( $single['id'] ); ?>" alt="<?php echo $single['name']; ?>" title="<?php echo $single['name']; ?>"></a></div>
-					<?php } else { ?>
-					<a href="<?php echo file_url( $single['id'] ); ?>" target="_blank"><i class="icon-file"></i> <?php echo $single['name']; ?></a>
-					<?php } ?>
-				</td>
-				<td><a href="<?php echo post_permalink($single['urltitle']); ?>"><?php echo $single['title']; ?></a></td>
-				<td><?php echo $single['size']; ?>kb</td>
-				<td><?php echo ( $single['isimage'] ) ? '是' : '否'; ?></td>
-				<td><?php echo ( $single['isthumbnail'] ) ? '是' : '否'; ?></td>
-				<td><?php echo date('Y-m-d H:i', $single['addtime']); ?></td>
-			</tr>
+			<?php if( count( $attachment_data ) == 0 ) { ?>
+				<tr>
+					<td colspan="7"><div class="alert alert-info">什么都木有</div></td>
+				</tr>
+			<?php } else { ?>
+				<?php foreach( $attachment_data as $single ) { ?>
+				<tr>
+					<td width="120">
+						<?php if( $single['isimage'] ) { ?>
+						<div class="span12"><a href="<?php echo file_url( $single['id'] ); ?>" class="thumbnail" target="_blank"><img src="<?php echo file_url( $single['id'] ); ?>" alt="<?php echo $single['name']; ?>" title="<?php echo $single['name']; ?>"></a></div>
+						<?php } else { ?>
+						<a href="<?php echo file_url( $single['id'] ); ?>" target="_blank"><i class="icon-file"></i> <?php echo $single['name']; ?></a>
+						<?php } ?>
+					</td>
+					<td><a href="<?php echo post_permalink($single['urltitle']); ?>"><?php echo $single['title']; ?></a></td>
+					<td><?php echo $single['uploader']; ?></td>
+					<td><?php echo $single['size']; ?>kb</td>
+					<td><?php echo ( $single['isimage'] ) ? '是' : '否'; ?></td>
+					<td><?php echo ( $single['isthumbnail'] ) ? '是' : '否'; ?></td>
+					<td><?php echo date('Y-m-d H:i', $single['addtime']); ?></td>
+				</tr>
+				<?php } ?>
 			<?php } ?>
 		</tbody>
 	</table>

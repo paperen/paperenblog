@@ -161,6 +161,15 @@ class Attachment_model extends CI_Model
 	}
 
 	/**
+	 * 上传的附件总数
+	 * @return int 总数
+	 */
+	public function total()
+	{
+		return $this->db->count_all_results( $this->_tables['attachment'] );
+	}
+
+	/**
 	 * 获取某个用户上传文件的总大小
 	 * @param int $user_id
 	 * @return float
@@ -172,6 +181,39 @@ class Attachment_model extends CI_Model
 						->from( $this->_tables['attachment'] )
 						->get()
 						->row_array();
+	}
+
+	/**
+	 * 获取上传文件的总大小
+	 * @return float
+	 */
+	public function total_size()
+	{
+		return $this->db->select_sum( 'size' )
+						->from( $this->_tables['attachment'] )
+						->get()
+						->row_array();
+	}
+
+	/**
+	 * 获取上传的附件
+	 * @return array
+	 */
+	public function get_all( $per_page = 0, $offset = 0 )
+	{
+		$query = $this->db->select(
+						'a.id,a.name,a.path,a.suffix,a.size,a.addtime,a.isthumbnail,a.isimage,
+						 u.name as uploader,
+						 pt.postid,
+						 p.urltitle,p.title'
+				)
+				->from( "{$this->_tables['attachment']} as a" )
+				->join( "{$this->_tables['post_attachment']} as pt", 'pt.attachmentid = a.id' )
+				->join( "{$this->_tables['user']} as u", 'u.id = a.userid' )
+				->join( "{$this->_tables['post']} as p", 'p.id = pt.postid' )
+				->order_by( 'a.addtime', 'desc' );
+		$query->limit( $per_page, $offset );
+		return $query->get()->result_array();
 	}
 
 	/**
@@ -191,7 +233,8 @@ class Attachment_model extends CI_Model
 				->join( "{$this->_tables['post_attachment']} as pt", 'pt.attachmentid = a.id' )
 				->join( "{$this->_tables['user']} as u", 'u.id = a.userid' )
 				->join( "{$this->_tables['post']} as p", 'p.id = pt.postid' )
-				->where( 'a.userid', $user_id );
+				->where( 'a.userid', $user_id )
+				->order_by( 'a.addtime', 'desc' );
 		$query->limit( $per_page, $offset );
 		return $query->get()->result_array();
 	}

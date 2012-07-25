@@ -32,11 +32,13 @@ else
 }
 $data['now_step'] = isset( $_SESSION['now_step'] ) && in_array( $_SESSION['now_step'], $step ) ? $_SESSION['now_step'] : $step[$data['step_key']];
 
-if ( file_exists( BASEPATH . 'intall.lock' ) )
+$lock_file = 'install.lock';
+if ( file_exists( BASEPATH . $lock_file ) )
 {
-	get_tpl();
+	header( "location:../" );
 	exit;
 }
+
 if ( $data['now_step'] == 'welcome' )
 {
 	$data['feature'] = array(
@@ -131,6 +133,10 @@ if ( $data['now_step'] == 'user_setting' )
 
 			// 寫入config表與生成配置
 			write_app_config();
+
+			// 生成lock文件
+			chmod( APPPATH . $lock_file, 777 );
+			file_put_contents( APPPATH . $lock_file, '' );
 
 			$_SESSION['now_step'] = $data['now_step'] = 'success';
 		}

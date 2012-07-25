@@ -2,7 +2,7 @@
 <?php $this->load->module('admin/sidebar/common/index'); ?>
 <!-- main -->
 <div class="main span10">
-	<h3><i class="icon-picture"></i>我的附件
+	<h3><i class="icon-picture"></i>附件
 		<strong><?php echo $total; ?></strong>篇
 		<strong><?php echo $total_size; ?></strong>kb
 	</h3>

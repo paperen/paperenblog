@@ -181,6 +181,9 @@ a:hover {
 .table-wordpress th,.table-wordpress td {
 	padding: 7px 8px;
 }
+.table .alert {
+	margin: 0;
+}
 /* --------- post-form ------- */
 .post-form input[type="radio"] {
 	display: inline;

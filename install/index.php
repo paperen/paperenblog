@@ -13,6 +13,13 @@ define( 'ORIG_TABLEPRE', '' );
 define( 'DBCHARSET', 'utf8' );
 define( 'ADMINROLE', 4 );
 
+$lock_file = 'install.lock';
+if ( file_exists( BASEPATH . DIRECTORY_SEPARATOR . $lock_file ) )
+{
+	header( "location:../" );
+	exit;
+}
+
 require BASEPATH . '/func.inc.php';
 
 $dirs = array(
@@ -31,13 +38,6 @@ else
 	if ( !array_key_exists( $data['step_key'], $step ) ) $data['step_key'] = 1;
 }
 $data['now_step'] = isset( $_SESSION['now_step'] ) && in_array( $_SESSION['now_step'], $step ) ? $_SESSION['now_step'] : $step[$data['step_key']];
-
-$lock_file = 'install.lock';
-if ( file_exists( BASEPATH . $lock_file ) )
-{
-	header( "location:../" );
-	exit;
-}
 
 if ( $data['now_step'] == 'welcome' )
 {
@@ -135,8 +135,8 @@ if ( $data['now_step'] == 'user_setting' )
 			write_app_config();
 
 			// 生成lock文件
-			chmod( APPPATH . $lock_file, 777 );
-			file_put_contents( APPPATH . $lock_file, '' );
+			chmod( BASEPATH . DIRECTORY_SEPARATOR . $lock_file, 777 );
+			file_put_contents( BASEPATH . DIRECTORY_SEPARATOR . $lock_file, '' );
 
 			$_SESSION['now_step'] = $data['now_step'] = 'success';
 		}

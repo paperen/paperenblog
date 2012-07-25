@@ -19,7 +19,7 @@ class Level
 	public function GetAllRole()
 	{
 		return array(
-			self::$USER => '普通用户',
+			//self::$USER => '普通用户',
 			self::$EDITOR => '编辑',
 			self::$ADMIN => '管理员',
 		);

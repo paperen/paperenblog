@@ -48,7 +48,7 @@ class Static_Common_Module extends CI_Module
 				'table', 'hr', 'map', 'code', 'pagebreak', 'anchor', 'link', 'unlink'
 			),
 			'resizeType' => 1,
-			'uploadJson' => base_url('upload'),
+			'uploadJson' => '../upload/',
 			'fileManagerJson' => './file_manager/',
 			'allowFileManager' => true,
 			'allowUpload' => true,

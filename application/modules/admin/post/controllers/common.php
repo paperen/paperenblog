@@ -22,7 +22,7 @@ class Admin_Post_Common_Module extends MY_Module
 		if ( $this->input->post( 'post_btn' ) && $this->form_validation->check_token() )
 		{
 			// 發佈文章
-			$this->_publish();
+			$this->_publish( array('uploadJson' => './upload/') );
 		}
 		else
 		{
@@ -85,10 +85,10 @@ class Admin_Post_Common_Module extends MY_Module
 	/**
 	 * 處理文章提交數據
 	 */
-	private function _publish()
+	private function _publish( $kindeditor_config = array() )
 	{
 		$data = array( );
-
+		$data['kindeditor_config'] = $kindeditor_config;
 		$post_data = $this->_form_data();
 		$data['post_data'] = $post_data;
 		try
@@ -424,7 +424,7 @@ class Admin_Post_Common_Module extends MY_Module
 		if ( $this->input->post( 'post_btn' ) && $this->form_validation->check_token() )
 		{
 			// 發佈文章
-			$this->_publish();
+			$this->_publish( array('uploadJson' => '../upload/') );
 		}
 		else
 		{

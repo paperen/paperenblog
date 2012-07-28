@@ -33,9 +33,9 @@ class Static_Common_Module extends CI_Module
 	/**
 	 * 輸出kindeditor的配置
 	 */
-	public function kindeditor_config()
+	public function kindeditor_config( $config = array() )
 	{
-		$config = array(
+		$default_config = array(
 			'width' => '100%',
 			'height' => '650px',
 			'items' => array(
@@ -54,6 +54,7 @@ class Static_Common_Module extends CI_Module
 			'allowUpload' => true,
 			'newlineTag' => 'p',
 		);
+		$config = array_merge( $default_config, $config );
 		echo '<script>var DEFAULT_OPTIONS = ' . stripslashes( json_encode( $config ) ) . ';</script>';
 	}
 

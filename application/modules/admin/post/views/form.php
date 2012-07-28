@@ -111,7 +111,7 @@
 	</div>
 	<?php echo js( base_url('editor/kindeditor-min.js') ); ?>
 	<?php echo js( base_url('editor/lang/zh_CN.js') ); ?>
-	<?php $this->load->module('static/common/kindeditor_config'); ?>
+	<?php $this->load->module('static/common/kindeditor_config', isset( $kindeditor_config ) ? array( $kindeditor_config ) : array() ); ?>
 	<?php echo js( 'jquery-ui-highlight.js' ); ?>
 	<?php echo js( 'admin/post.js' ); ?>
 	<?php echo js( 'admin/tag.js' ); ?>

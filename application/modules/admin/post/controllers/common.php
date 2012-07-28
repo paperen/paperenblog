@@ -54,6 +54,12 @@ class Admin_Post_Common_Module extends MY_Module
 				if ( empty( $post_data ) || $post_data['istrash'] ) throw new Exception( '非法操作', -1 );
 				$data['post_data'] = $post_data;
 			}
+			else
+			{
+				$data['kindeditor_config'] = array(
+					'uploadJson' => './upload/'
+				);
+			}
 		}
 		catch ( Exception $e )
 		{

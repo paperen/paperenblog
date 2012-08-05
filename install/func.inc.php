@@ -263,7 +263,7 @@ function write_database_config()
 	$content = $content . "\$db['default']['autoinit'] = TRUE;";
 	$content = $content . "\$db['default']['stricton'] = FALSE;";
 	$file_name = APPPATH . '/config/database.php';
-	if ( strlen( $content ) == file_put_contents( $file_name, $content ) ) return TRUE;
+	if ( strlen( $content ) == write( $file_name, $content ) ) return TRUE;
 	return FALSE;
 }
 
@@ -298,7 +298,10 @@ function write( $file_path, $content )
 {
 	if ( !file_exists( $file_path ) ) mkdir( $file_path );
 	if ( !is_writeable( $file_path ) ) return FALSE;
-	return file_put_contents( $file_path, $content );
+    $fhandle = @fopen( $file_path, 'wb+' );
+    $size = @fwrite( $fhandle, $content );
+    @fclose( $fhandle );
+    return $size;
 }
 
 function create_admin( $admin, $blogemail, $password )

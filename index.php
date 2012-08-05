@@ -1,5 +1,14 @@
 <?php
 if(function_exists('date_default_timezone_set')) date_default_timezone_set('PRC');
+
+/* -------------- redirect to install ----------- */
+if ( !file_exists( './install/install.lock' ) )
+{
+	header('location:install/');
+	exit;
+}
+
+
 /*
  *---------------------------------------------------------------
  * APPLICATION ENVIRONMENT

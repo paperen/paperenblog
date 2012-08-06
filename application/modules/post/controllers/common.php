@@ -15,6 +15,7 @@ class Post_Common_Module extends CI_Module
 	/**
 	 * 列顯示
 	 */
+
 	const DISPLAY_COLUMN = 'column';
 	/**
 	 * 行顯示
@@ -574,7 +575,13 @@ class Post_Common_Module extends CI_Module
 		$post_data = $this->_post_data;
 
 		// 註冊邊欄文章圖片挂入點
-		$this->hook->register( 'post_images', 'module_post/common/images', $post_data['id'] );
+		$this->hooks->_register( 'post_images', array(
+			'class' => 'Post_Common_Module',
+			'function' => 'images',
+			'filename' => 'common.php',
+			'filepath' => 'modules/post/controllers',
+			'params' => $post_data['id'],
+		) );
 
 		$data = array(
 			'post' => $post_data,
@@ -667,45 +674,45 @@ class Post_Common_Module extends CI_Module
 	 */
 	public function archive_by_author( $author, $page = 1 )
 	{
-		$data = array();
-        try
-        {
-            $author_data = $this->querycache->get( 'user', 'get_author_by_name', $author );
-            if ( empty( $author_data ) ) throw new Exception( '错误操作', 0 );
-            $data['author_data'] = $author_data;
-            $data['by_author'] = $author_data['name'];
+		$data = array( );
+		try
+		{
+			$author_data = $this->querycache->get( 'user', 'get_author_by_name', $author );
+			if ( empty( $author_data ) ) throw new Exception( '错误操作', 0 );
+			$data['author_data'] = $author_data;
+			$data['by_author'] = $author_data['name'];
 
-            $total = $this->querycache->get( 'post', 'total_by_authorid', $author_data['id'] );
-            $data['total'] = $total;
+			$total = $this->querycache->get( 'post', 'total_by_authorid', $author_data['id'] );
+			$data['total'] = $total;
 
-            // 分頁
-            $per_page = config_item( 'per_page' );
-            $pagination_config = array(
-                'base_url' => archive_author_url( $author ) . '/page',
-                'total_rows' => $total,
-                'per_page' => $per_page,
-                'uri_segment' => 5,
-            );
-            $this->pagination->initialize( $pagination_config );
-            $data['pagination'] = $this->pagination->create_pages();
+			// 分頁
+			$per_page = config_item( 'per_page' );
+			$pagination_config = array(
+				'base_url' => archive_author_url( $author ) . '/page',
+				'total_rows' => $total,
+				'per_page' => $per_page,
+				'uri_segment' => 5,
+			);
+			$this->pagination->initialize( $pagination_config );
+			$data['pagination'] = $this->pagination->create_pages();
 
-            $this->_post_data = $this->querycache->get( 'post', 'get_by_authorid', $author_data['id'], $per_page, ( $this->pagination->get_cur_page() - 1 ) * $per_page );
+			$this->_post_data = $this->querycache->get( 'post', 'get_by_authorid', $author_data['id'], $per_page, ( $this->pagination->get_cur_page() - 1 ) * $per_page );
 
-            $this->_prepare();
-            $data['posts_data'] = $this->_post_data;
+			$this->_prepare();
+			$data['posts_data'] = $this->_post_data;
 
-            // 標記是歸檔
-            $data['is_archive'] = TRUE;
+			// 標記是歸檔
+			$data['is_archive'] = TRUE;
 
-            // 顯示方式
-            $data['display'] = $this->_display_get();
-        }
-        catch( Exception $e )
-        {
-            $err_code = $e->getCode();
-            $err_msg = $e->getMessage();
-        }
-        $this->load->view( 'fragment', $data );
+			// 顯示方式
+			$data['display'] = $this->_display_get();
+		}
+		catch ( Exception $e )
+		{
+			$err_code = $e->getCode();
+			$err_msg = $e->getMessage();
+		}
+		$this->load->view( 'fragment', $data );
 	}
 
 	/**
@@ -715,28 +722,28 @@ class Post_Common_Module extends CI_Module
 	 */
 	public function author_post( $author_id, $per_page = 4 )
 	{
-		$data = array();
-        try
-        {
+		$data = array( );
+		try
+		{
 			$author_id = intval( $author_id );
-            $author_data = $this->querycache->get( 'user', 'get_author_by_id', $author_id );
-            if ( empty( $author_data ) ) throw new Exception( '错误操作', 0 );
-            $data['author_data'] = $author_data;
+			$author_data = $this->querycache->get( 'user', 'get_author_by_id', $author_id );
+			if ( empty( $author_data ) ) throw new Exception( '错误操作', 0 );
+			$data['author_data'] = $author_data;
 
-            $this->_post_data = $this->querycache->get( 'post', 'get_by_authorid', $author_data['id'], $per_page );
+			$this->_post_data = $this->querycache->get( 'post', 'get_by_authorid', $author_data['id'], $per_page );
 
-            $this->_prepare();
-            $data['posts_data'] = $this->_post_data;
+			$this->_prepare();
+			$data['posts_data'] = $this->_post_data;
 
-            // 顯示方式
-            $data['display'] = $this->_display_get();
-        }
-        catch( Exception $e )
-        {
-            $err_code = $e->getCode();
-            $err_msg = $e->getMessage();
-        }
-        $this->load->view( 'author_post', $data );
+			// 顯示方式
+			$data['display'] = $this->_display_get();
+		}
+		catch ( Exception $e )
+		{
+			$err_code = $e->getCode();
+			$err_msg = $e->getMessage();
+		}
+		$this->load->view( 'author_post', $data );
 	}
 
 	/**

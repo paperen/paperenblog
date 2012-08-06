@@ -17,7 +17,7 @@
     </script>
 	<!-- cmd -->
 
-	<?php $this->hook->trigger('post_images'); ?>
+	<?php $this->hooks->_call_hook('post_images'); ?>
 
 	<?php $this->load->module('calendar/common/locus', array()); ?>
 	<?php $this->load->module('post/common/hot', array()); ?>

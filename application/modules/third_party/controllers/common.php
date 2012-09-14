@@ -32,21 +32,22 @@ class Third_party_Common_Module extends MY_Module
 	public function weibo_auth()
 	{
 		$token = $this->adminverify->token;
-		if ( empty( $token ) )
-		{
-			$this->load->helper( 'saetv2' );
+		if ( empty( $token ) ) $this->_weibo_authorize();
 
-			$o = new SaeTOAuthV2( $this->_config['weibo_akey'], $this->_config['weibo_skey'] );
-			$code_url = $o->getAuthorizeURL( $this->_config['weibo_callback'] );
-			redirect( $code_url );
-		}
-		else
-		{
-			$data['already_sync'] = TRUE;
-		}
+		$data['already_sync'] = TRUE;
 		$this->load->view( 'weibo_auth', $data );
 	}
 
+	private function _weibo_authorize()
+	{
+		$this->adminverify->token = '';
+		$this->load->helper( 'saetv2' );
+
+		$o = new SaeTOAuthV2( $this->_config['weibo_akey'], $this->_config['weibo_skey'] );
+		$code_url = $o->getAuthorizeURL( $this->_config['weibo_callback'] );
+		redirect( $code_url );
+	}
+	
 	/**
 	 * 微博授权回调
 	 */
@@ -97,12 +98,13 @@ class Third_party_Common_Module extends MY_Module
 			$c = $this->_SaeTClientV2();
 			if ( $image )
 			{
-				$c->upload( $post, $image, $lat, $long );
+				$result = $c->upload( $post, $image, $lat, $long );
 			}
 			else
 			{
-				$c->update( $post, $lat, $long );
+				$result = $c->update( $post, $lat, $long );
 			}
+			if ( isset( $result['error'] ) && trim( $result['error'] ) == 'expired_token' ) $this->_weibo_authorize();
 		}
 		redirect( base_url( 'weibo_auth' ) );
 	}

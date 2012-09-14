@@ -134,7 +134,7 @@ class Third_party_Common_Module extends MY_Module
 	public function _update_weibo_token( $token )
 	{
 		$this->querycache->execute( 'user', 'update_token', array( $token, $this->adminverify->id ) );
-	}
+    }
 
 }
 

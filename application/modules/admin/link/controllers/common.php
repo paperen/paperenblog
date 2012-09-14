@@ -44,7 +44,7 @@ class Admin_Link_Common_Module extends MY_Module
 	{
 		if ( $this->input->post( 'submit_btn' ) )
 		{
-			$this->_add();
+			$this->_edit();
 		}
 		else
 		{
@@ -93,6 +93,22 @@ class Admin_Link_Common_Module extends MY_Module
 		$this->load->view('form', $data);
 	}
 
+	public function _edit() {
+		$data = array();
+		try {
+			if( !$this->form_validation->check_token() ) throw new Exception( '非法操作', 0 );
+
+			$link_data = $this->_form_data();
+			if( !$this->_validation( TRUE ) ) throw new Exception( validation_errors(), -1 );
+
+			$this->querycache->execute('link', 'update', array( $link_data, $link_data['id'] ) );
+			$data['success'] = TRUE;
+		} catch( Exception $e ) {
+			$data['err'] = ( $err_code == -1 ) ? $e->getMessage() : $this->form_validation->wrap_error( $e->getMessage() );
+		}
+		$this->load->view('form', $data);
+	}
+
 	/**
 	 * 收集添加友链表单的数据
 	 * @return array
@@ -113,8 +129,9 @@ class Admin_Link_Common_Module extends MY_Module
 	 * 表单验证
 	 * @return bool
 	 */	
-	private function _validation()
+	private function _validation( $is_edit = FALSE )
 	{
+		if ( $is_edit ) $this->form_validation->set_rules('id', '链接ID', 'required');
 		$this->form_validation->set_rules('name', '用戶名', 'required');
 		$this->form_validation->set_rules('email', '郵箱', 'required|valid_email');
 		$this->form_validation->set_rules('url', 'URL', 'required|prep_url');

@@ -9,7 +9,7 @@
 				<div class="post-content"><?php echo $post['content']; ?></div>
 			</div>
 			<div class="c"></div>
-			<?php $this->load->module( 'comment/common/index', array( $post['id'] ) );?>
+			<?php $this->load->module( 'comment/common/weibocomment_box', array( $post['id'] ) );?>
 		</div>
 	</div>
 

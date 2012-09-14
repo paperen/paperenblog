@@ -76,6 +76,15 @@ class Static_Common_Module extends CI_Module
 		echo '<script>var DEFAULT_OPTIONS = ' . stripslashes( json_encode( $config ) ) . ';</script>';
 	}
 
+        /**
+     * 获取虾米播放器
+     */
+    public function xiami_song()
+    {
+        $data['xiami_js'] = '<script type="text/javascript" src="http://www.xiami.com/widget/player-multi?uid=9106521&sid=3107407,1770275556,1769432053,1769758684,1769758682,3107401,2082906,1769516992,&width=245&height=346&mainColor=999999&backColor=ffffff&autoplay=1&mode=js"></script>';
+        $this->load->view( 'xiami_player', $data );
+    }
+
 }
 
 // end of common

@@ -76,6 +76,24 @@ class Link_model extends CI_Model
 		return $this->db->insert_id();
 	}
 
+	/**
+	 * 更新链接
+	 * @param array $data
+	 * @param int 链接ID
+	 * @return int 影响行数
+	 */
+	public function update( $data, $link_id ) {
+		$update_data = array(
+			'name' => $data['name'],
+			'email' => $data['email'],
+			'url' => $data['url'],
+			'order' => $data['order'],
+			'meta' => $data['meta'],
+		);
+		$this->db->where('id', $link_id)->update( $this->_tables['link'], $update_data );
+		return $this->db->affected_rows();
+	}
+
 }
 
 // end of Link_model

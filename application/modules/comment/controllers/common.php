@@ -87,6 +87,24 @@ class Comment_Common_Module extends CI_Module
 		$this->load->view( 'comment', $data );
 	}
 
+	public function weibocomment_box( $post_id ) {
+		$data = array( );
+		$post_id = intval( $post_id );
+		try
+		{
+			$post_data = $this->querycache->get( 'post', 'get_by_id', $post_id );
+			if ( empty( $post_data ) ) throw new Exception( '錯誤操作', 0 );
+			$data['post_data'] = $post_data;
+
+			$data['post_id'] = $post_id;
+		}
+		catch ( Exception $e )
+		{
+			$data['err'] = $e->getMessage();
+		}
+		$this->load->view( 'comment_weibo', $data );
+	}
+
 	/**
 	 * 显示指定文章的评论列表
 	 * @param int $post_id 文章ID

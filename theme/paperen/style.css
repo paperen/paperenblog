@@ -239,6 +239,10 @@ pre {
 }
 
 /* post-entry */
+.post-entry {
+	word-break: break-all;
+	word-wrap: break-word;
+}
 .post-entry p {
 	font-size: 1.1em;
 	color: #333;

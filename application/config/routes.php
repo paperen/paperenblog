@@ -103,6 +103,12 @@ $route['weibo_auth'] = 'module/third_party/common/weibo_auth';
 $route['weibo_callback'] = 'module/third_party/common/weibo_callback';
 $route['weibo_post'] = 'module/third_party/common/weibo_post';
 
+// consume
+$route['consume'] = 'module/third_party/common/consume';
+$route['user/consume'] = 'module/admin/consume/common/index';
+$route['user/consume/(:num)'] = 'module/admin/consume/common/index/$1';
+$route['user/consume/(:num)/(:num)'] = 'module/admin/consume/common/index/$1/$2';
+
 // admin
 $route['deny'] = 'module/admin/login/common/deny';
 $route['logout'] = 'module/admin/user/common/logout';

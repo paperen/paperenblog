@@ -30,6 +30,7 @@
                     <ul class="unstyled">
                     	<li rel="nofollow"><a href="http://creativecommons.org/licenses/by/3.0/deed.zh_HK">姓名標示Unported (CC BY 3.0)</a></li>
                         <li><a href="<?php echo config_item('ICP'); ?>" rel="nofollow">粤ICP备09209790号</a></li>
+						<li><script src="http://s24.cnzz.com/stat.php?id=4743221&web_id=4743221" language="javascript"></script></li>
                     </ul>
                 </div>
             </div>
@@ -45,5 +46,8 @@
 		prettyPrint();
 	});
 </script>
+<!--[if lte IE 6]>
+<script src="http://anti-ie6-plan.googlecode.com/files/anti-ie6-plan.zh_CN_utf8.js"></script>
+<![endif]-->
 </body>
 </html>

@@ -9,7 +9,7 @@
  * @package paperenblog
  * @subpackage application/modules/third_party/controllers/
  */
-class Third_party_Common_Module extends MY_Module
+class Third_party_Common_Module extends CI_Module
 {
 
 	private $_config;
@@ -23,6 +23,7 @@ class Third_party_Common_Module extends MY_Module
 	private function _SaeTClientV2()
 	{
 		$this->load->helper( 'saetv2' );
+		$this->load->library( 'adminverify' );
 		return new SaeTClientV2( $this->_config['weibo_akey'], $this->_config['weibo_skey'], $this->adminverify->token );
 	}
 
@@ -31,6 +32,7 @@ class Third_party_Common_Module extends MY_Module
 	 */
 	public function weibo_auth()
 	{
+		$this->load->library('adminverify');
 		$token = $this->adminverify->token;
 		if ( empty( $token ) ) $this->_weibo_authorize();
 
@@ -40,6 +42,7 @@ class Third_party_Common_Module extends MY_Module
 
 	private function _weibo_authorize()
 	{
+		$this->load->library('adminverify');
 		$this->adminverify->token = '';
 		$this->load->helper( 'saetv2' );
 
@@ -53,6 +56,7 @@ class Third_party_Common_Module extends MY_Module
 	 */
 	public function weibo_callback()
 	{
+		$this->load->library('adminverify');
 		if ( empty( $this->adminverify->token ) )
 		{
 			$this->load->helper( 'saetv2' );
@@ -135,8 +139,43 @@ class Third_party_Common_Module extends MY_Module
 	 */
 	public function _update_weibo_token( $token )
 	{
+		$this->load->library('adminverify');
 		$this->querycache->execute( 'user', 'update_token', array( $token, $this->adminverify->id ) );
     }
+
+    /**
+     * 获取虾米播放器
+     */
+    public function xiami_song()
+    {
+        $data['xiami_js'] = '<script type="text/javascript" src="http://www.xiami.com/widget/player-multi?uid=9106521&sid=3107407,1770275556,1769432053,1769758684,1769758682,3107401,2082906,1769516992,&width=245&height=346&mainColor=999999&backColor=ffffff&autoplay=1&mode=js"></script>';
+        $this->load->view( 'xiami_player', $data );
+    }
+
+	/**
+	 * 记录消费记录而用
+	 */
+	public function consume() {
+		$appid = $this->input->post('appid');
+		if ( $appid == 'android' ) {
+
+			// 备用日后多用户的模式用到的令牌
+			$token = $this->input->post('token');
+			$time = intval( $this->input->post('time') );
+			$time = ( $time ) ? $time : time();
+
+			$insert_data = array(
+				'username' => $this->input->post('username'),
+				'time' => $time,
+				'type' => htmlspecialchars( $this->input->post('type') ),
+				'money' => floatval( $this->input->post('money') ),
+				'remark' => NULL,
+			);
+
+			$consume_id = $this->querycache->execute( 'consume', 'insert', array( $insert_data ));
+			echo $consume_id;
+		}
+	}
 
 }
 

@@ -165,7 +165,7 @@ class Comment_Common_Module extends CI_Module
 			'pid' => $this->input->post( 'pid' ),
 			'author' => $this->input->post( 'nickname' ),
 			'email' => $this->input->post( 'email' ),
-			'content' => $this->input->post( 'content' ),
+			'content' => strip_tags( $this->input->post( 'content' ) ),
 			'url' => $this->input->post( 'blog' ),
 			'ip' => bindec( decbin( ip2long( $this->input->ip_address() ) ) ),
 			'ispublic' => config_item( 'comment_ispublic' ),

@@ -24,6 +24,9 @@
 				<li>
 					<a href="<?php echo base_url('user/setting'); ?>"><i class="icon-cog"></i>个人设置</a>
 				</li>
+				<li>
+					<a href="<?php echo base_url('user/consume'); ?>"><i class="icon-eye-open"></i>消费统计</a>
+				</li>
 				<li><a href="<?php echo base_url('logout'); ?>"><i class="icon-off"></i>注销</a></li>
 			</ul>
 		</div>

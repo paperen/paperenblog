@@ -22,7 +22,7 @@ class Admin_Post_Common_Module extends MY_Module
 		if ( $this->input->post( 'post_btn' ) && $this->form_validation->check_token() )
 		{
 			// 發佈文章
-			$this->_publish( array('uploadJson' => './upload/') );
+			$this->_publish();
 		}
 		else
 		{
@@ -54,12 +54,6 @@ class Admin_Post_Common_Module extends MY_Module
 				if ( empty( $post_data ) || $post_data['istrash'] ) throw new Exception( '非法操作', -1 );
 				$data['post_data'] = $post_data;
 			}
-			else
-			{
-				$data['kindeditor_config'] = array(
-					'uploadJson' => './upload/'
-				);
-			}
 		}
 		catch ( Exception $e )
 		{
@@ -85,10 +79,10 @@ class Admin_Post_Common_Module extends MY_Module
 	/**
 	 * 處理文章提交數據
 	 */
-	private function _publish( $kindeditor_config = array() )
+	private function _publish()
 	{
 		$data = array( );
-		$data['kindeditor_config'] = $kindeditor_config;
+
 		$post_data = $this->_form_data();
 		$data['post_data'] = $post_data;
 		try
@@ -424,7 +418,7 @@ class Admin_Post_Common_Module extends MY_Module
 		if ( $this->input->post( 'post_btn' ) && $this->form_validation->check_token() )
 		{
 			// 發佈文章
-			$this->_publish( array('uploadJson' => '../upload/') );
+			$this->_publish();
 		}
 		else
 		{
@@ -535,7 +529,7 @@ class Admin_Post_Common_Module extends MY_Module
 				@unlink( $attachment_path );
 				$attachment_ids[] = $single['id'];
 			}
-			$this->querycache->execute( 'attachment', 'delete_by_ids', array( $attachment_ids ) );
+			if ( $attachment_ids ) $this->querycache->execute( 'attachment', 'delete_by_ids', array( $attachment_ids ) );
 			$this->querycache->execute( 'post', 'delete_attachment', array( $post_id ) );
 
 			// 刪除相關的評論

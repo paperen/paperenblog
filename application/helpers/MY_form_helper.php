@@ -64,7 +64,19 @@ function form_hidden($name, $value = '', $extra = '', $recursing = FALSE)
     }
     if ( ! is_array($value))
     {
-        $form .= '<input type="hidden" name="'.$name.'" value="'.form_prep($value, $name).'" '.$extra.' />'."\n";
+	$form .= '<input type="hidden" name="'.$name.'" value="'.form_prep($value, $name).'" ';
+
+	if(!is_array($extra))
+	{
+		$form .= $extra;
+	}
+	{
+		foreach($extra as $k => $v)
+		{
+			$form .= ' '.$k.'="'.$v.'" ';
+		}
+	}
+	$form .= ' />'."\n";
     }
     else
     {

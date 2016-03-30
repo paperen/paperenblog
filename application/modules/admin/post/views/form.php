@@ -11,7 +11,7 @@
 	<h3><i class="icon-edit"></i>發表新文章</h3>
 	<hr>
 	<div class="row-fluid">
-		<?php echo form_open('', array('class' => 'post-form form-inline form-horizontal', 'id' => 'post-form')); ?>
+		<?php echo form_open_multipart('', array('class' => 'post-form form-inline form-horizontal', 'id' => 'post-form')); ?>
 		<?php echo form_hidden('postid', isset( $post_data['id'] ) ? $post_data['id'] : '', 'id="postid"'); ?>
 		<div class="span8">
 		<?php if( isset( $error ) && $error ) { ?>
@@ -44,11 +44,16 @@
 		)); ?>
 		</p>
 		<p><label>文章類別 <?php echo form_dropdown('categoryid', $category_data, (isset( $post_data['categoryid'] ) ? $post_data['categoryid'] : ''), 'class="input-medium input-autosave"'); ?></label></p>
-		<?php echo form_textarea( array(
-			'id' => 'content',
-			'name' => 'content',
-			'class' => 'input-autosave',
-		), isset( $post_data['content'] ) ? $post_data['content'] : '' ); ?>
+		<?php
+			$markdown_editor_config = array(
+				'upload_handler' => base_url('module/admin/file/common/upload') . '?from=mdeditor',
+				'upload_path' => base_url('upload'),
+				'editor_relpath' => base_url('js'),
+				'parse_url' => base_url('md_parse'),
+				'value' => isset( $post_data['content'] ) ? $post_data['content'] : '',
+			);
+			MarkdownEditor::render( $markdown_editor_config );
+		?>
 		</div>
 		<div class="span3 post-sidebar">
 			<div id="autosave-tip" class="alert alert-block hide">
@@ -109,9 +114,6 @@
 		<?php echo create_token(); ?>
 		<?php echo form_close(); ?>
 	</div>
-	<?php echo js( base_url('editor/kindeditor-min.js') ); ?>
-	<?php echo js( base_url('editor/lang/zh_CN.js') ); ?>
-	<?php $this->load->module('static/common/kindeditor_config', isset( $kindeditor_config ) ? array( $kindeditor_config ) : array() ); ?>
 	<?php echo js( 'jquery-ui-highlight.js' ); ?>
 	<?php echo js( 'admin/post.js' ); ?>
 	<?php echo js( 'admin/tag.js' ); ?>
@@ -128,16 +130,6 @@
 			},
 			blur: function(){
 				$(this).attr('readonly', true);
-			}
-		});
-		// editor
-		var editor;
-		KindEditor.ready(function(K) {
-			editor = K.create('textarea[name="content"]', DEFAULT_OPTIONS);
-			//
-			editor.edit.doc.onkeyup = function() {
-				editor.sync();
-				autosave_on( 5000 );
 			}
 		});
 		// auto save

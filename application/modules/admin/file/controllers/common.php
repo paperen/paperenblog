@@ -22,6 +22,8 @@ class Admin_File_Common_Module extends MY_Module
 	 */
 	public function upload()
 	{
+		$from_mdeditor = $this->input->get('from');
+		
 		$error = $file_url = $message = '';
 		$this->load->library( 'upload' );
 
@@ -69,12 +71,17 @@ class Admin_File_Common_Module extends MY_Module
 				$this->upload->rollback();
 			}
 		}
-		echo json_encode( array(
+		$result = array(
 			'error' => $error,
 			'url' => $file_url,
 			'message' => strip_tags( $message ),
-		) );
-		exit;
+		);
+		if ( $from_mdeditor ) {
+			$this->load->view('mdeditor', $result);
+		} else {
+			echo json_encode( $result );
+			exit;
+		}
 	}
 
 	/**

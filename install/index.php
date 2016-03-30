@@ -10,7 +10,7 @@ define( 'ROOT', dirname( dirname( __FILE__ ) ) );
 define( 'APPPATH', dirname( dirname( __FILE__ ) ) . DIRECTORY_SEPARATOR . 'application' );
 define( 'ORIG_TABLEPRE', '' );
 define( 'DBCHARSET', 'utf8' );
-define( 'ADMINROLE', 4 );
+define( 'ADMINROLE', 7 );
 
 $lock_file = 'install.lock';
 if ( file_exists( BASEPATH . DIRECTORY_SEPARATOR . $lock_file ) )

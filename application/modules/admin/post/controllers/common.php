@@ -12,6 +12,20 @@
 class Admin_Post_Common_Module extends MY_Module
 {
 
+	public function parse() {
+		// 引入markdowneditor
+		$this->load->library('MarkdownEditor');
+	
+		$content = stripslashes( $this->input->post('content') );
+		$html = MarkdownEditor::parse( $content );
+		$result = array(
+			'html' => $html,
+			'raw' => htmlspecialchars( $html ),
+		);
+		echo json_encode( $result );
+		exit;
+	}
+
 	/**
 	 * 發表新文章
 	 */
@@ -19,10 +33,12 @@ class Admin_Post_Common_Module extends MY_Module
 	{
 		// 檢查是否具有編輯權限
 		if ( $this->adminverify->deny_permission( adminverify::AUTHOR ) ) deny();
+		// 引入markdowneditor
+		$this->load->library('MarkdownEditor');
 		if ( $this->input->post( 'post_btn' ) && $this->form_validation->check_token() )
 		{
 			// 發佈文章
-			$this->_publish();
+			$this->_publish( array('uploadJson' => './upload/') );
 		}
 		else
 		{
@@ -52,7 +68,16 @@ class Admin_Post_Common_Module extends MY_Module
 				// 獲取文章數據
 				$post_data = $this->_valid_post( $post_id );
 				if ( empty( $post_data ) || $post_data['istrash'] ) throw new Exception( '非法操作', -1 );
+				$this->load->library('MarkdownDeparse');
+				$converter = new MarkdownDeparse();
+				$post_data['content'] = $converter->parseString($post_data['content']);
 				$data['post_data'] = $post_data;
+			}
+			else
+			{
+				$data['kindeditor_config'] = array(
+					'uploadJson' => './upload/'
+				);
 			}
 		}
 		catch ( Exception $e )
@@ -79,10 +104,10 @@ class Admin_Post_Common_Module extends MY_Module
 	/**
 	 * 處理文章提交數據
 	 */
-	private function _publish()
+	private function _publish( $kindeditor_config = array() )
 	{
 		$data = array( );
-
+		$data['kindeditor_config'] = $kindeditor_config;
 		$post_data = $this->_form_data();
 		$data['post_data'] = $post_data;
 		try
@@ -145,6 +170,9 @@ class Admin_Post_Common_Module extends MY_Module
 				'title' => "{$post_data['title']} 已成功發佈",
 				'post_url' => post_permalink( $post_data['urltitle'] ),
 			);
+			$this->load->library('MarkdownDeparse');
+			$converter = new MarkdownDeparse();
+			$data['post_data']['content'] = $converter->parseString($data['post_data']['content']);
 		}
 		catch ( Exception $e )
 		{
@@ -415,10 +443,12 @@ class Admin_Post_Common_Module extends MY_Module
 	{
 		// 檢查是否具有編輯權限
 		if ( $this->adminverify->deny_permission( adminverify::AUTHOR ) ) deny();
+		// 引入markdowneditor
+		$this->load->library('MarkdownEditor');
 		if ( $this->input->post( 'post_btn' ) && $this->form_validation->check_token() )
 		{
 			// 發佈文章
-			$this->_publish();
+			$this->_publish( array('uploadJson' => '../upload/') );
 		}
 		else
 		{

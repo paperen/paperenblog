@@ -2,7 +2,6 @@
 
 session_start();
 error_reporting( 0 );
-set_magic_quotes_runtime( 1 );
 if ( function_exists( 'date_default_timezone_set' ) ) date_default_timezone_set( 'PRC' );
 
 define( 'IN_INSTALL', TRUE );
@@ -125,7 +124,6 @@ if ( $data['now_step'] == 'user_setting' )
 		if ( empty( $blogemail ) ) $data['err'][] = '請填寫管理員郵箱';
 		if ( empty( $password ) ) $data['err'][] = '請填寫管理員密碼';
 		if ( $password2 != $password ) $data['err'][] = '重複密碼不正確';
-
 		if ( count( $data['err'] ) == 0 )
 		{
 			// 沒錯
@@ -140,6 +138,11 @@ if ( $data['now_step'] == 'user_setting' )
 			file_put_contents( BASEPATH . DIRECTORY_SEPARATOR . $lock_file, '' );
 
 			$_SESSION['now_step'] = $data['now_step'] = 'success';
+		}
+		else
+		{
+			get_tpl();
+			exit;
 		}
 	}
 	else

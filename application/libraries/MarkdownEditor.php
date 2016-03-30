@@ -18,7 +18,7 @@ EOT;
         if ( $config['preview'] ) $html .= "<input type=\"button\" id=\"MDE_preview_btn\" value=\"预览\" class=\"btn btn-small\">";
         if ( $config['upload'] ) $html .= "<input type=\"file\" name=\"imgFile\" for=\"MDE_file_form\" id=\"MDE_file\">
             <input type=\"button\" id=\"MDE_filesubmit_btn\" value=\"上传文件\" for=\"MDE_file_form\" class=\"btn btn-small\">
-            <div><iframe frameborder=\"no\" id=\"MDE_upload_iframe\" name=\"MDE_upload_iframe\" border=\"none\" ></iframe></div>
+            <div><hr><h3>支持的热键列表</h3><ul><li>alt+shift+a 插入链接</li><li>alt+shift+p 预览</li><li>alt+shift+u 上传文件</li><li><a href=\"http://wowubuntu.com/markdown/\" target=\"_blank\">关于markdown</a></li></ul><iframe frameborder=\"no\" id=\"MDE_upload_iframe\" name=\"MDE_upload_iframe\" border=\"none\" ></iframe></div>
 </div>";
         echo $html;
     }

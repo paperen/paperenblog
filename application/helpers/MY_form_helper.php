@@ -69,8 +69,7 @@ function form_hidden($name, $value = '', $extra = '', $recursing = FALSE)
 	if(!is_array($extra))
 	{
 		$form .= $extra;
-	}
-	{
+	} else {
 		foreach($extra as $k => $v)
 		{
 			$form .= ' '.$k.'="'.$v.'" ';

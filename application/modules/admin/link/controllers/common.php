@@ -17,7 +17,7 @@ class Admin_Link_Common_Module extends MY_Module
 	 */
 	public function index()
 	{
-		
+
 		$data = array( );
 
 		$data['total'] = $this->querycache->execute('link', 'total', array());
@@ -27,7 +27,7 @@ class Admin_Link_Common_Module extends MY_Module
 
 		$this->load->view( 'list', $data );
 	}
-	
+
 	public function add()
 	{
 		if ( $this->input->post( 'submit_btn' ) )
@@ -39,7 +39,7 @@ class Admin_Link_Common_Module extends MY_Module
 			$this->_form();
 		}
 	}
-	
+
 	public function edit( $link_id )
 	{
 		if ( $this->input->post( 'submit_btn' ) )
@@ -51,7 +51,7 @@ class Admin_Link_Common_Module extends MY_Module
 			$this->_form( $link_id );
 		}
 	}
-	
+
 	/**
 	 * 添加友链表单
 	 */
@@ -62,11 +62,11 @@ class Admin_Link_Common_Module extends MY_Module
 		{
 			$data['isedit'] = TRUE;
 			$link_data = $this->querycache->get('link', 'get_by_id', $link_id);
-			$data['link_data'] = $link_data; 
+			$data['link_data'] = $link_data;
 		}
 		$this->load->view('form', $data);
 	}
-	
+
 	/**
 	 * 添加链接信息操作
 	 */
@@ -76,13 +76,15 @@ class Admin_Link_Common_Module extends MY_Module
 		try
 		{
 			if( !$this->form_validation->check_token() ) throw new Exception( '非法操作', 0 );
-			
+
 			$link_data = $this->_form_data();
 			if( !$this->_validation() ) throw new Exception( validation_errors(), -1 );
-			
+
 			$link_id = $this->querycache->execute('link', 'insert', array( $link_data ) );
 			if ( empty( $link_id ) ) throw new Exception('系統出錯，請重試', -2);
 			$data['success'] = TRUE;
+			// redis
+			$this->querycache->unset_tag('link');
 		}
 		catch( Exception $e )
 		{
@@ -103,6 +105,8 @@ class Admin_Link_Common_Module extends MY_Module
 
 			$this->querycache->execute('link', 'update', array( $link_data, $link_data['id'] ) );
 			$data['success'] = TRUE;
+			// redis
+			$this->querycache->unset_tag('link');
 		} catch( Exception $e ) {
 			$data['err'] = ( $err_code == -1 ) ? $e->getMessage() : $this->form_validation->wrap_error( $e->getMessage() );
 		}
@@ -128,12 +132,12 @@ class Admin_Link_Common_Module extends MY_Module
 	/**
 	 * 表单验证
 	 * @return bool
-	 */	
+	 */
 	private function _validation( $is_edit = FALSE )
 	{
 		if ( $is_edit ) $this->form_validation->set_rules('id', '链接ID', 'required');
 		$this->form_validation->set_rules('name', '用戶名', 'required');
-		$this->form_validation->set_rules('email', '郵箱', 'required|valid_email');
+		//$this->form_validation->set_rules('email', '郵箱', 'required|valid_email');
 		$this->form_validation->set_rules('url', 'URL', 'required|prep_url');
 		$this->form_validation->set_rules('order', '排序', 'is_natural');
 		return $this->form_validation->run();

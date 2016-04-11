@@ -74,7 +74,7 @@ class Comment_Common_Module extends CI_Module
 			$total = $this->querycache->get( 'comment', 'total_by_postid', $post_id );
 			$data['total'] = $total;
 
-			$post_data = $this->querycache->get( 'post', 'get_by_id', $post_id );
+			$post_data = $this->querycache->tag("comment_{$post_id}")->get( 'post', 'get_by_id', $post_id );
 			if ( empty( $post_data ) ) throw new Exception( '錯誤操作', 0 );
 			$data['post_data'] = $post_data;
 
@@ -227,6 +227,8 @@ class Comment_Common_Module extends CI_Module
 			if ( $comment_data['url'] ) $comment_data['url'] = $this->form_validation->prep_url( $comment_data['url'] );
 
 			$comment_id = $this->querycache->execute( 'comment', 'insert', array( $comment_data ) );
+			$this->querycache->unset_tag("comment_{$post_id}");
+			$this->querycache->unset_tag("comment_recent");
 			if ( empty( $comment_id ) ) throw new Exception( '親，博客出現一些問題，請重試看看', -3 );
 			$comment_data['id'] = $comment_id;
 
@@ -235,6 +237,7 @@ class Comment_Common_Module extends CI_Module
 
 			// 更新評論者cookie數據
 			$this->_update_comment_author( $comment_data['author'], $comment_data['email'], $comment_data['url'] );
+
 		}
 		catch ( Exception $e )
 		{
@@ -276,7 +279,7 @@ class Comment_Common_Module extends CI_Module
 
 		$data = array( );
 
-		$comments_data = $this->querycache->get( 'comment', 'get_all', $limit );
+		$comments_data = $this->querycache->tag('comment_recent')->get( 'comment', 'get_all', $limit );
 		$data['comments_data'] = $comments_data;
 
 		$this->load->view( 'recent', $data );

@@ -85,7 +85,6 @@ class Admin_Config_Common_Module extends MY_Module
 			}
 		}
 		$config_data .= ' ?>';
-
 		fwrite( $fhandle, $config_data );
 		fclose( $fhandle );
 

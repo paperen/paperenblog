@@ -21,7 +21,7 @@
 
 	<?php $this->load->module('calendar/common/locus', array()); ?>
 	<?php $this->load->module('post/common/hot', array()); ?>
-	<?php //$this->load->module('comment/common/recent', array()); ?>
+	<?php $this->load->module('comment/common/recent', array()); ?>
 	<?php $this->load->module('link/common/all', array()); ?>
 </div>
 <!-- sidebar -->

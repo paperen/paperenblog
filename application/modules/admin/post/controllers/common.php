@@ -15,7 +15,7 @@ class Admin_Post_Common_Module extends MY_Module
 	public function parse() {
 		// 引入markdowneditor
 		$this->load->library('MarkdownEditor');
-	
+
 		$content = stripslashes( $this->input->post('content') );
 		$html = MarkdownEditor::parse( $content );
 		$result = array(
@@ -132,6 +132,7 @@ class Admin_Post_Common_Module extends MY_Module
 				// 是否合法
 				$post_raw_data = $this->_valid_post( $post_id );
 				if ( empty( $post_raw_data ) || $post_raw_data['istrash'] ) throw new Exception( '錯誤操作', -4 );
+				$this->querycache->unset_tag("post_{$post_raw_data['urltitle']}");
 				if ( !$this->querycache->execute( 'post', 'update', array( $post_data, $post_data['id'] ) ) ) throw new Exception( '系統錯誤', -5 );
 			}
 
@@ -173,6 +174,11 @@ class Admin_Post_Common_Module extends MY_Module
 			$this->load->library('MarkdownDeparse');
 			$converter = new MarkdownDeparse();
 			$data['post_data']['content'] = $converter->parseString($data['post_data']['content']);
+
+			// 删掉redis中的数据
+			$this->querycache->unset_tag('index');
+			$this->querycache->unset_tag("post_{$post_data['urltitle']}");
+			$this->querycache->unset_tag("post_{$post_id}");
 		}
 		catch ( Exception $e )
 		{
@@ -505,11 +511,18 @@ class Admin_Post_Common_Module extends MY_Module
 			if ( empty( $post_data ) ) throw new Exception( '錯誤操作', -1 );
 
 			$this->querycache->execute( 'post', 'update_trash', array( $post_id ) );
+
+			// 删掉redis中的数据
+			$this->querycache->unset_tag('index');
+			$this->querycache->unset_tag("post_{$post_data['urltitle']}");
+			$this->querycache->unset_tag("post_{$post_id}");
+			$this->querycache->unset_tag("comment_recent");
 		}
 		catch ( Exception $e )
 		{
 			$error_msg = $e->getMessage();
 		}
+
 		redirect( base_url( 'trash' ) );
 	}
 
@@ -528,6 +541,12 @@ class Admin_Post_Common_Module extends MY_Module
 			if ( empty( $post_data ) || !$post_data['istrash'] ) throw new Exception( '錯誤操作', -1 );
 
 			$this->querycache->execute( 'post', 'update_trash_revoke', array( $post_id ) );
+
+			// 删掉redis中的数据
+			$this->querycache->unset_tag('index');
+			$this->querycache->unset_tag("post_{$post_data['urltitle']}");
+			$this->querycache->unset_tag("post_{$post_id}");
+			$this->querycache->unset_tag("comment_recent");
 		}
 		catch ( Exception $e )
 		{
@@ -567,6 +586,13 @@ class Admin_Post_Common_Module extends MY_Module
 
 			// 刪除文章
 			$this->querycache->execute( 'post', 'delete_by_id', array( $post_id ) );
+
+			// 删除redis中的数据
+			$this->querycache->unset_tag('index');
+			$this->querycache->unset_tag("post_{$post_data['urltitle']}");
+			$this->querycache->unset_tag("post_{$post_id}");
+			$this->querycache->unset_tag("comment_{$post_id}");
+			$this->querycache->unset_tag("comment_recent");
 
 			$data['error'] = FALSE;
 		}

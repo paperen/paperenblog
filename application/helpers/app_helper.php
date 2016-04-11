@@ -119,15 +119,19 @@ if ( !function_exists( 'gbk_substr' ) )
 	 */
 	function gbk_substr( $string, $length, $from = 0 )
 	{
-		$string = strip_tags( $string );
-		if ( $length == 0 )
-		{
-			return $string;
-		}
-		else
-		{
-			return preg_replace( '#^(?:[\x00-\x7F]|[\xC0-\xFF][\x80-\xBF]+){0,' . $from . '}' .
-							'((?:[\x00-\x7F]|[\xC0-\xFF][\x80-\xBF]+){0,' . $length . '}).*#s', '$1', $string );
+		if ( !function_exists( 'mb_substr' ) ) {
+			$string = strip_tags( $string );
+			if ( $length == 0 )
+			{
+				return $string;
+			}
+			else
+			{
+				return preg_replace( '#^(?:[\x00-\x7F]|[\xC0-\xFF][\x80-\xBF]+){0,' . $from . '}' .
+								'((?:[\x00-\x7F]|[\xC0-\xFF][\x80-\xBF]+){0,' . $length . '}).*#s', '$1', $string );
+			}
+		} else {
+			return mb_substr($string, $from, $length);
 		}
 	}
 

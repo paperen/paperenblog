@@ -15,7 +15,7 @@ class Tag_Common_Module extends CI_Module
 	public function index()
 	{
 		$data = array( );
-		$tag_data = $this->querycache->get( 'tag', 'get_all', 0 );
+		$tag_data = $this->querycache->tag('tag')->get( 'tag', 'get_all', 0 );
 		$data['tag_data'] = $tag_data;
 		$this->load->view( 'index', $data );
 	}

@@ -19,7 +19,7 @@ class Link_Common_Module extends CI_Module
 	{
 		$data = array( );
 
-		$links = $this->querycache->get( 'link', 'get_all', NULL );
+		$links = $this->querycache->tag('link')->get( 'link', 'get_all', NULL );
 		$data['links'] = $links;
 
 		$this->load->view( 'all', $data );

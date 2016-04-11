@@ -142,7 +142,7 @@ class Post_Common_Module extends CI_Module
 		);
 		$this->pagination->initialize( $pagination_config );
 		$data['pagination'] = $this->pagination->create_pages();
-		$this->_post_data = $this->querycache->get( 'post', 'get_all', $per_page, ( $this->pagination->get_cur_page() - 1 ) * $per_page );
+		$this->_post_data = $this->querycache->tag('index')->get( 'post', 'get_all', $per_page, ( $this->pagination->get_cur_page() - 1 ) * $per_page );
 		// 加工
 		$this->_prepare();
 
@@ -470,12 +470,12 @@ class Post_Common_Module extends CI_Module
 		if ( is_numeric( $postid_or_urltitle ) )
 		{
 			$post_id = intval( $postid_or_urltitle );
-			$post_data = $this->querycache->get( 'post', 'get_by_id', $post_id );
+			$post_data = $this->querycache->tag("post_{$post_id}")->get( 'post', 'get_by_id', $post_id );
 		}
 		else
 		{
 			$postid_or_urltitle = urldecode( $postid_or_urltitle );
-			$post_data = $this->querycache->get( 'post', 'get_by_urltitle', $postid_or_urltitle );
+			$post_data = $this->querycache->tag("post_{$postid_or_urltitle}")->get( 'post', 'get_by_urltitle', $postid_or_urltitle );
 		}
 		if ( isset( $post_data['ispublic'] ) ) return $post_data;
 		return FALSE;

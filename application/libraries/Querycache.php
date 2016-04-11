@@ -10,10 +10,15 @@ class Querycache
 
 	private $_CI;
 	private $_cache;
+	private $_redis;
 
 	function __construct()
 	{
 		$this->_CI = & get_instance();
+		if ( config_item( 'redis' ) ) {
+			$this->_CI->load->library('redis');
+			$this->_redis =& $this->_CI->redis;
+		}
 	}
 
 	/**
@@ -31,6 +36,24 @@ class Querycache
 	}
 
 	/**
+	 * 用于作为redis的tag
+	 * @var string
+	 */
+	private $_redis_tag;
+	public function tag( $tag ) {
+		$this->_redis_tag = $tag;
+		return $this;
+	}
+
+	/**
+	 * 删除redis里面指定的tag
+	 * @param string $tag
+	 */
+	public function unset_tag( $tag ) {
+		if ( config_item( 'redis' ) && $tag ) $this->_redis->del(array($tag));
+	}
+
+	/**
 	 *
 	 * @param string $model 模型名(不需要加_model)
 	 * @param string $method 方法
@@ -43,16 +66,26 @@ class Querycache
 		$model_and_method = array_shift( $args ) . '_' . array_shift( $args );
 
 		// 索引
-		$hash = "{$model_and_method}_" . serialize( $args );
+		$hash = md5("{$model_and_method}_" . serialize( $args ));
 
 		// 存在缓存直接返回
 		if ( isset( $this->_cache[$hash] ) ) return $this->_cache[$hash];
+		if ( config_item( 'redis' ) && $this->_redis_tag ) {
+			$redis_data = @unserialize($this->_redis->get($this->_redis_tag));
+			if ( $redis_data ) {
+				$this->_redis_tag = NULL;
+				return $redis_data;
+			}
+		}
 
 		// 通过模型获取数据
 		$result = $this->execute( $model, $method, $args, TRUE );
 
 		// 缓存起来
 		$this->_cache[$hash] = $result;
+		if ( config_item( 'redis' ) && $this->_redis_tag && $result ) $this->_redis->set($this->_redis_tag, @serialize($result));
+		$this->_redis_tag = NULL;
+
 		return $result;
 	}
 

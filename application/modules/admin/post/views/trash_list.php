@@ -30,7 +30,7 @@
 					<p><?php echo $single['author']; ?></p>
 				</td>
 				<td><?php echo $single['category']; ?></td>
-				<td><?php echo gbk_substr(  strip_tags( $single['content'] ), 300); ?></td>
+				<td><?php echo gbk_substr( strip_tags( $single['content'] ), 300); ?></td>
 				<td>
 					<div class="btn-toolbar">
 						<div class="btn-group">

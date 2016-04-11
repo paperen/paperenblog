@@ -2,6 +2,7 @@ INSERT INTO config (`id`, `key`, `name`, `value`) VALUES
 ('', 'sitename', '站点名称', 'paperenblog'),
 ('', 'description', '站点描述', ''),
 ('', 'theme', '主题', 'paperen'),
+('', 'redis', '是否开启redis', '0'),
 ('', 'per_page', '每页显示数据条数', '18'),
 ('', 'upload_path', '上传路径', './upload/'),
 ('', 'comment_ispublic', '评论是否需要审批', '1'),

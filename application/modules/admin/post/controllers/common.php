@@ -176,7 +176,6 @@ class Admin_Post_Common_Module extends MY_Module
 			$data['post_data']['content'] = $converter->parseString($data['post_data']['content']);
 
 			// 删掉redis中的数据
-			$this->querycache->unset_tag('index');
 			$this->querycache->unset_tag("post_{$post_data['urltitle']}");
 			$this->querycache->unset_tag("post_{$post_id}");
 		}
@@ -513,7 +512,6 @@ class Admin_Post_Common_Module extends MY_Module
 			$this->querycache->execute( 'post', 'update_trash', array( $post_id ) );
 
 			// 删掉redis中的数据
-			$this->querycache->unset_tag('index');
 			$this->querycache->unset_tag("post_{$post_data['urltitle']}");
 			$this->querycache->unset_tag("post_{$post_id}");
 			$this->querycache->unset_tag("comment_recent");
@@ -543,7 +541,6 @@ class Admin_Post_Common_Module extends MY_Module
 			$this->querycache->execute( 'post', 'update_trash_revoke', array( $post_id ) );
 
 			// 删掉redis中的数据
-			$this->querycache->unset_tag('index');
 			$this->querycache->unset_tag("post_{$post_data['urltitle']}");
 			$this->querycache->unset_tag("post_{$post_id}");
 			$this->querycache->unset_tag("comment_recent");
@@ -588,7 +585,6 @@ class Admin_Post_Common_Module extends MY_Module
 			$this->querycache->execute( 'post', 'delete_by_id', array( $post_id ) );
 
 			// 删除redis中的数据
-			$this->querycache->unset_tag('index');
 			$this->querycache->unset_tag("post_{$post_data['urltitle']}");
 			$this->querycache->unset_tag("post_{$post_id}");
 			$this->querycache->unset_tag("comment_{$post_id}");
